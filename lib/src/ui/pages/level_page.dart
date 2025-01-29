@@ -173,7 +173,7 @@ class _LevelPageState extends State<LevelPage> {
     setState(() {
       isLoading = true;
     });
-    Future.delayed(const Duration(seconds: 1)).then((v) {
+    Future.delayed(const Duration(milliseconds: 100)).then((v) {
       var endNodeId = currentNode!.edges?[0].endNodeId;
 
       for (Node node in level.graph ?? []) {

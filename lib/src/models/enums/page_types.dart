@@ -5,6 +5,10 @@ enum PageId {
   technicals,
   events,
   other,
+  sahiTechnicals,
+  sahiOptionChain,
+  sahiCandlestick,
+  sahiMarketDepth
 }
 
 extension PageIdValue on PageId {
@@ -22,6 +26,14 @@ extension PageIdValue on PageId {
         return 11;
       case PageId.other:
         return 12;
+      case PageId.sahiTechnicals:
+        return 18;
+      case PageId.sahiOptionChain:
+        return 17;
+      case PageId.sahiCandlestick:
+        return 16;
+      case PageId.sahiMarketDepth:
+        return 15;
     }
   }
 }

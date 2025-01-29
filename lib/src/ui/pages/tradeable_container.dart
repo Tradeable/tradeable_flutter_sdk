@@ -12,7 +12,7 @@ class TradeableContainer extends StatefulWidget {
   const TradeableContainer(
       {super.key,
       required this.child,
-      this.learnBtnTopPos = 80,
+      this.learnBtnTopPos = 180,
       this.isLearnBtnStatic = true,
       this.pageId,
       this.modules});
