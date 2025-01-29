@@ -33,28 +33,14 @@ class _SahiLandingPageState extends State<SahiLandingPage> {
                             context,
                             MaterialPageRoute(
                                 builder: (context) => SahiAppPage(
-                                      pageId: PageId.allModule,
+                                      pageId: PageId.sahiTechnicals,
                                       pageDescription:
                                           "This is \nSahi Education page",
+                                      bgImage: "instrument_page.png",
                                     )));
                       },
                       child: Text(
-                        "Sahi Education Page(All Trade:able sample modules)",
-                        textAlign: TextAlign.center,
-                      )),
-                  ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => SahiAppPage(
-                                      pageId: PageId.overview,
-                                      pageDescription:
-                                          "Sahi page with candle chart and user is a rookie",
-                                    )));
-                      },
-                      child: Text(
-                        "Sahi candle chart pages",
+                        "Sahi Instrument Screen",
                         textAlign: TextAlign.center,
                       )),
                   ElevatedButton(
@@ -64,11 +50,13 @@ class _SahiLandingPageState extends State<SahiLandingPage> {
                             MaterialPageRoute(
                                 builder: (context) => SahiAppPage(
                                       pageId: PageId.optionChain,
-                                      pageDescription: "Sahi's Option page",
+                                      bgImage: "option_page.png",
+                                      pageDescription:
+                                          "Sahi page with candle chart and user is a rookie",
                                     )));
                       },
                       child: Text(
-                        "Sahi Option Chain page",
+                        "Sahi option chain screen",
                         textAlign: TextAlign.center,
                       )),
                   ElevatedButton(
@@ -77,30 +65,31 @@ class _SahiLandingPageState extends State<SahiLandingPage> {
                             context,
                             MaterialPageRoute(
                                 builder: (context) => SahiAppPage(
-                                      pageId: PageId.technicals,
+                                      pageId: PageId.sahiCandlestick,
+                                      bgImage: "chart_page.png",
+                                      pageDescription: "Sahi's Option page",
+                                    )));
+                      },
+                      child: Text(
+                        "Sahi Chart Screen",
+                        textAlign: TextAlign.center,
+                      )),
+                  ElevatedButton(
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => SahiAppPage(
+                                      pageId: PageId.sahiMarketDepth,
+                                      bgImage: "market_depth.png",
                                       pageDescription:
                                           "Sahi instrument page and user might have to undertand techincals",
                                     )));
                       },
                       child: Text(
-                        "Sahi Instrument page",
+                        "Sahi Market Depth Screen",
                         textAlign: TextAlign.center,
                       )),
-                  // ElevatedButton(
-                  //     onPressed: () {
-                  //       Navigator.push(
-                  //           context,
-                  //           MaterialPageRoute(
-                  //               builder: (context) => SahiAppPage(
-                  //                     pageId: PageId.events,
-                  //                     pageDescription:
-                  //                         "Sahi page with news etc...",
-                  //                   )));
-                  //     },
-                  //     child: Text(
-                  //       "Sahi News page",
-                  //       textAlign: TextAlign.center,
-                  //     )),
                   SizedBox(
                     height: 40,
                   ),
