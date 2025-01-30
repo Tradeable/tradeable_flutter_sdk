@@ -1,4 +1,4 @@
-import 'package:example/pages/sahi/sahi_landing_page.dart';
+import 'package:example/pages/axis/axis_page_list.dart';
 import 'package:flutter/material.dart';
 import 'package:tradeable_flutter_sdk/tradeable_flutter_sdk.dart';
 
@@ -20,8 +20,7 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: '/',
       routes: {
-        //'/': (context) => const AxisPageList(),
-        '/': (context) => const SahiLandingPage(),
+        '/': (context) => const AxisPageList(),
       },
     );
   }

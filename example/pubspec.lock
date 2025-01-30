@@ -702,7 +702,7 @@ packages:
     description:
       path: "."
       ref: main
-      resolved-ref: "1d3a095d8d6ffb01ed9c0e79ea9050bec73b187c"
+      resolved-ref: "9c8a61babfc75a9a25ef461f92755acec553fbec"
       url: "https://github.com/Tradeable/tradeable_learn_widget.git"
     source: git
     version: "0.0.1"
