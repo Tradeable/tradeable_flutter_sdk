@@ -49,7 +49,7 @@ class _SahiLandingPageState extends State<SahiLandingPage> {
                             context,
                             MaterialPageRoute(
                                 builder: (context) => SahiAppPage(
-                                      pageId: PageId.optionChain,
+                                      pageId: PageId.sahiOptionChain,
                                       bgImage: "option_page.png",
                                       pageDescription:
                                           "Sahi page with candle chart and user is a rookie",
@@ -90,6 +90,39 @@ class _SahiLandingPageState extends State<SahiLandingPage> {
                         "Sahi Market Depth Screen",
                         textAlign: TextAlign.center,
                       )),
+                  ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => OptionStrategyContainer(
+                                  spotPrice: 23245,
+                                  spotPriceDayDelta: 17.70,
+                                  spotPriceDayDeltaPer: 0.07,
+                                  onExecute: () {},
+                                  legs: [
+                                    OptionLeg(
+                                      symbol: "NIFTY",
+                                      strike: 23250,
+                                      type: PositionType.buy,
+                                      optionType: OptionType.call,
+                                      expiry:
+                                          DateTime.parse("2025-02-06 15:30:00"),
+                                      quantity: 25,
+                                      premium: 362,
+                                    ),
+                                    OptionLeg(
+                                      symbol: "NIFTY",
+                                      strike: 23250,
+                                      type: PositionType.buy,
+                                      optionType: OptionType.put,
+                                      expiry:
+                                          DateTime.parse("2025-02-06 15:30:00"),
+                                      quantity: 25,
+                                      premium: 310,
+                                    )
+                                  ],
+                                )));
+                      },
+                      child: const Text("Options Strategy")),
                   SizedBox(
                     height: 40,
                   ),

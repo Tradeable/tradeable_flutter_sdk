@@ -58,9 +58,9 @@ class OpenDrawerDialog extends StatelessWidget {
                       alignment: Alignment.bottomCenter,
                       child: SizedBox(
                         width: MediaQuery.of(context).size.width *
-                            0.9, // 80% of dialog width
+                            0.4, // 80% of dialog width
                         child: Lottie.asset(
-                          'packages/tradeable_flutter_sdk/lib/assets/lottie/lottie_open_helper.json', // Replace with your Lottie animation file
+                          'packages/tradeable_flutter_sdk/lib/assets/lottie/lottie_open_helper_v2.json', // Replace with your Lottie animation file
                           fit: BoxFit.contain,
                         ),
                       ),

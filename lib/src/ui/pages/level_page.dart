@@ -3,6 +3,7 @@ import 'package:tradeable_flutter_sdk/src/models/level/level.model.dart';
 import 'package:tradeable_flutter_sdk/src/network/api.dart';
 import 'package:tradeable_learn_widget/tradeable_learn_widget.dart';
 import 'package:tradeable_learn_widget/user_story_widget/user_story_model.dart';
+import 'package:tradeable_learn_widget/utils/theme.dart';
 
 class LevelPage extends StatefulWidget {
   final int levelId;
@@ -15,6 +16,7 @@ class LevelPage extends StatefulWidget {
 
 class _LevelPageState extends State<LevelPage> {
   late Level level;
+  String title = "";
   bool isLoading = true;
   Node? currentNode;
   Recommendations? recommendations;
@@ -27,6 +29,7 @@ class _LevelPageState extends State<LevelPage> {
         isLoading = false;
         level = val;
         recommendations = level.recommendations;
+        title = level.title;
       });
       findStartNode();
     });
@@ -49,7 +52,13 @@ class _LevelPageState extends State<LevelPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(backgroundColor: Colors.white),
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        title: Text(
+          title,
+          style: Theme.of(context).customTextStyles.mediumBold,
+        ),
+      ),
       body: SafeArea(
         child: isLoading
             ? const Center(child: CircularProgressIndicator())
