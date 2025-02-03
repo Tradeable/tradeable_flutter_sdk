@@ -8,7 +8,7 @@
 PRODUCT_NAME = sahi_demo
 
 // The application's bundle identifier
-PRODUCT_BUNDLE_IDENTIFIER = com.example.sahiDemo
+PRODUCT_BUNDLE_IDENTIFIER = app.tradeable.sahiDemo
 
 // The copyright displayed in application information
 PRODUCT_COPYRIGHT = Copyright © 2025 com.example. All rights reserved.

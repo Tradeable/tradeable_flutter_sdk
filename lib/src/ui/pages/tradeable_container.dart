@@ -63,13 +63,16 @@ class _TradeableContainerState extends State<TradeableContainer>
                     ),
                   ],
                   gradient: LinearGradient(
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                      colors: [
-                        Color(0xff4a4363),
-                        Color(0xff774a3d)
-                      ] //[Color(0xffed1164), Color(0xff97144d)],
-                      ),
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors:
+                        // [
+                        //   Colors.red,
+                        //   Colors.red
+                        // ]
+                        [Color(0xffed1164), Color(0xff97144d)],
+                    //[Color(0xff4a4363), Color(0xff774a3d)]
+                  ),
                   borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(8),
                       bottomLeft: Radius.circular(8))),
@@ -105,7 +108,7 @@ class _TradeableContainerState extends State<TradeableContainer>
                 child: Center(
                   child: //Icon(Icons.chevron_left, color: Colors.white),
                       Image.asset(
-                    "packages/tradeable_flutter_sdk/lib/assets/images/sahi_learn_logo.png",
+                    "packages/tradeable_flutter_sdk/lib/assets/images/axis_learn_logo.png",
                     height: 30,
                   ),
                 ),

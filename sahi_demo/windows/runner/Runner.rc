@@ -92,7 +92,7 @@ BEGIN
             VALUE "CompanyName", "com.example" "\0"
             VALUE "FileDescription", "sahi_demo" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "sahi_demo" "\0"
+            VALUE "InternalName", "app.tradeable.sahiDemo" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2025 com.example. All rights reserved." "\0"
             VALUE "OriginalFilename", "sahi_demo.exe" "\0"
             VALUE "ProductName", "sahi_demo" "\0"
