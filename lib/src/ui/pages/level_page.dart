@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:tradeable_flutter_sdk/src/models/level/level.model.dart';
 import 'package:tradeable_flutter_sdk/src/network/api.dart';
+import 'package:tradeable_learn_widget/buy_sell_widget/buy_sell.dart';
+import 'package:tradeable_learn_widget/candle_formation/candle_formation_model.dart';
 import 'package:tradeable_learn_widget/tradeable_learn_widget.dart';
-import 'package:tradeable_learn_widget/user_story_widget/user_story_model.dart';
+import 'package:tradeable_learn_widget/user_story_widget/models/user_story_model.dart';
 import 'package:tradeable_learn_widget/utils/theme.dart';
 
 class LevelPage extends StatefulWidget {
@@ -169,6 +171,56 @@ class _LevelPageState extends State<LevelPage> {
       case "horizontal_line_v1":
         return HorizontalLineQuestionV1(
             model: HorizontalLineModelV1.fromJson(data),
+            onNextClick: () => onNextClick());
+      case "Buy_Sell":
+        return BuySellV1();
+      case "Reading_Option_Chain":
+        return ReadingOptionChain(onNextClick: () => onNextClick());
+      case "scenario_intro":
+        return ScenarioIntroWidget(
+            model: OptionIntroModel.fromJson(data),
+            onNextClick: () => onNextClick());
+      case "fno_buy_page_3":
+        return PriceDecreased(
+            model: PriceDecreaseModel.fromJson(data),
+            onNextClick: () => onNextClick());
+      case "index_page":
+        return IndexPage(
+            model: IndexPageModel.fromJson(data),
+            onNextClick: () => onNextClick());
+      case "info":
+        return PriceDecreased(
+            model: PriceDecreaseModel.fromJson(data),
+            onNextClick: () => onNextClick());
+      case "webpage":
+        return WebInfoReel(
+            model: WebpageModel.fromJson(data),
+            onNextClick: () => onNextClick());
+      case "LS11":
+        return LS11(
+            model: LS11Model.fromJson(data), onNextClick: () => onNextClick());
+      case "RR_DYNAMIC":
+        return RRQuestion(
+            model: RRModel.fromJson(data), onNextClick: () => onNextClick());
+      case "candle_formation":
+        return CandleFormation(
+            model: CandleFormationModel.fromJson(data),
+            onNextClick: () => onNextClick());
+      case "banana_widget":
+        return BananaWidget(
+            model: BananaModel.fromJson(data),
+            onNextClick: () => onNextClick());
+      case "image_mcq":
+        return ImageMcq(
+            model: ImageMCQModel.fromJson(data),
+            onNextClick: () => onNextClick());
+      case "column_match":
+        return ColumnMatch(
+            model: ColumnModel.fromJson(data),
+            onNextClick: () => onNextClick());
+      case "range_grid_slider":
+        return RatingWidget(
+            model: RangeGridSliderModel.fromJson(data),
             onNextClick: () => onNextClick());
       default:
         return Container(
