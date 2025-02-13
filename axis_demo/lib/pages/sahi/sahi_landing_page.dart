@@ -33,13 +33,13 @@ class _SahiLandingPageState extends State<SahiLandingPage> {
                             context,
                             MaterialPageRoute(
                                 builder: (context) => SahiAppPage(
-                                      pageId: PageId.sahiTechnicals,
+                                      pageId: PageId.axisOverview,
                                       pageDescription: "",
-                                      bgImage: "instrument_page.png",
+                                      bgImage: "market_depth.jpg",
                                     )));
                       },
                       child: Text(
-                        "Axis Instrument Screen",
+                        "Overview tab",
                         textAlign: TextAlign.center,
                       )),
                   ElevatedButton(
@@ -48,13 +48,13 @@ class _SahiLandingPageState extends State<SahiLandingPage> {
                             context,
                             MaterialPageRoute(
                                 builder: (context) => SahiAppPage(
-                                      pageId: PageId.sahiOptionChain,
-                                      bgImage: "option_page.png",
+                                      pageId: PageId.axisOptions,
+                                      bgImage: "option_page.jpg",
                                       pageDescription: "",
                                     )));
                       },
                       child: Text(
-                        "Axis option chain screen",
+                        "Options tab",
                         textAlign: TextAlign.center,
                       )),
                   ElevatedButton(
@@ -63,13 +63,13 @@ class _SahiLandingPageState extends State<SahiLandingPage> {
                             context,
                             MaterialPageRoute(
                                 builder: (context) => SahiAppPage(
-                                      pageId: PageId.sahiCandlestick,
-                                      bgImage: "chart_page.png",
+                                      pageId: PageId.axisBasics101,
+                                      bgImage: "instrument_page.jpg",
                                       pageDescription: "",
                                     )));
                       },
                       child: Text(
-                        "Axis Chart Screen",
+                        "Technical tab",
                         textAlign: TextAlign.center,
                       )),
                   ElevatedButton(
@@ -78,7 +78,7 @@ class _SahiLandingPageState extends State<SahiLandingPage> {
                             context,
                             MaterialPageRoute(
                                 builder: (context) => SahiAppPage(
-                                      pageId: PageId.sahiMarketDepth,
+                                      pageId: PageId.trends,
                                       bgImage: "market_depth.png",
                                       pageDescription: "",
                                     )));
@@ -87,39 +87,39 @@ class _SahiLandingPageState extends State<SahiLandingPage> {
                         "Axis Market Depth Screen",
                         textAlign: TextAlign.center,
                       )),
-                  ElevatedButton(
-                      onPressed: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => OptionStrategyContainer(
-                                  spotPrice: 23245,
-                                  spotPriceDayDelta: 17.70,
-                                  spotPriceDayDeltaPer: 0.07,
-                                  onExecute: () {},
-                                  legs: [
-                                    OptionLeg(
-                                      symbol: "NIFTY",
-                                      strike: 23250,
-                                      type: PositionType.buy,
-                                      optionType: OptionType.call,
-                                      expiry:
-                                          DateTime.parse("2025-02-06 15:30:00"),
-                                      quantity: 25,
-                                      premium: 362,
-                                    ),
-                                    OptionLeg(
-                                      symbol: "NIFTY",
-                                      strike: 23250,
-                                      type: PositionType.buy,
-                                      optionType: OptionType.put,
-                                      expiry:
-                                          DateTime.parse("2025-02-06 15:30:00"),
-                                      quantity: 25,
-                                      premium: 310,
-                                    )
-                                  ],
-                                )));
-                      },
-                      child: const Text("Options Strategy")),
+                  // ElevatedButton(
+                  //     onPressed: () {
+                  //       Navigator.of(context).push(MaterialPageRoute(
+                  //           builder: (context) => OptionStrategyContainer(
+                  //                 spotPrice: 23245,
+                  //                 spotPriceDayDelta: 17.70,
+                  //                 spotPriceDayDeltaPer: 0.07,
+                  //                 onExecute: () {},
+                  //                 legs: [
+                  //                   OptionLeg(
+                  //                     symbol: "NIFTY",
+                  //                     strike: 23250,
+                  //                     type: PositionType.buy,
+                  //                     optionType: OptionType.call,
+                  //                     expiry:
+                  //                         DateTime.parse("2025-02-06 15:30:00"),
+                  //                     quantity: 25,
+                  //                     premium: 362,
+                  //                   ),
+                  //                   OptionLeg(
+                  //                     symbol: "NIFTY",
+                  //                     strike: 23250,
+                  //                     type: PositionType.buy,
+                  //                     optionType: OptionType.put,
+                  //                     expiry:
+                  //                         DateTime.parse("2025-02-06 15:30:00"),
+                  //                     quantity: 25,
+                  //                     premium: 310,
+                  //                   )
+                  //                 ],
+                  //               )));
+                  //     },
+                  //     child: const Text("Options Strategy")),
                   SizedBox(
                     height: 40,
                   ),
