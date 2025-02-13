@@ -8,7 +8,10 @@ enum PageId {
   sahiTechnicals,
   sahiOptionChain,
   sahiCandlestick,
-  sahiMarketDepth
+  sahiMarketDepth,
+  axisOverview,
+  axisOption,
+  axisTechnical
 }
 
 extension PageIdValue on PageId {
@@ -34,6 +37,12 @@ extension PageIdValue on PageId {
         return 16;
       case PageId.sahiMarketDepth:
         return 15;
+      case PageId.axisOverview:
+        return 20;
+      case PageId.axisOption:
+        return 21;
+      case PageId.axisTechnical:
+        return 22;
     }
   }
 }

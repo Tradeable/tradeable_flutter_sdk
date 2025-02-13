@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tradeable_flutter_sdk/src/models/level/level.model.dart';
 import 'package:tradeable_flutter_sdk/src/network/api.dart';
 import 'package:tradeable_learn_widget/tradeable_learn_widget.dart';
-import 'package:tradeable_learn_widget/user_story_widget/user_story_model.dart';
+import 'package:tradeable_learn_widget/user_story_widget/models/user_story_model.dart';
 import 'package:tradeable_learn_widget/utils/theme.dart';
 
 class LevelPage extends StatefulWidget {
