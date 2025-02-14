@@ -72,20 +72,6 @@ class _SahiLandingPageState extends State<SahiLandingPage> {
                         "Technical tab",
                         textAlign: TextAlign.center,
                       )),
-                  ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => SahiAppPage(
-                                      pageId: PageId.trends,
-                                      bgImage: "market_depth.png",
-                                      pageDescription: "",
-                                    )));
-                      },
-                      child: Text(
-                        "Axis Market Depth Screen",
-                        textAlign: TextAlign.center,
                   // ElevatedButton(
                   //     onPressed: () {
                   //       Navigator.of(context).push(MaterialPageRoute(
