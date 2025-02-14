@@ -189,8 +189,8 @@ class _LevelPageState extends State<LevelPage> {
             model: IndexPageModel.fromJson(data),
             onNextClick: () => onNextClick());
       case "info":
-        return PriceDecreased(
-            model: PriceDecreaseModel.fromJson(data),
+        return InfoReel(
+            model: InfoReelModel.fromJson(data),
             onNextClick: () => onNextClick());
       case "webpage":
         return WebInfoReel(
