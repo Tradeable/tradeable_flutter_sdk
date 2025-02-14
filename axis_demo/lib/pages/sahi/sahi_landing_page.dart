@@ -48,7 +48,7 @@ class _SahiLandingPageState extends State<SahiLandingPage> {
                             context,
                             MaterialPageRoute(
                                 builder: (context) => SahiAppPage(
-                                      pageId: PageId.axisOptions,
+                                      pageId: PageId.axisOption,
                                       bgImage: "option_page.jpg",
                                       pageDescription: "",
                                     )));
@@ -63,7 +63,7 @@ class _SahiLandingPageState extends State<SahiLandingPage> {
                             context,
                             MaterialPageRoute(
                                 builder: (context) => SahiAppPage(
-                                      pageId: PageId.axisBasics101,
+                                      pageId: PageId.axisTechnical,
                                       bgImage: "instrument_page.jpg",
                                       pageDescription: "",
                                     )));
@@ -86,7 +86,6 @@ class _SahiLandingPageState extends State<SahiLandingPage> {
                       child: Text(
                         "Axis Market Depth Screen",
                         textAlign: TextAlign.center,
-                      )),
                   // ElevatedButton(
                   //     onPressed: () {
                   //       Navigator.of(context).push(MaterialPageRoute(
