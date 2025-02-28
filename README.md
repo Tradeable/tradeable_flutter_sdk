@@ -1,22 +1,27 @@
 # Tradeable Learn SDK
 
 ## Installation
-
 Add the following dependency to your `pubspec.yaml`:
-
 ```yaml
 tradeable_learn:
   git:
-    url: https://github.com/Tradeable/tradeable_learn.git
+    url: https://github.com/Tradeable/tradeable_flutter_sdk.git
     ref: main
 ```
 
+## Initialization
+Add this to your main.dart file:
+```dart
+void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  TFS().initialize(token: "your_api_token_here");
+  runApp(const MyApp());
+}
+```
+
 ## Basic Usage
-
 ### Adding Tradeable Learn Sheet
-
 To add a Tradeable Learn sheet to any page, wrap your widget with `TradeableLearnContainer`:
-
 ```dart
 @override
 Widget build(BuildContext context) {
@@ -30,16 +35,13 @@ Widget build(BuildContext context) {
 ```
 
 ## Data Configuration Methods
-
 ### 1. Using PageIds
-
 You can configure the container by passing a `pageId`:
-
 ```dart
 @override
 Widget build(BuildContext context) {
   return TradeableLearnContainer(
-    pageId: PageId.allModule,
+    pageId: PageId.axis,
     child: Scaffold(
       appBar: AppBar(),
       body: const SafeArea(child: Placeholder())
@@ -48,45 +50,15 @@ Widget build(BuildContext context) {
 }
 ```
 
-Available PageIds:
-
-- `allModule`
-- `overview`
-- `optionChain`
-- `technicals`
-- `events`
-- `other`
-
-### 2. Using ModuleLabels
-
-Alternatively, you can pass specific module labels:
-
-```dart
-@override
-Widget build(BuildContext context) {
-  return TradeableLearnContainer(
-    modules: const [ModuleLabel.candlestickPatterns],
-    child: Scaffold(
-      appBar: AppBar(),
-      body: const SafeArea(child: Placeholder())
-    )
-  );
-}
-```
-
-Available ModuleLabels:
-
-- `moneyness`
-- `options`
-- `supportAndResistance`
-- `introToTA`
-- `circuits`
-- `candlestickPatterns`
+### Available PageIds:
+- `axisOverview`
+- `axisOption`
+- `axisTechnical`
+- `axisScanners`
+- `axisWatchlist`
 
 ## Option Strategy Container
-
 To implement an Option Strategy, use the following code:
-
 ```dart
 Navigator.of(context).push(
   MaterialPageRoute(
