@@ -57,7 +57,7 @@ class _LevelPageState extends State<LevelPage> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         title: Text(
-          title,
+          "$title-${currentNode?.nodeId ?? ""}",
           style: Theme.of(context).customTextStyles.mediumBold,
         ),
       ),
@@ -71,6 +71,7 @@ class _LevelPageState extends State<LevelPage> {
   }
 
   Widget getViewByType(String levelType, Map<String, dynamic>? data) {
+    print(levelType);
     switch (levelType) {
       case "End":
         return LevelCompleteScreen(recommendations: recommendations);
