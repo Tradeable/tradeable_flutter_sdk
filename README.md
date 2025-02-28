@@ -14,7 +14,7 @@ Add this to your main.dart file:
 ```dart
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  TFS().initialize(token: "your_api_token_here");
+  TFS().initialize(token: "axis_acess_token");
   runApp(const MyApp());
 }
 ```
