@@ -717,8 +717,8 @@ packages:
     dependency: transitive
     description:
       path: "."
-      ref: dev_deepak
-      resolved-ref: ab5c8b28e6255e5ad20b07592f55c28cf7708e03
+      ref: main
+      resolved-ref: ac72d6f0f8ea6d4dd074e4bb52901588a25750e7
       url: "https://github.com/Tradeable/tradeable_learn_widget.git"
     source: git
     version: "0.0.1"
