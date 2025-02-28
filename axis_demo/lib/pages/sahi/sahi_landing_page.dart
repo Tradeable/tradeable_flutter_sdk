@@ -35,7 +35,7 @@ class _SahiLandingPageState extends State<SahiLandingPage> {
                                 builder: (context) => SahiAppPage(
                                       pageId: PageId.axisOverview,
                                       pageDescription: "",
-                                      bgImage: "market_depth.jpg",
+                                      bgImage: "axis_overview.png",
                                     )));
                       },
                       child: Text(
@@ -49,7 +49,7 @@ class _SahiLandingPageState extends State<SahiLandingPage> {
                             MaterialPageRoute(
                                 builder: (context) => SahiAppPage(
                                       pageId: PageId.axisOption,
-                                      bgImage: "option_page.jpg",
+                                      bgImage: "axis_options.png",
                                       pageDescription: "",
                                     )));
                       },
@@ -64,7 +64,7 @@ class _SahiLandingPageState extends State<SahiLandingPage> {
                             MaterialPageRoute(
                                 builder: (context) => SahiAppPage(
                                       pageId: PageId.axisTechnical,
-                                      bgImage: "instrument_page.jpg",
+                                      bgImage: "axis_technicals.png",
                                       pageDescription: "",
                                     )));
                       },
@@ -72,19 +72,36 @@ class _SahiLandingPageState extends State<SahiLandingPage> {
                         "Technical tab",
                         textAlign: TextAlign.center,
                       )),
+
                   ElevatedButton(
                       onPressed: () {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => SahiAppPage(
-                                      pageId: PageId.trends,
-                                      bgImage: "instrument_page.jpg",
+                                      pageId: PageId.axisScanners,
+                                      bgImage: "axis_scanners.jpg",
                                       pageDescription: "",
                                     )));
                       },
                       child: Text(
-                        "Trends",
+                        "Screeners tab",
+                        textAlign: TextAlign.center,
+                      )),
+
+                  ElevatedButton(
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => SahiAppPage(
+                                      pageId: PageId.axisWatchlist,
+                                      bgImage: "axis_watchlist.jpg",
+                                      pageDescription: "",
+                                    )));
+                      },
+                      child: Text(
+                        "Watchlist tab",
                         textAlign: TextAlign.center,
                       )),
                   // ElevatedButton(

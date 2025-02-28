@@ -22,6 +22,8 @@ class _LevelPageState extends State<LevelPage> {
   bool isLoading = true;
   Node? currentNode;
   Recommendations? recommendations;
+  double progress = 0.0;
+  int currentIndex = 0;
 
   @override
   void initState() {
@@ -52,6 +54,8 @@ class _LevelPageState extends State<LevelPage> {
 
   @override
   Widget build(BuildContext context) {
+    final colors = Theme.of(context).customColors;
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -59,6 +63,15 @@ class _LevelPageState extends State<LevelPage> {
         title: Text(
           title,
           style: Theme.of(context).customTextStyles.mediumBold,
+        ),
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(4.0),
+          child: LinearProgressIndicator(
+            value: progress,
+            backgroundColor: colors.cardColorSecondary,
+            valueColor:
+                AlwaysStoppedAnimation<Color>(colors.borderColorPrimary),
+          ),
         ),
       ),
       body: SafeArea(
@@ -237,11 +250,13 @@ class _LevelPageState extends State<LevelPage> {
     Future.delayed(const Duration(milliseconds: 100)).then((v) {
       var endNodeId = currentNode!.edges?[0].endNodeId;
 
-      for (Node node in level.graph ?? []) {
-        if (node.nodeId == endNodeId) {
+      for (int i = 0; i < level.graph!.length; i++) {
+        if (level.graph![i].nodeId == endNodeId) {
           setState(() {
-            currentNode = node;
+            currentNode = level.graph![i];
+            currentIndex++;
             isLoading = false;
+            progress = currentIndex / (level.graph!.length - 1);
           });
           break;
         }

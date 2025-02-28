@@ -12,7 +12,9 @@ enum PageId {
   trends,
   axisOverview,
   axisOption,
-  axisTechnical
+  axisTechnical,
+  axisScanners,
+  axisWatchlist
 }
 
 extension PageIdValue on PageId {
@@ -46,6 +48,10 @@ extension PageIdValue on PageId {
         return 21;
       case PageId.axisTechnical:
         return 22;
+      case PageId.axisScanners:
+        return 23;
+      case PageId.axisWatchlist:
+        return 24;
     }
   }
 }
