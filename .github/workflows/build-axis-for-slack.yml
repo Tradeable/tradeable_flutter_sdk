@@ -1,12 +1,16 @@
 name: Build Flutter APK and Upload to GitHub Releases
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
-      - feat/build-pipeline
     paths:
       - 'axis_demo/**'
+      - '.github/workflows/**'
+  repository_dispatch:
+    types: [trigger-axis-build]
+
 
 jobs:
   build:
@@ -35,7 +39,7 @@ jobs:
         id: date
         run: echo "DATE=$(date +'%Y-%m-%d-%H%M%S')" >> $GITHUB_ENV
 
-      - name: Upload APK as Artifact (Optional)
+      - name: Upload APK as Artifact
         uses: actions/upload-artifact@v4
         with:
           name: flutter-apk
