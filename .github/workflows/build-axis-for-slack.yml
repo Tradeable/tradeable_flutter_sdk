@@ -1,6 +1,7 @@
 name: Build Flutter APK and Upload to GitHub Releases
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
