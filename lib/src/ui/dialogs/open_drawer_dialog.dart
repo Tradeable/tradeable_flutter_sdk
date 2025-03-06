@@ -18,7 +18,7 @@ class OpenDrawerDialog extends StatelessWidget {
       ),
       child: SizedBox(
         height: MediaQuery.of(context).size.height *
-            0.5, // Dialog takes 60% of screen height
+            0.6, // Dialog takes 60% of screen height
         width: MediaQuery.of(context).size.width *
             0.8, // Dialog takes 80% of screen width
         child: Column(

@@ -1,0 +1,20 @@
+{
+  "buildFiles": [
+    "/Users/adityagohad/flutter/packages/flutter_tools/gradle/src/main/groovy/CMakeLists.txt"
+  ],
+  "cleanCommandsComponents": [
+    [
+      "/Users/adityagohad/Library/Android/sdk/cmake/3.22.1/bin/ninja",
+      "-C",
+      "/Users/adityagohad/Developer/Finlearn/tradeable_flutter_sdk/axis_demo/android/app/.cxx/RelWithDebInfo/b386q244/x86_64",
+      "clean"
+    ]
+  ],
+  "buildTargetsCommandComponents": [
+    "/Users/adityagohad/Library/Android/sdk/cmake/3.22.1/bin/ninja",
+    "-C",
+    "/Users/adityagohad/Developer/Finlearn/tradeable_flutter_sdk/axis_demo/android/app/.cxx/RelWithDebInfo/b386q244/x86_64",
+    "{LIST_OF_TARGETS_TO_BUILD}"
+  ],
+  "libraries": {}
+}
