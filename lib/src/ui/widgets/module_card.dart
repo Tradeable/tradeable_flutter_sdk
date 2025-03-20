@@ -54,6 +54,14 @@ class ModuleCard extends StatelessWidget {
                       fit: BoxFit.cover,
                       width: 64,
                       height: 64,
+                      errorBuilder: (context, error, stackTrace) {
+                        return Image.network(
+                          'https://db7ux0oq7lxvd.cloudfront.net/Logos/334.png',
+                          fit: BoxFit.cover,
+                          width: 64,
+                          height: 64,
+                        );
+                      },
                     )
                   : Image.asset(
                       "assets/default_module_icon.png",
