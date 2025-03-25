@@ -12,9 +12,15 @@ class TopicDetailPage extends StatefulWidget {
   State<TopicDetailPage> createState() => _TopicDetailPageState();
 }
 
-class _TopicDetailPageState extends State<TopicDetailPage>
-    with SingleTickerProviderStateMixin {
+class _TopicDetailPageState extends State<TopicDetailPage> {
   bool isExpanded = false;
+  final ScrollController _scrollController = ScrollController();
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,11 +33,15 @@ class _TopicDetailPageState extends State<TopicDetailPage>
               tag: widget.topic.name,
               child: FlowDropdownHolder(
                 toggleIcon: _buildToggleButton(),
+                isExpanded: isExpanded,
                 child: Material(
                   color: Colors.transparent,
                   child: Column(
                     children: [
                       _buildHeader(),
+                      isExpanded
+                          ? const SizedBox(height: 20)
+                          : SizedBox.shrink(),
                       AnimatedSize(
                         duration: Duration(milliseconds: 300),
                         curve: Curves.easeInOut,
@@ -52,21 +62,29 @@ class _TopicDetailPageState extends State<TopicDetailPage>
     return GestureDetector(
       onTap: () => setState(() => isExpanded = !isExpanded),
       child: Container(
-        height: 10,
-        width: 50,
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-              colors: [Color(0xff204135), Color(0xff3D9D7F)],
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              stops: [0.2, 1]),
-          borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(10),
-              bottomRight: Radius.circular(10)),
-        ),
-        child: Icon(isExpanded ? Icons.arrow_drop_up : Icons.arrow_drop_down,
-            color: Color(0xff50F3BF), size: 12),
-      ),
+          height: 10,
+          width: 50,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+                colors: [Color(0xff204135), Color(0xff3D9D7F)],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                stops: [0.2, 1]),
+            borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(10),
+                bottomRight: Radius.circular(10)),
+          ),
+          padding: const EdgeInsets.all(2),
+          child: isExpanded
+              ? Transform.rotate(
+                  angle: 3.1416,
+                  child: Image.asset(
+                    "packages/tradeable_flutter_sdk/lib/assets/images/arrow_down.png",
+                  ),
+                )
+              : Image.asset(
+                  "packages/tradeable_flutter_sdk/lib/assets/images/arrow_down.png",
+                )),
     );
   }
 

@@ -177,10 +177,12 @@ class _KAGRTopicsPageState extends State<KAGRTopicsPage> {
                 color: Colors.transparent,
                 child: Text(
                   topic.name,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                   style: const TextStyle(
                       fontWeight: FontWeight.w700,
-                      fontSize: 14,
-                      color: Colors.white),
+                      fontSize: 15,
+                      color: Color(0xffD3CABD)),
                 ),
               ),
             ),
@@ -189,7 +191,7 @@ class _KAGRTopicsPageState extends State<KAGRTopicsPage> {
               topic.description,
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
-              style: const TextStyle(color: Colors.grey, fontSize: 12),
+              style: const TextStyle(color: Color(0xffD3CABD), fontSize: 12),
             ),
             const Spacer(),
             Row(

@@ -10,21 +10,30 @@ class FlowsList extends StatefulWidget {
 class _FlowsList extends State<FlowsList> {
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        SizedBox(height: 20),
-        _buildHorizontalList("Education corner"),
-        _buildHorizontalList("Analysis"),
-        _buildHorizontalList("Practice / Scenario"),
-      ],
+    return Container(
+      margin: const EdgeInsets.all(4),
+      decoration: BoxDecoration(
+        color: Color(0xff313030),
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(color: Colors.black, blurRadius: 4, spreadRadius: 0.2)
+        ],
+      ),
+      child: Column(
+        children: [
+          _buildHorizontalList("Education corner"),
+          _buildHorizontalList("Analysis"),
+          _buildHorizontalList("Practice / Scenario"),
+        ],
+      ),
     );
   }
 
   Widget _buildHorizontalList(String title) {
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+      margin: EdgeInsets.symmetric(vertical: 10, horizontal: 6),
       decoration: BoxDecoration(
-        color: Color(0xff1D1D1D),
+        color: Color(0xff1D1C1C),
         borderRadius: BorderRadius.circular(20),
       ),
       child: Column(
@@ -41,18 +50,22 @@ class _FlowsList extends State<FlowsList> {
     return Center(
       child: Container(
         width: 150,
-        padding: const EdgeInsets.symmetric(vertical: 6),
+        padding: const EdgeInsets.symmetric(vertical: 4),
         decoration: BoxDecoration(
           color: Color(0xff333131),
           borderRadius: BorderRadius.only(
-              bottomRight: Radius.circular(10),
-              bottomLeft: Radius.circular(10)),
+            bottomRight: Radius.circular(14),
+            bottomLeft: Radius.circular(14),
+          ),
         ),
         child: Center(
           child: Text(
             title,
             style: TextStyle(
-                color: Colors.white, fontWeight: FontWeight.w600, fontSize: 12),
+              color: Colors.white,
+              fontWeight: FontWeight.w600,
+              fontSize: 12,
+            ),
           ),
         ),
       ),
@@ -60,17 +73,21 @@ class _FlowsList extends State<FlowsList> {
   }
 
   Widget _buildScrollableList() {
+    final ScrollController scrollController = ScrollController();
+
     return Container(
       padding: const EdgeInsets.all(8),
       height: 140,
       child: RawScrollbar(
+        controller: scrollController,
         thumbVisibility: true,
-        thickness: 4,
+        thickness: 3,
         radius: Radius.circular(5),
         thumbColor: Color(0xff5D5C5C),
         child: Padding(
           padding: const EdgeInsets.only(bottom: 16),
           child: ListView.builder(
+            controller: scrollController,
             scrollDirection: Axis.horizontal,
             itemCount: 5,
             itemBuilder: (context, index) {
@@ -79,10 +96,11 @@ class _FlowsList extends State<FlowsList> {
                 margin: EdgeInsets.only(right: 10),
                 decoration: BoxDecoration(
                   color: Color(0xff303030),
-                  borderRadius: BorderRadius.circular(10),
+                  borderRadius: BorderRadius.circular(20),
                 ),
                 child: Center(
-                    child: Icon(Icons.circle, color: Colors.grey, size: 30)),
+                  child: Icon(Icons.circle, color: Colors.grey, size: 30),
+                ),
               );
             },
           ),
