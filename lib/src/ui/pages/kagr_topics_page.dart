@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:shimmer/shimmer.dart';
+import 'package:tradeable_flutter_sdk/src/models/kagr/topic_model.dart';
+import 'package:tradeable_flutter_sdk/src/network/kagr_api.dart';
 import 'package:tradeable_flutter_sdk/src/ui/pages/topic_details_page.dart';
 
 class KAGRTopicsPage extends StatefulWidget {
@@ -10,21 +13,23 @@ class KAGRTopicsPage extends StatefulWidget {
 
 class _KAGRTopicsPageState extends State<KAGRTopicsPage> {
   bool isGradientChanged = false;
-  final List<Map<String, dynamic>> topics = [
-    {
-      "title": "Market Depth",
-      "description": "Understand order book data.",
-      "progress": 0.2
-    },
-    {"title": "OHLC 1", "description": "Learn about OHLC.", "progress": 0.4},
-    {
-      "title": "Upper and Lower Circuits",
-      "description": "Basics of Open, High, Low and Close",
-      "progress": 0.6
-    }
-  ];
+  List<Topic>? topics;
 
-  void _navigateToDetail(Map<String, dynamic> topic) {
+  @override
+  void initState() {
+    fetchTopics();
+    super.initState();
+  }
+
+  void fetchTopics() async {
+    await KagrApi().fetchModuleById(1).then((va) {
+      setState(() {
+        topics = va.topics;
+      });
+    });
+  }
+
+  void _navigateToDetail(Topic topic) {
     setState(() => isGradientChanged = true);
     Navigator.of(context)
         .push(PageRouteBuilder(
@@ -81,28 +86,52 @@ class _KAGRTopicsPageState extends State<KAGRTopicsPage> {
   }
 
   Widget _buildTopicList() {
+    return topics != null
+        ? ListView.builder(
+            itemCount: topics?.length,
+            itemBuilder: (context, index) {
+              return GestureDetector(
+                onTap: () => _navigateToDetail(topics![index]),
+                child: Container(
+                  margin: const EdgeInsets.only(bottom: 20),
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: isGradientChanged
+                        ? Color(0xff666666)
+                        : Color(0xff1C1C1C),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: _buildTopicCard(topics![index], index.isEven),
+                ),
+              );
+            },
+          )
+        : _buildShimmerEffect();
+  }
+
+  Widget _buildShimmerEffect() {
     return ListView.builder(
-      itemCount: topics.length,
+      itemCount: 5,
       itemBuilder: (context, index) {
-        return GestureDetector(
-          onTap: () => _navigateToDetail(topics[index]),
+        return Shimmer.fromColors(
+          baseColor: Colors.grey[800]!,
+          highlightColor: Colors.grey[600]!,
           child: Container(
             margin: const EdgeInsets.only(bottom: 20),
-            padding: const EdgeInsets.all(8),
+            height: 130,
             decoration: BoxDecoration(
-              color: const Color(0xff1C1C1C),
+              color: Colors.black,
               borderRadius: BorderRadius.circular(20),
             ),
-            child: _buildTopicCard(topics[index], index.isEven),
           ),
         );
       },
     );
   }
 
-  Widget _buildTopicCard(Map<String, dynamic> topic, bool isLeftAligned) {
+  Widget _buildTopicCard(Topic topic, bool isLeftAligned) {
     return Container(
-      height: 130,
+      height: 120,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
         color: const Color(0xff242424),
@@ -110,25 +139,32 @@ class _KAGRTopicsPageState extends State<KAGRTopicsPage> {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: isLeftAligned
-            ? [_buildImageBox(), _buildTopicDetails(topic, isLeftAligned)]
-            : [_buildTopicDetails(topic, isLeftAligned), _buildImageBox()],
+            ? [
+                _buildImageBox(topic.logo.url),
+                _buildTopicDetails(topic, isLeftAligned)
+              ]
+            : [
+                _buildTopicDetails(topic, isLeftAligned),
+                _buildImageBox(topic.logo.url)
+              ],
       ),
     );
   }
 
-  Widget _buildImageBox() {
+  Widget _buildImageBox(String url) {
     return Container(
-      margin: const EdgeInsets.all(6),
+      margin: const EdgeInsets.all(4),
       width: 110,
-      height: 110,
+      height: 120,
       decoration: BoxDecoration(
         color: Colors.black,
         borderRadius: BorderRadius.circular(20),
       ),
+      child: Image.network(url),
     );
   }
 
-  Widget _buildTopicDetails(Map<String, dynamic> topic, bool isLeftAligned) {
+  Widget _buildTopicDetails(Topic topic, bool isLeftAligned) {
     return Expanded(
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
@@ -136,11 +172,11 @@ class _KAGRTopicsPageState extends State<KAGRTopicsPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Hero(
-              tag: topic["title"],
+              tag: topic.name,
               child: Material(
                 color: Colors.transparent,
                 child: Text(
-                  topic["title"],
+                  topic.name,
                   style: const TextStyle(
                       fontWeight: FontWeight.w700,
                       fontSize: 14,
@@ -150,7 +186,7 @@ class _KAGRTopicsPageState extends State<KAGRTopicsPage> {
             ),
             const SizedBox(height: 6),
             Text(
-              topic["description"],
+              topic.description,
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
               style: const TextStyle(color: Colors.grey, fontSize: 12),
@@ -162,8 +198,9 @@ class _KAGRTopicsPageState extends State<KAGRTopicsPage> {
                   : MainAxisAlignment.start,
               children: [
                 Text(
-                  "Completed ${(topic["progress"] * 5).toInt()}/5",
-                  style: const TextStyle(color: Colors.white, fontSize: 10),
+                  "COMPLETED ${topic.progress.completed}/${topic.progress.total}",
+                  style:
+                      const TextStyle(color: Color(0xff6F6F6F), fontSize: 10),
                 ),
                 const SizedBox(width: 10),
                 SizedBox(
@@ -173,7 +210,9 @@ class _KAGRTopicsPageState extends State<KAGRTopicsPage> {
                     color: const Color(0xff919191),
                     backgroundColor: const Color(0xff4A4949),
                     strokeWidth: 2,
-                    value: topic["progress"],
+                    value: topic.progress.total > 0
+                        ? topic.progress.completed / topic.progress.total
+                        : 0.0,
                   ),
                 ),
               ],
