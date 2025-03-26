@@ -49,14 +49,30 @@ class _SahiLandingPageState extends State<SahiLandingPage> {
                             MaterialPageRoute(
                                 builder: (context) => SahiAppPage(
                                       pageId: PageId.axisOption,
+                                      bgImage: "axis_options_itm.png",
+                                      pageDescription: "",
+                                    )));
+                      },
+                      child: Text(
+                        "Options tab seciont 1",
+                        textAlign: TextAlign.center,
+                      )),
+                  ElevatedButton(
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => SahiAppPage(
+                                      pageId: PageId.axisOption,
                                       bgImage: "axis_options.png",
                                       pageDescription: "",
                                     )));
                       },
                       child: Text(
-                        "Options tab",
+                        "Options tab section 2",
                         textAlign: TextAlign.center,
                       )),
+
                   ElevatedButton(
                       onPressed: () {
                         Navigator.push(
@@ -80,7 +96,7 @@ class _SahiLandingPageState extends State<SahiLandingPage> {
                             MaterialPageRoute(
                                 builder: (context) => SahiAppPage(
                                       pageId: PageId.axisScanners,
-                                      bgImage: "axis_scanners.jpg",
+                                      bgImage: "axis_scanners.png",
                                       pageDescription: "",
                                     )));
                       },
@@ -96,7 +112,7 @@ class _SahiLandingPageState extends State<SahiLandingPage> {
                             MaterialPageRoute(
                                 builder: (context) => SahiAppPage(
                                       pageId: PageId.axisWatchlist,
-                                      bgImage: "axis_watchlist.jpg",
+                                      bgImage: "axis_watchlist.png",
                                       pageDescription: "",
                                     )));
                       },
