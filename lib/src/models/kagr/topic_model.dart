@@ -1,3 +1,5 @@
+import 'package:tradeable_flutter_sdk/src/models/kagr/flow_model.dart';
+
 class Topic {
   final int id;
   final String name;
@@ -6,7 +8,7 @@ class Topic {
   final Progress progress;
   final int? startFlow;
   final List<String> tags;
-  List<Flow>? flows;
+  List<FlowModel>? flows;
 
   Topic({
     required this.id,
@@ -29,22 +31,22 @@ class Topic {
       startFlow: json["start_flow"],
       tags: List<String>.from(json["tags"]),
       flows: json["flows"] != null
-          ? (json["flows"] as List).map((e) => Flow.fromJson(e)).toList()
+          ? (json["flows"] as List).map((e) => FlowModel.fromJson(e)).toList()
           : [],
     );
   }
 }
 
-class Logo {
-  final String url;
-  final String type;
+class TagModel {
+  final int id;
+  final int name;
 
-  Logo({required this.url, required this.type});
+  TagModel({required this.id, required this.name});
 
-  factory Logo.fromJson(Map<String, dynamic> json) {
-    return Logo(
-      url: json["url"],
-      type: json["type"],
+  factory TagModel.fromJson(Map<String, dynamic> json) {
+    return TagModel(
+      id: json["id"],
+      name: json["name"],
     );
   }
 }
@@ -59,29 +61,6 @@ class Progress {
     return Progress(
       total: json["total"],
       completed: json["completed"],
-    );
-  }
-}
-
-class Flow {
-  final int id;
-  final bool isCompleted;
-  final Logo logo;
-  final String? category;
-
-  Flow({
-    required this.id,
-    required this.isCompleted,
-    required this.logo,
-    required this.category,
-  });
-
-  factory Flow.fromJson(Map<String, dynamic> json) {
-    return Flow(
-      id: json["id"],
-      isCompleted: json["is_completed"],
-      logo: Logo.fromJson(json["logo"]),
-      category: json["category"],
     );
   }
 }

@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:tradeable_flutter_sdk/src/models/kagr/flow_model.dart';
 import 'package:tradeable_flutter_sdk/src/models/kagr/module_model.dart';
 import 'package:tradeable_flutter_sdk/src/models/kagr/topic_model.dart';
 import 'package:tradeable_flutter_sdk/src/utils/constants.dart';
@@ -27,5 +28,23 @@ class KagrApi {
     );
 
     return Topic.fromJson(response.data["data"]);
+  }
+
+  Future<FlowModel> fetchFlowById(
+    int topicId,
+    int flowId,
+    int moduleId,
+    int topicTagId,
+  ) async {
+    Response response = await Dio().get(
+      "$baseUrl/v0/sdk/topics/$topicId/flows/$flowId",
+      queryParameters: {
+        "module_id": moduleId,
+        "topic_tag_id": topicTagId,
+      },
+      options: Options(headers: kagrtoken),
+    );
+
+    return FlowModel.fromJson(response.data["data"]);
   }
 }

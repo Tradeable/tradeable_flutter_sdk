@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
-import 'package:tradeable_flutter_sdk/src/models/kagr/topic_model.dart';
+import 'package:tradeable_flutter_sdk/src/models/kagr/topic_user_model.dart';
 import 'package:tradeable_flutter_sdk/src/network/kagr_api.dart';
 import 'package:tradeable_flutter_sdk/src/ui/pages/topic_details_page.dart';
+import 'package:tradeable_flutter_sdk/src/ui/widgets/button_widget.dart';
 
 class KAGRTopicsPage extends StatefulWidget {
   const KAGRTopicsPage({super.key});
@@ -13,7 +14,7 @@ class KAGRTopicsPage extends StatefulWidget {
 
 class _KAGRTopicsPageState extends State<KAGRTopicsPage> {
   bool isGradientChanged = false;
-  List<Topic>? topics;
+  ModuleUserModel? moduleUserModel;
 
   @override
   void initState() {
@@ -22,21 +23,31 @@ class _KAGRTopicsPageState extends State<KAGRTopicsPage> {
   }
 
   void fetchTopics() async {
-    await KagrApi().fetchModuleById(1).then((va) {
+    await KagrApi().fetchModuleById(1).then((data) {
       setState(() {
-        topics = va.topics;
+        moduleUserModel = ModuleUserModel(
+            moduleId: data.id,
+            topics: data.topics
+                .map((e) => TopicUserModel(
+                    topicId: e.id,
+                    name: e.name,
+                    description: e.description,
+                    logo: e.logo,
+                    progress: e.progress,
+                    startFlow: e.startFlow ?? 1))
+                .toList());
       });
     });
   }
 
-  void _navigateToDetail(Topic topic) {
+  void _navigateToDetail(int moduleId, TopicUserModel topic) {
     setState(() => isGradientChanged = true);
     Navigator.of(context)
         .push(PageRouteBuilder(
           transitionDuration: const Duration(milliseconds: 500),
           pageBuilder: (_, animation, __) => FadeTransition(
             opacity: animation,
-            child: TopicDetailPage(topic: topic),
+            child: TopicDetailPage(topic: topic, moduleId: moduleId),
           ),
         ))
         .then((_) => setState(() => isGradientChanged = false));
@@ -53,7 +64,10 @@ class _KAGRTopicsPageState extends State<KAGRTopicsPage> {
             children: [
               _buildHeader(),
               Expanded(child: _buildTopicList()),
-              _buildFooter(),
+              DoubleLayerButtonWidget(
+                  onClick: () {},
+                  text: "Go to Learn Dashboard",
+                  isDisabled: false),
             ],
           ),
         ),
@@ -86,26 +100,30 @@ class _KAGRTopicsPageState extends State<KAGRTopicsPage> {
   }
 
   Widget _buildTopicList() {
-    return topics != null
-        ? ListView.builder(
-            itemCount: topics?.length,
-            itemBuilder: (context, index) {
-              return GestureDetector(
-                onTap: () => _navigateToDetail(topics![index]),
-                child: Container(
-                  margin: const EdgeInsets.only(bottom: 20),
-                  padding: const EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                    color: isGradientChanged
-                        ? Color(0xff666666)
-                        : Color(0xff1C1C1C),
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: _buildTopicCard(topics![index], index.isEven),
-                ),
-              );
-            },
-          )
+    return moduleUserModel != null
+        ? moduleUserModel?.topics != null
+            ? ListView.builder(
+                itemCount: moduleUserModel?.topics.length,
+                itemBuilder: (context, index) {
+                  return GestureDetector(
+                    onTap: () => _navigateToDetail(moduleUserModel!.moduleId,
+                        moduleUserModel!.topics[index]),
+                    child: Container(
+                      margin: const EdgeInsets.only(bottom: 20),
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        color: isGradientChanged
+                            ? Color(0xff666666)
+                            : Color(0xff1C1C1C),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: _buildTopicCard(
+                          moduleUserModel!.topics[index], index.isEven),
+                    ),
+                  );
+                },
+              )
+            : Text("No data found")
         : _buildShimmerEffect();
   }
 
@@ -129,7 +147,7 @@ class _KAGRTopicsPageState extends State<KAGRTopicsPage> {
     );
   }
 
-  Widget _buildTopicCard(Topic topic, bool isLeftAligned) {
+  Widget _buildTopicCard(TopicUserModel topic, bool isLeftAligned) {
     return Container(
       height: 120,
       decoration: BoxDecoration(
@@ -164,7 +182,7 @@ class _KAGRTopicsPageState extends State<KAGRTopicsPage> {
     );
   }
 
-  Widget _buildTopicDetails(Topic topic, bool isLeftAligned) {
+  Widget _buildTopicDetails(TopicUserModel topic, bool isLeftAligned) {
     return Expanded(
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
@@ -221,48 +239,6 @@ class _KAGRTopicsPageState extends State<KAGRTopicsPage> {
             ),
             const SizedBox(height: 10),
           ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildFooter() {
-    return Container(
-      padding: const EdgeInsets.all(6),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
-        gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [
-            const Color(0xff1D1D1D).withOpacity(0.8),
-            const Color(0xff303030).withOpacity(0.8),
-          ],
-        ),
-      ),
-      child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 12),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
-          gradient: const LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [Color(0xff303030), Color(0xff1D1D1D)],
-          ),
-        ),
-        width: double.infinity,
-        child: Center(
-          child: Text(
-            "Go to Learn Dashboard",
-            style: TextStyle(
-              fontWeight: FontWeight.w700,
-              fontSize: 18,
-              foreground: Paint()
-                ..shader = const LinearGradient(
-                  colors: [Color(0xff50F3BF), Color(0xff1E1E1E)],
-                ).createShader(const Rect.fromLTWH(0.0, 0.0, 400.0, 70.0)),
-            ),
-          ),
         ),
       ),
     );

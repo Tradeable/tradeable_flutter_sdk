@@ -1,165 +1,121 @@
 import 'package:flutter/material.dart';
-import 'package:tradeable_flutter_sdk/src/models/kagr/topic_model.dart';
-import 'package:tradeable_flutter_sdk/src/ui/pages/flow_dropdown.dart';
-import 'package:tradeable_flutter_sdk/src/ui/pages/flows_list.dart';
+import 'package:tradeable_flutter_sdk/src/models/kagr/topic_user_model.dart';
+import 'package:tradeable_flutter_sdk/src/models/kagr/user_widgets_model.dart';
+import 'package:tradeable_flutter_sdk/src/network/kagr_api.dart';
+import 'package:tradeable_flutter_sdk/src/ui/pages/topic_header_page.dart';
+import 'package:tradeable_flutter_sdk/src/ui/pages/widget_page.dart';
 
 class TopicDetailPage extends StatefulWidget {
-  final Topic topic;
+  final int moduleId;
+  final TopicUserModel topic;
 
-  const TopicDetailPage({super.key, required this.topic});
+  const TopicDetailPage(
+      {super.key, required this.moduleId, required this.topic});
 
   @override
   State<TopicDetailPage> createState() => _TopicDetailPageState();
 }
 
-class _TopicDetailPageState extends State<TopicDetailPage> {
-  bool isExpanded = false;
-  final ScrollController _scrollController = ScrollController();
+class _TopicDetailPageState extends State<TopicDetailPage>
+    with SingleTickerProviderStateMixin {
+  final ValueNotifier<bool> isExpanded = ValueNotifier(false);
+  List<WidgetsModel>? widgets;
+
+  void getFlowByFlowId(int flowId) async {
+    setState(() {
+      widgets = [];
+    });
+    await KagrApi()
+        .fetchFlowById(widget.topic.topicId, flowId, widget.moduleId, 1)
+        .then((val) {
+      setState(() {
+        widgets = (val.widgets ?? [])
+            .map((e) => WidgetsModel(data: e.data, modelType: e.modelType))
+            .toList();
+      });
+    });
+  }
 
   @override
-  void dispose() {
-    _scrollController.dispose();
-    super.dispose();
+  void initState() {
+    getFlowByFlowId(widget.topic.startFlow);
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xff2A2929),
+      backgroundColor: const Color(0xff2A2929),
       body: SafeArea(
-        child: Column(
+        child: Stack(
           children: [
-            Hero(
-              tag: widget.topic.name,
-              child: FlowDropdownHolder(
-                toggleIcon: _buildToggleButton(),
-                isExpanded: isExpanded,
-                child: Material(
-                  color: Colors.transparent,
-                  child: Column(
-                    children: [
-                      _buildHeader(),
-                      isExpanded
-                          ? const SizedBox(height: 20)
-                          : SizedBox.shrink(),
-                      AnimatedSize(
-                        duration: Duration(milliseconds: 300),
-                        curve: Curves.easeInOut,
-                        child: isExpanded ? FlowsList() : SizedBox.shrink(),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+            LayoutBuilder(
+              builder: (context, constraints) {
+                return Column(
+                  children: [
+                    TopicHeaderWidget(
+                      topic: widget.topic,
+                      moduleId: widget.moduleId,
+                      onBack: () => Navigator.of(context).pop(),
+                      onExpandChanged: (expanded) {
+                        isExpanded.value = expanded.isExpanded;
+                        if (expanded.flowId != widget.topic.startFlow) {
+                          getFlowByFlowId(expanded.flowId);
+                        }
+                      },
+                    ),
+                    ValueListenableBuilder<bool>(
+                      valueListenable: isExpanded,
+                      builder: (context, expanded, child) {
+                        return AnimatedSwitcher(
+                          duration: const Duration(milliseconds: 300),
+                          transitionBuilder: (child, animation) {
+                            final slideAnimation = Tween<Offset>(
+                              begin: const Offset(-1, 0),
+                              end: Offset.zero,
+                            ).animate(animation);
+                            return SlideTransition(
+                                position: slideAnimation, child: child);
+                          },
+                          child: expanded
+                              ? const SizedBox.shrink()
+                              // : Container(
+                              //     height: constraints.maxHeight * 0.8,
+                              //     margin: const EdgeInsets.symmetric(
+                              //         horizontal: 10),
+                              //     padding: const EdgeInsets.all(10),
+                              //     child: ContainerLayoutWidget(
+                              //       childWidget:
+                              //           WidgetPage(widgets: widgets ?? []),
+                              //     ),
+                              //   ),
+                              : Container(
+                                  margin: const EdgeInsets.symmetric(
+                                      horizontal: 10),
+                                  padding: const EdgeInsets.all(10),
+                                  height: constraints.maxHeight * 0.88,
+                                  child: WidgetPage(widgets: widgets ?? [])),
+                        );
+                      },
+                    ),
+                  ],
+                );
+              },
             ),
+            // ValueListenableBuilder<bool>(
+            //   valueListenable: isExpanded,
+            //   builder: (_, expanded, __) => expanded
+            //       ? const SizedBox.shrink()
+            //       : Positioned(
+            //           bottom: 10,
+            //           left: 20,
+            //           right: 20,
+            //           child: DoubleLayerButtonWidget(
+            //               onClick: () {}, text: "Skip", isDisabled: true),
+            //         ),
+            // ),
           ],
         ),
-      ),
-    );
-  }
-
-  Widget _buildToggleButton() {
-    return GestureDetector(
-      onTap: () => setState(() => isExpanded = !isExpanded),
-      child: Container(
-          height: 10,
-          width: 50,
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-                colors: [Color(0xff204135), Color(0xff3D9D7F)],
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                stops: [0.2, 1]),
-            borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(10),
-                bottomRight: Radius.circular(10)),
-          ),
-          padding: const EdgeInsets.all(2),
-          child: isExpanded
-              ? Transform.rotate(
-                  angle: 3.1416,
-                  child: Image.asset(
-                    "packages/tradeable_flutter_sdk/lib/assets/images/arrow_down.png",
-                  ),
-                )
-              : Image.asset(
-                  "packages/tradeable_flutter_sdk/lib/assets/images/arrow_down.png",
-                )),
-    );
-  }
-
-  Widget _buildHeader() {
-    return Container(
-      padding: EdgeInsets.symmetric(vertical: 12),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
-        gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [Color(0xff303030), Color(0xff1D1D1D)],
-        ),
-      ),
-      width: double.infinity,
-      child: Row(
-        children: [
-          _buildBackButton(),
-          Spacer(),
-          _buildTitle(),
-          Spacer(),
-          _buildProgressIndicator(),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildBackButton() {
-    return GestureDetector(
-      onTap: () => Navigator.of(context).pop(),
-      child: Container(
-        margin: EdgeInsets.only(left: 20),
-        decoration: BoxDecoration(
-            color: Color(0xffD3CABD), borderRadius: BorderRadius.circular(4)),
-        height: 20,
-        width: 20,
-        child: ShaderMask(
-          shaderCallback: (bounds) => LinearGradient(
-            colors: [Color(0xff50F3BF), Color(0xff1E1E1E)],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ).createShader(bounds),
-          child: Transform.rotate(
-            angle: 3.1416,
-            child: Icon(Icons.play_arrow, color: Colors.white, size: 16),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildTitle() {
-    return Text(
-      widget.topic.name,
-      style: TextStyle(
-        fontWeight: FontWeight.w700,
-        fontSize: 18,
-        foreground: Paint()
-          ..shader = LinearGradient(
-            colors: [Color(0xff50F3BF), Color(0xff1E1E1E)],
-          ).createShader(Rect.fromLTWH(0.0, 0.0, 400.0, 70.0)),
-      ),
-    );
-  }
-
-  Widget _buildProgressIndicator() {
-    return Container(
-      margin: EdgeInsets.only(right: 20),
-      height: 20,
-      width: 20,
-      child: CircularProgressIndicator(
-        color: Color(0xff919191),
-        backgroundColor: Color(0xff4A4949),
-        strokeWidth: 2,
-        value: widget.topic.progress.completed / widget.topic.progress.total,
       ),
     );
   }
