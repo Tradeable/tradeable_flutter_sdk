@@ -1,14 +1,10 @@
 import 'package:tradeable_flutter_sdk/src/models/kagr/flow_model.dart';
 
 class TopicFlowModel {
-  final int moduleId;
   final int topicId;
   List<TopicFlowsListModel> userFlowsList;
 
-  TopicFlowModel(
-      {required this.moduleId,
-      required this.topicId,
-      required this.userFlowsList});
+  TopicFlowModel({required this.topicId, required this.userFlowsList});
 }
 
 class TopicFlowsListModel {

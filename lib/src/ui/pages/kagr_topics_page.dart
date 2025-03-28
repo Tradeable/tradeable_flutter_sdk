@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:tradeable_flutter_sdk/src/models/kagr/topic_user_model.dart';
 import 'package:tradeable_flutter_sdk/src/network/kagr_api.dart';
+import 'package:tradeable_flutter_sdk/src/tfs.dart';
 import 'package:tradeable_flutter_sdk/src/ui/pages/topic_details_page.dart';
 import 'package:tradeable_flutter_sdk/src/ui/widgets/button_widget.dart';
+import 'package:tradeable_flutter_sdk/src/utils/app_theme.dart';
 
 class KAGRTopicsPage extends StatefulWidget {
   const KAGRTopicsPage({super.key});
@@ -13,8 +15,8 @@ class KAGRTopicsPage extends StatefulWidget {
 }
 
 class _KAGRTopicsPageState extends State<KAGRTopicsPage> {
-  bool isGradientChanged = false;
-  ModuleUserModel? moduleUserModel;
+  List<TopicUserModel>? topicUserModel;
+  int? selectedIndex;
 
   @override
   void initState() {
@@ -23,40 +25,40 @@ class _KAGRTopicsPageState extends State<KAGRTopicsPage> {
   }
 
   void fetchTopics() async {
-    await KagrApi().fetchModuleById(1).then((data) {
+    await KagrApi().fetchTopicByTagId(3).then((data) {
       setState(() {
-        moduleUserModel = ModuleUserModel(
-            moduleId: data.id,
-            topics: data.topics
-                .map((e) => TopicUserModel(
-                    topicId: e.id,
-                    name: e.name,
-                    description: e.description,
-                    logo: e.logo,
-                    progress: e.progress,
-                    startFlow: e.startFlow ?? 1))
-                .toList());
+        topicUserModel = data
+            .map((e) => TopicUserModel(
+                topicId: e.id,
+                name: e.name,
+                description: e.description,
+                logo: e.logo,
+                progress: e.progress,
+                startFlow: e.startFlow ?? 1))
+            .toList();
       });
     });
   }
 
-  void _navigateToDetail(int moduleId, TopicUserModel topic) {
-    setState(() => isGradientChanged = true);
+  void _navigateToDetail(int index, TopicUserModel topic) {
+    setState(() => selectedIndex = index);
     Navigator.of(context)
         .push(PageRouteBuilder(
           transitionDuration: const Duration(milliseconds: 500),
           pageBuilder: (_, animation, __) => FadeTransition(
             opacity: animation,
-            child: TopicDetailPage(topic: topic, moduleId: moduleId),
+            child: TopicDetailPage(topic: topic),
           ),
         ))
-        .then((_) => setState(() => isGradientChanged = false));
+        .then((_) => setState(() => selectedIndex = null));
   }
 
   @override
   Widget build(BuildContext context) {
+    final colors =
+        TFS().themeData?.customColors ?? Theme.of(context).customColors;
     return Scaffold(
-      backgroundColor: const Color(0xff2A2929),
+      backgroundColor: colors.background,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
@@ -76,6 +78,11 @@ class _KAGRTopicsPageState extends State<KAGRTopicsPage> {
   }
 
   Widget _buildHeader() {
+    final textStyles =
+        TFS().themeData?.customTextStyles ?? Theme.of(context).customTextStyles;
+    final colors =
+        TFS().themeData?.customColors ?? Theme.of(context).customColors;
+
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 20),
       padding: const EdgeInsets.all(20),
@@ -84,41 +91,41 @@ class _KAGRTopicsPageState extends State<KAGRTopicsPage> {
         gradient: LinearGradient(
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
-          colors: isGradientChanged
-              ? [const Color(0xff1D1D1D), const Color(0xff50F3BF)]
-              : const [Color(0xff1D1D1D), Color(0xff1F1F1F), Color(0xff303030)],
+          colors: [colors.darkShade1, colors.darkShade2, colors.darkShade3],
         ),
       ),
-      child: const Center(
+      child: Center(
         child: Text(
           "What do you want to learn about today?",
-          style: TextStyle(
-              fontSize: 20, fontWeight: FontWeight.w700, color: Colors.white),
+          style: textStyles.mediumBold.copyWith(fontSize: 20),
         ),
       ),
     );
   }
 
   Widget _buildTopicList() {
-    return moduleUserModel != null
-        ? moduleUserModel?.topics != null
+    final colors =
+        TFS().themeData?.customColors ?? Theme.of(context).customColors;
+
+    return topicUserModel != null
+        ? topicUserModel!.isNotEmpty
             ? ListView.builder(
-                itemCount: moduleUserModel?.topics.length,
+                itemCount: topicUserModel!.length,
                 itemBuilder: (context, index) {
                   return GestureDetector(
-                    onTap: () => _navigateToDetail(moduleUserModel!.moduleId,
-                        moduleUserModel!.topics[index]),
+                    onTap: () =>
+                        _navigateToDetail(index, topicUserModel![index]),
                     child: Container(
                       margin: const EdgeInsets.only(bottom: 20),
                       padding: const EdgeInsets.all(8),
                       decoration: BoxDecoration(
-                        color: isGradientChanged
-                            ? Color(0xff666666)
-                            : Color(0xff1C1C1C),
+                        color: selectedIndex == index
+                            ? colors.itemFocusColor
+                            : colors.itemUnfocusedColor,
                         borderRadius: BorderRadius.circular(20),
                       ),
-                      child: _buildTopicCard(
-                          moduleUserModel!.topics[index], index.isEven),
+                      child:
+                          _buildTopicCard(topicUserModel![index], index.isEven),
                     ),
                   );
                 },
@@ -128,12 +135,15 @@ class _KAGRTopicsPageState extends State<KAGRTopicsPage> {
   }
 
   Widget _buildShimmerEffect() {
+    final colors =
+        TFS().themeData?.customColors ?? Theme.of(context).customColors;
+
     return ListView.builder(
       itemCount: 5,
       itemBuilder: (context, index) {
         return Shimmer.fromColors(
-          baseColor: Colors.grey[800]!,
-          highlightColor: Colors.grey[600]!,
+          baseColor: colors.darkShade3,
+          highlightColor: colors.darkShade1,
           child: Container(
             margin: const EdgeInsets.only(bottom: 20),
             height: 130,
@@ -148,11 +158,14 @@ class _KAGRTopicsPageState extends State<KAGRTopicsPage> {
   }
 
   Widget _buildTopicCard(TopicUserModel topic, bool isLeftAligned) {
+    final colors =
+        TFS().themeData?.customColors ?? Theme.of(context).customColors;
+
     return Container(
       height: 120,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
-        color: const Color(0xff242424),
+        color: colors.listItemColor,
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -170,12 +183,15 @@ class _KAGRTopicsPageState extends State<KAGRTopicsPage> {
   }
 
   Widget _buildImageBox(String url) {
+    final colors =
+        TFS().themeData?.customColors ?? Theme.of(context).customColors;
+
     return Container(
       margin: const EdgeInsets.all(4),
       width: 110,
       height: 120,
       decoration: BoxDecoration(
-        color: Colors.black,
+        color: colors.cardBasicBackground,
         borderRadius: BorderRadius.circular(20),
       ),
       child: Image.network(url),
@@ -183,6 +199,11 @@ class _KAGRTopicsPageState extends State<KAGRTopicsPage> {
   }
 
   Widget _buildTopicDetails(TopicUserModel topic, bool isLeftAligned) {
+    final textStyles =
+        TFS().themeData?.customTextStyles ?? Theme.of(context).customTextStyles;
+    final colors =
+        TFS().themeData?.customColors ?? Theme.of(context).customColors;
+
     return Expanded(
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
@@ -197,10 +218,8 @@ class _KAGRTopicsPageState extends State<KAGRTopicsPage> {
                   topic.name,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
-                      fontWeight: FontWeight.w700,
-                      fontSize: 15,
-                      color: Color(0xffD3CABD)),
+                  style: textStyles.smallBold
+                      .copyWith(fontSize: 15, color: colors.listItemTextColor1),
                 ),
               ),
             ),
@@ -209,7 +228,8 @@ class _KAGRTopicsPageState extends State<KAGRTopicsPage> {
               topic.description,
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
-              style: const TextStyle(color: Color(0xffD3CABD), fontSize: 12),
+              style: textStyles.smallNormal
+                  .copyWith(fontSize: 12, color: colors.listItemTextColor2),
             ),
             const Spacer(),
             Row(
@@ -219,19 +239,19 @@ class _KAGRTopicsPageState extends State<KAGRTopicsPage> {
               children: [
                 Text(
                   "COMPLETED ${topic.progress.completed}/${topic.progress.total}",
-                  style:
-                      const TextStyle(color: Color(0xff6F6F6F), fontSize: 10),
+                  style: textStyles.smallNormal
+                      .copyWith(fontSize: 10, color: colors.progressIndColor1),
                 ),
                 const SizedBox(width: 10),
                 SizedBox(
                   height: 14,
                   width: 14,
                   child: CircularProgressIndicator(
-                    color: const Color(0xff919191),
-                    backgroundColor: const Color(0xff4A4949),
+                    color: colors.progressIndColor1,
+                    backgroundColor: colors.progressIndColor2,
                     strokeWidth: 2,
-                    value: topic.progress.total > 0
-                        ? topic.progress.completed / topic.progress.total
+                    value: topic.progress.total! > 0
+                        ? topic.progress.completed! / topic.progress.total!
                         : 0.0,
                   ),
                 ),

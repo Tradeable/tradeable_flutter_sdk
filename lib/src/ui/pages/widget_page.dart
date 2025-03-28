@@ -1,5 +1,9 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:tradeable_flutter_sdk/src/models/kagr/user_widgets_model.dart';
+import 'package:tradeable_flutter_sdk/src/network/kagr_api.dart';
+import 'package:tradeable_flutter_sdk/src/ui/pages/flow_controller.dart';
 import 'package:tradeable_learn_widget/atm_itm_dropdown_widget/atm_itm_dropdown_data_model.dart';
 import 'package:tradeable_learn_widget/atm_itm_dropdown_widget/atm_itm_dropdown_widget_main.dart';
 import 'package:tradeable_learn_widget/banana_widget/banana_model.dart';
@@ -24,6 +28,8 @@ import 'package:tradeable_learn_widget/column_match/column_match.dart';
 import 'package:tradeable_learn_widget/demand_supply_educorner/demand_supply_educorner_main.dart';
 import 'package:tradeable_learn_widget/demand_supply_educorner/demand_supply_educorner_model.dart';
 import 'package:tradeable_learn_widget/drag_and_drop_match_widget/drag_and_drop_match.dart';
+import 'package:tradeable_learn_widget/dynamic_chart/dynamic_chart_main.dart';
+import 'package:tradeable_learn_widget/dynamic_chart/dynamic_chart_model.dart';
 import 'package:tradeable_learn_widget/edu_cornerv1/edu_corner_model.dart';
 import 'package:tradeable_learn_widget/edu_cornerv1/edu_corner_v1.dart';
 import 'package:tradeable_learn_widget/en1_matchthepair/en1_model.dart';
@@ -73,9 +79,10 @@ import 'package:tradeable_learn_widget/web_info_reel/web_info_reel.dart';
 import 'package:tradeable_learn_widget/web_info_reel/webpage_model.dart';
 
 class WidgetPage extends StatefulWidget {
-  final List<WidgetsModel> widgets;
+  final int topicId;
+  final int flowId;
 
-  const WidgetPage({super.key, required this.widgets});
+  const WidgetPage({super.key, required this.topicId, required this.flowId});
 
   @override
   State<WidgetPage> createState() => _WidgetPageState();
@@ -83,19 +90,45 @@ class WidgetPage extends StatefulWidget {
 
 class _WidgetPageState extends State<WidgetPage> {
   int currentIndex = 0;
+  bool isLoading = false;
+  List<WidgetsModel>? widgets;
 
-  void goToNext() {
-    if (currentIndex < widget.widgets.length - 1) {
-      setState(() => currentIndex++);
-    }
+  @override void didUpdateWidget(covariant WidgetPage oldWidget) {
+    setState(() {
+      widgets = [];
+      print(oldWidget.flowId);
+      getFlowByFlowId(widget.flowId);
+    });
+    super.didUpdateWidget(oldWidget);
+  }
+
+  @override
+  void initState() {
+    getFlowByFlowId(widget.flowId);
+    super.initState();
+  }
+
+  void getFlowByFlowId(int flowId) async {
+    setState(() {
+      widgets = [];
+    });
+    await KagrApi().fetchFlowById(widget.topicId, flowId, 1).then((val) {
+      setState(() {
+        widgets = (val.widgets ?? [])
+            .map((e) => WidgetsModel(data: e.data, modelType: e.modelType))
+            .toList();
+      });
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Center(
-        child: widget.widgets.isNotEmpty
-            ? getViewByType(widget.widgets[currentIndex].modelType,
-                widget.widgets[currentIndex].data)
+        child: (widgets ?? []).isNotEmpty
+            ? isLoading
+                ? CircularProgressIndicator()
+                : getViewByType(widgets![currentIndex].modelType,
+                    widgets![currentIndex].data)
             : CircularProgressIndicator());
   }
 
@@ -251,6 +284,11 @@ class _WidgetPageState extends State<WidgetPage> {
         return RatingWidget(
             model: RangeGridSliderModel.fromJson(data),
             onNextClick: () => onNextClick());
+      case "dynamic_chart":
+        log(data.toString());
+        return DynamicChartWidget(
+            model: DynamicChartModel.fromJson(data),
+            onNextClick: () => onNextClick());
       default:
         return Container(
           padding: const EdgeInsets.all(8.0),
@@ -261,9 +299,19 @@ class _WidgetPageState extends State<WidgetPage> {
 
   void onNextClick() {
     setState(() {
-      if (currentIndex < widget.widgets.length - 1) {
-        currentIndex++;
-      }
+      isLoading = true;
+    });
+    Future.delayed(Duration(milliseconds: 100)).then((val) {
+      setState(() {
+        if (currentIndex < widgets!.length - 1) {
+          currentIndex++;
+          isLoading = false;
+        } else {
+          FlowController().openFlowsList(highlightNextFlow: true);
+          isLoading = false;
+          currentIndex = 0;
+        }
+      });
     });
   }
 }

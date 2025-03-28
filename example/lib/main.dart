@@ -4,20 +4,29 @@ import 'package:tradeable_flutter_sdk/tradeable_flutter_sdk.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  TFS().initialize(token: "token");
+  String app = "Kagr";
+  switch (app) {
+    case "Kagr":
+      TFS().initialize(token: "token", theme: AppTheme.darkTheme());
+      break;
+    case "Axis":
+      TFS().initialize(token: "token", theme: AppTheme.lightTheme());
+      break;
+  }
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
+          colorScheme: ColorScheme.fromSeed(
+              seedColor: Colors.deepPurple, brightness: Brightness.dark),
+          useMaterial3: true),
       initialRoute: '/',
       routes: {
         '/': (context) => const AxisPageList(),

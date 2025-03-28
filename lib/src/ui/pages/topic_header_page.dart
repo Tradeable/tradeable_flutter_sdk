@@ -2,19 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:tradeable_flutter_sdk/src/models/kagr/expansion_data.dart';
 import 'package:tradeable_flutter_sdk/src/models/kagr/topic_flow_model.dart';
 import 'package:tradeable_flutter_sdk/src/models/kagr/topic_user_model.dart';
+import 'package:tradeable_flutter_sdk/src/tfs.dart';
+import 'package:tradeable_flutter_sdk/src/ui/pages/flow_controller.dart';
 import 'package:tradeable_flutter_sdk/src/ui/pages/flow_dropdown.dart';
 import 'package:tradeable_flutter_sdk/src/ui/pages/flows_list.dart';
+import 'package:tradeable_flutter_sdk/src/utils/app_theme.dart';
 
 class TopicHeaderWidget extends StatefulWidget {
   final TopicUserModel topic;
-  final int moduleId;
   final VoidCallback onBack;
   final ValueChanged<ExpansionData> onExpandChanged;
 
   const TopicHeaderWidget({
     super.key,
     required this.topic,
-    required this.moduleId,
     required this.onBack,
     required this.onExpandChanged,
   });
@@ -25,6 +26,19 @@ class TopicHeaderWidget extends StatefulWidget {
 
 class _TopicHeaderWidgetState extends State<TopicHeaderWidget> {
   bool isExpanded = false;
+  int currentFlowId = 1;
+
+  @override
+  void initState() {
+    super.initState();
+    currentFlowId = widget.topic.startFlow;
+    FlowController().registerCallback((highlightNextFlow) {
+      setState(() {
+        isExpanded = true;
+      });
+      widget.onExpandChanged(ExpansionData(isExpanded, currentFlowId));
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,13 +54,13 @@ class _TopicHeaderWidgetState extends State<TopicHeaderWidget> {
             curve: Curves.easeInOut,
             onEnd: () {
               if (!isExpanded) {
-                widget.onExpandChanged(ExpansionData(isExpanded, 1));
+                widget.onExpandChanged(
+                    ExpansionData(isExpanded, widget.topic.startFlow));
               }
             },
             child: isExpanded
                 ? FlowsList(
                     flowModel: TopicFlowModel(
-                      moduleId: widget.moduleId,
                       topicId: widget.topic.topicId,
                       userFlowsList: [],
                     ),
@@ -54,6 +68,7 @@ class _TopicHeaderWidgetState extends State<TopicHeaderWidget> {
                       setState(() {
                         setState(() {
                           isExpanded = !isExpanded;
+                          currentFlowId = flowId;
                         });
                         widget
                             .onExpandChanged(ExpansionData(isExpanded, flowId));
@@ -68,13 +83,17 @@ class _TopicHeaderWidgetState extends State<TopicHeaderWidget> {
   }
 
   Widget _buildToggleButton() {
+    final colors =
+        TFS().themeData?.customColors ?? Theme.of(context).customColors;
+
     return GestureDetector(
       onTap: () {
         setState(() {
           isExpanded = !isExpanded;
         });
         if (isExpanded) {
-          widget.onExpandChanged(ExpansionData(isExpanded, 1));
+          widget.onExpandChanged(
+              ExpansionData(isExpanded, widget.topic.startFlow));
         }
       },
       child: Container(
@@ -82,7 +101,7 @@ class _TopicHeaderWidgetState extends State<TopicHeaderWidget> {
         width: 50,
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [Color(0xff204135), Color(0xff3D9D7F)],
+            colors: [colors.dropdownShade1, colors.dropdownShade2],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             stops: [0.2, 1],
@@ -108,6 +127,11 @@ class _TopicHeaderWidgetState extends State<TopicHeaderWidget> {
   }
 
   Widget _buildHeader() {
+    final colors =
+        TFS().themeData?.customColors ?? Theme.of(context).customColors;
+    final textStyles =
+        TFS().themeData?.customTextStyles ?? Theme.of(context).customTextStyles;
+
     return Container(
       padding: EdgeInsets.symmetric(vertical: 12),
       decoration: BoxDecoration(
@@ -115,7 +139,7 @@ class _TopicHeaderWidgetState extends State<TopicHeaderWidget> {
         gradient: LinearGradient(
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
-          colors: [Color(0xff303030), Color(0xff1D1D1D)],
+          colors: [colors.darkShade3, colors.darkShade1],
         ),
       ),
       width: double.infinity,
@@ -126,14 +150,14 @@ class _TopicHeaderWidgetState extends State<TopicHeaderWidget> {
             child: Container(
               margin: EdgeInsets.only(left: 20),
               decoration: BoxDecoration(
-                color: Color(0xffD3CABD),
+                color: colors.listItemTextColor1,
                 borderRadius: BorderRadius.circular(4),
               ),
               height: 20,
               width: 20,
               child: ShaderMask(
                 shaderCallback: (bounds) => LinearGradient(
-                  colors: [Color(0xff50F3BF), Color(0xff1E1E1E)],
+                  colors: [colors.primary, colors.darkShade1],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                 ).createShader(bounds),
@@ -145,28 +169,25 @@ class _TopicHeaderWidgetState extends State<TopicHeaderWidget> {
             ),
           ),
           Spacer(),
-          Text(
-            widget.topic.name,
-            style: TextStyle(
-              fontWeight: FontWeight.w700,
-              fontSize: 18,
-              foreground: Paint()
-                ..shader = LinearGradient(
-                  colors: [Color(0xff50F3BF), Color(0xff1E1E1E)],
-                ).createShader(Rect.fromLTWH(0.0, 0.0, 400.0, 70.0)),
-            ),
-          ),
+          Text(widget.topic.name,
+              style: textStyles.mediumBold.copyWith(
+                fontSize: 18,
+                foreground: Paint()
+                  ..shader = LinearGradient(
+                    colors: [colors.primary, colors.darkShade1],
+                  ).createShader(Rect.fromLTWH(0.0, 0.0, 400.0, 70.0)),
+              )),
           Spacer(),
           Container(
             margin: EdgeInsets.only(right: 20),
             height: 20,
             width: 20,
             child: CircularProgressIndicator(
-              color: Color(0xff919191),
-              backgroundColor: Color(0xff4A4949),
+              color: colors.progressIndColor1,
+              backgroundColor: colors.progressIndColor2,
               strokeWidth: 2,
-              value:
-                  widget.topic.progress.completed / widget.topic.progress.total,
+              value: widget.topic.progress.completed! /
+                  widget.topic.progress.total!,
             ),
           ),
         ],

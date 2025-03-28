@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:tradeable_flutter_sdk/src/tfs.dart';
+import 'package:tradeable_flutter_sdk/src/utils/app_theme.dart';
 
 class FlowDropdownHolder extends StatefulWidget {
   final bool isExpanded;
@@ -19,6 +21,9 @@ class _FlowDropdownHolder extends State<FlowDropdownHolder>
     with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
+    final colors =
+        TFS().themeData?.customColors ?? Theme.of(context).customColors;
+
     return Stack(
       clipBehavior: Clip.none,
       alignment: Alignment.bottomCenter,
@@ -32,13 +37,10 @@ class _FlowDropdownHolder extends State<FlowDropdownHolder>
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
               colors: widget.isExpanded
-                  ? [
-                      Color(0xff363535),
-                      Color(0xff3D3D3D),
-                    ]
+                  ? [colors.containerShade1, colors.containerShade2]
                   : [
-                      Color(0xff1D1D1D).withOpacity(0.8),
-                      Color(0xff303030).withOpacity(0.8),
+                      colors.darkShade1.withOpacity(0.8),
+                      colors.darkShade3.withOpacity(0.8)
                     ],
             ),
           ),

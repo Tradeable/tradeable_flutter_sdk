@@ -7,7 +7,7 @@ class Topic {
   final Logo logo;
   final Progress progress;
   final int? startFlow;
-  final List<String> tags;
+  final List<TagModel> tags;
   List<FlowModel>? flows;
 
   Topic({
@@ -29,7 +29,9 @@ class Topic {
       logo: Logo.fromJson(json["logo"]),
       progress: Progress.fromJson(json["progress"]),
       startFlow: json["start_flow"],
-      tags: List<String>.from(json["tags"]),
+      tags: json["tags"] != null
+          ? (json["tags"] as List).map((e) => TagModel.fromJson(e)).toList()
+          : [],
       flows: json["flows"] != null
           ? (json["flows"] as List).map((e) => FlowModel.fromJson(e)).toList()
           : [],
@@ -39,7 +41,7 @@ class Topic {
 
 class TagModel {
   final int id;
-  final int name;
+  final String name;
 
   TagModel({required this.id, required this.name});
 
@@ -52,15 +54,15 @@ class TagModel {
 }
 
 class Progress {
-  final int total;
-  final int completed;
+  int? total;
+  int? completed;
 
-  Progress({required this.total, required this.completed});
+  Progress({this.total, this.completed});
 
   factory Progress.fromJson(Map<String, dynamic> json) {
     return Progress(
-      total: json["total"],
-      completed: json["completed"],
+      total: json["total"] ?? 0,
+      completed: json["completed"] ?? 0,
     );
   }
 }
