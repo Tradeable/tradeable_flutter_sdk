@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:tradeable_flutter_sdk/src/ui/pages/kagr_topics_page.dart';
-import 'package:tradeable_flutter_sdk/src/ui/pages/module_list_page.dart';
 import 'package:tradeable_flutter_sdk/src/ui/widgets/tradeable_right_side_drawer.dart';
 import 'package:tradeable_flutter_sdk/tradeable_flutter_sdk.dart';
 
@@ -32,7 +31,13 @@ class _TradeableContainerState extends State<TradeableContainer>
   void initState() {
     super.initState();
     learnBtnTopPos = widget.learnBtnTopPos;
-    animationValue = StorageManager().isSideDrawerOpened() ? 0 : 5;
+  }
+
+  waitForStorageService() async {
+    await Future.delayed(const Duration(milliseconds: 100));
+    setState(() {
+      animationValue = StorageManager().isSideDrawerOpened() ? 0 : 5;
+    });
   }
 
   @override
