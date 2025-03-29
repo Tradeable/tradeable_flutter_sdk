@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tradeable_flutter_sdk/src/ui/pages/module_list_page.dart';
+import 'package:tradeable_flutter_sdk/src/ui/pages/kagr_topics_page.dart';
 import 'package:tradeable_flutter_sdk/src/ui/widgets/tradeable_right_side_drawer.dart';
 import 'package:tradeable_flutter_sdk/tradeable_flutter_sdk.dart';
 
@@ -9,6 +9,7 @@ class TradeableContainer extends StatefulWidget {
   final PageId? pageId;
   final List<ModuleLabel>? modules;
   final bool isLearnBtnStatic;
+
   const TradeableContainer(
       {super.key,
       required this.child,
@@ -30,7 +31,13 @@ class _TradeableContainerState extends State<TradeableContainer>
   void initState() {
     super.initState();
     learnBtnTopPos = widget.learnBtnTopPos;
-    animationValue = StorageManager().isSideDrawerOpened() ? 0 : 5;
+  }
+
+  waitForStorageService() async {
+    await Future.delayed(const Duration(milliseconds: 100));
+    setState(() {
+      animationValue = StorageManager().isSideDrawerOpened() ? 0 : 5;
+    });
   }
 
   @override
@@ -97,13 +104,17 @@ class _TradeableContainerState extends State<TradeableContainer>
                   TradeableRightSideDrawer.open(
                       context: context,
                       drawerBorderRadius: 12,
-                      body: ModuleListPage(
-                        pageId: widget.pageId,
-                        pages: widget.modules,
-                        onClose: () {
-                          Navigator.of(context).pop();
-                        },
-                      ));
+                      body: KAGRTopicsPage());
+                  // TradeableRightSideDrawer.open(
+                  //     context: context,
+                  //     drawerBorderRadius: 12,
+                  //     body: ModuleListPage(
+                  //       pageId: widget.pageId,
+                  //       pages: widget.modules,
+                  //       onClose: () {
+                  //         Navigator.of(context).pop();
+                  //       },
+                  //     ));
                 },
                 child: Center(
                   child: //Icon(Icons.chevron_left, color: Colors.white),

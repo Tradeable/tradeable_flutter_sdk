@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tradeable_flutter_sdk/src/models/enums/module_types.dart';
 import 'package:tradeable_flutter_sdk/src/models/enums/page_types.dart';
+import 'package:tradeable_flutter_sdk/src/models/kagr/user_widgets_model.dart';
 import 'package:tradeable_flutter_sdk/src/models/module.model.dart';
 import 'package:tradeable_flutter_sdk/src/network/api.dart';
 import 'package:tradeable_flutter_sdk/src/ui/pages/level_page.dart';
@@ -26,6 +27,7 @@ class _ModuleListPageState extends State<ModuleListPage> {
   bool _showShimmer = true;
   List<ModuleModel> modules = [];
   List<ModuleModel> relatedModules = [];
+  List<WidgetsModel>? widgets;
 
   @override
   void initState() {

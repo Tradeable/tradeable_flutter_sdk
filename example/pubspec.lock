@@ -214,6 +214,15 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "7.0.1"
+  fin_chart:
+    dependency: transitive
+    description:
+      path: "."
+      ref: package_update
+      resolved-ref: abc8f7b133a876b5597c2b28c765bc8d14952766
+      url: "https://github.com/adityagohad/fin_chart.git"
+    source: git
+    version: "0.0.1"
   fl_chart:
     dependency: transitive
     description:
@@ -701,8 +710,8 @@ packages:
     dependency: transitive
     description:
       path: "."
-      ref: main
-      resolved-ref: a175ac95ab7cef2d67123220e2929058e1a3f806
+      ref: tlw
+      resolved-ref: ac4232c168dfb2f1fd6af52610b7943d990c2dd9
       url: "https://github.com/Tradeable/tradeable_learn_widget.git"
     source: git
     version: "0.0.1"
