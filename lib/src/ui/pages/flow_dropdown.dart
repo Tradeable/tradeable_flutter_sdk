@@ -39,8 +39,8 @@ class _FlowDropdownHolder extends State<FlowDropdownHolder>
               colors: widget.isExpanded
                   ? [colors.containerShade1, colors.containerShade2]
                   : [
-                      colors.darkShade1.withOpacity(0.8),
-                      colors.darkShade3.withOpacity(0.8)
+                      colors.cardColorSecondary.withOpacity(0.8),
+                      colors.cardColorSecondary.withOpacity(0.8)
                     ],
             ),
           ),

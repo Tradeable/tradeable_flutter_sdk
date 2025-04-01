@@ -36,7 +36,6 @@ class KagrApi {
     int flowId,
     int topicTagId,
   ) async {
-    print("$topicId, $flowId, $topicTagId");
     Response response = await Dio().get(
       "$baseUrl/v0/sdk/topics/$topicId/flows/$flowId",
       queryParameters: {

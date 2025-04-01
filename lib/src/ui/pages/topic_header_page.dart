@@ -86,42 +86,32 @@ class _TopicHeaderWidgetState extends State<TopicHeaderWidget> {
     final colors =
         TFS().themeData?.customColors ?? Theme.of(context).customColors;
 
-    return GestureDetector(
-      onTap: () {
-        setState(() {
-          isExpanded = !isExpanded;
-        });
-        if (isExpanded) {
-          widget.onExpandChanged(
-              ExpansionData(isExpanded, widget.topic.startFlow));
-        }
-      },
-      child: Container(
-        height: 10,
-        width: 50,
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [colors.dropdownShade1, colors.dropdownShade2],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            stops: [0.2, 1],
+    return Positioned(
+      bottom: -14,
+      child: GestureDetector(
+        onTap: () {
+          setState(() {
+            isExpanded = !isExpanded;
+          });
+          if (isExpanded) {
+            widget.onExpandChanged(
+                ExpansionData(isExpanded, widget.topic.startFlow));
+          }
+        },
+        child: Container(
+          width: 50,
+          decoration: BoxDecoration(
+            color: colors.borderColorPrimary,
+            borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(10),
+              bottomRight: Radius.circular(10),
+            ),
           ),
-          borderRadius: BorderRadius.only(
-            bottomLeft: Radius.circular(10),
-            bottomRight: Radius.circular(10),
-          ),
+          padding: const EdgeInsets.all(2),
+          child: isExpanded
+              ? Icon(Icons.keyboard_arrow_up, color: Colors.white)
+              : Icon(Icons.keyboard_arrow_down, color: Colors.white),
         ),
-        padding: const EdgeInsets.all(2),
-        child: isExpanded
-            ? Transform.rotate(
-                angle: 3.1416,
-                child: Image.asset(
-                  "packages/tradeable_flutter_sdk/lib/assets/images/arrow_down.png",
-                ),
-              )
-            : Image.asset(
-                "packages/tradeable_flutter_sdk/lib/assets/images/arrow_down.png",
-              ),
       ),
     );
   }
@@ -149,34 +139,14 @@ class _TopicHeaderWidgetState extends State<TopicHeaderWidget> {
             onTap: widget.onBack,
             child: Container(
               margin: EdgeInsets.only(left: 20),
-              decoration: BoxDecoration(
-                color: colors.listItemTextColor1,
-                borderRadius: BorderRadius.circular(4),
-              ),
               height: 20,
               width: 20,
-              child: ShaderMask(
-                shaderCallback: (bounds) => LinearGradient(
-                  colors: [colors.primary, colors.darkShade1],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                ).createShader(bounds),
-                child: Transform.rotate(
-                  angle: 3.1416,
-                  child: Icon(Icons.play_arrow, color: Colors.white, size: 16),
-                ),
-              ),
+              child: Icon(Icons.arrow_back_ios, size: 16),
             ),
           ),
           Spacer(),
           Text(widget.topic.name,
-              style: textStyles.mediumBold.copyWith(
-                fontSize: 18,
-                foreground: Paint()
-                  ..shader = LinearGradient(
-                    colors: [colors.primary, colors.darkShade1],
-                  ).createShader(Rect.fromLTWH(0.0, 0.0, 400.0, 70.0)),
-              )),
+              style: textStyles.mediumBold.copyWith(fontSize: 18)),
           Spacer(),
           Container(
             margin: EdgeInsets.only(right: 20),

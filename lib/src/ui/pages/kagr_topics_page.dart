@@ -91,7 +91,7 @@ class _KAGRTopicsPageState extends State<KAGRTopicsPage> {
         gradient: LinearGradient(
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
-          colors: [colors.darkShade1, colors.darkShade2, colors.darkShade3],
+          colors: [colors.darkShade1, colors.darkShade2],
         ),
       ),
       child: Center(

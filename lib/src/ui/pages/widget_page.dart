@@ -94,11 +94,12 @@ class _WidgetPageState extends State<WidgetPage> {
   List<WidgetsModel>? widgets;
 
   @override void didUpdateWidget(covariant WidgetPage oldWidget) {
-    setState(() {
-      widgets = [];
-      print(oldWidget.flowId);
-      getFlowByFlowId(widget.flowId);
-    });
+    if(oldWidget.flowId!=widget.flowId) {
+      setState(() {
+        widgets = [];
+        getFlowByFlowId(widget.flowId);
+      });
+    }
     super.didUpdateWidget(oldWidget);
   }
 

@@ -117,13 +117,6 @@ class _FlowsList extends State<FlowsList> {
         padding: const EdgeInsets.symmetric(vertical: 2),
         decoration: BoxDecoration(
           color: colors.listHeaderColor,
-          boxShadow: [
-            BoxShadow(
-                color: colors.cardBasicBackground,
-                blurRadius: 9,
-                spreadRadius: 0.4,
-                offset: Offset(3, 6))
-          ],
           borderRadius: BorderRadius.only(
             bottomRight: Radius.circular(14),
             bottomLeft: Radius.circular(14),
@@ -201,7 +194,7 @@ class _FlowsList extends State<FlowsList> {
                     color: colors.progressIndColor1,
                     backgroundColor: colors.progressIndColor2,
                     strokeWidth: 2,
-                    value: 1,
+                    value: flowsList[index].isCompleted ? 1 : 0,
                   ),
                 ),
               ),
