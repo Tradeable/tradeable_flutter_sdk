@@ -7,7 +7,7 @@ void main() {
   String app = "Kagr";
   switch (app) {
     case "Kagr":
-      TFS().initialize(token: "token", theme: AppTheme.darkTheme());
+      TFS().initialize(token: "token", theme: AppTheme.lightTheme());
       break;
     case "Axis":
       TFS().initialize(token: "token", theme: AppTheme.lightTheme());
@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(
-              seedColor: Colors.deepPurple, brightness: Brightness.dark),
+              seedColor: Colors.deepPurple, brightness: Brightness.light),
           useMaterial3: true),
       initialRoute: '/',
       routes: {
