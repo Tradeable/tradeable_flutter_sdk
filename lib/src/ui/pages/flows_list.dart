@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:tradeable_flutter_sdk/src/models/kagr/suggestion_model.dart';
 import 'package:tradeable_flutter_sdk/src/models/kagr/topic_flow_model.dart';
 import 'package:tradeable_flutter_sdk/src/network/kagr_api.dart';
 import 'package:tradeable_flutter_sdk/src/tfs.dart';
 import 'package:tradeable_flutter_sdk/src/ui/widgets/container_layout_widget.dart';
+import 'package:tradeable_flutter_sdk/src/ui/widgets/suggestion_widget.dart';
 import 'package:tradeable_flutter_sdk/src/utils/app_theme.dart';
 
 class FlowsList extends StatefulWidget {
@@ -77,7 +79,8 @@ class _FlowsList extends State<FlowsList> {
                   : Column(
                       children: [
                         ...segregratedFlows
-                            .map((flow) => _buildHorizontalList(flow))
+                            .map((flow) => _buildHorizontalList(flow)),
+                        SuggestionWidget(model: SuggestionModel())
                       ],
                     ),
         ],
