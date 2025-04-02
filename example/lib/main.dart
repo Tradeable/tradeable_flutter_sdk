@@ -4,7 +4,7 @@ import 'package:tradeable_flutter_sdk/tradeable_flutter_sdk.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  String app = "Kagr";
+  String app = "Axis";
   switch (app) {
     case "Kagr":
       TFS().initialize(token: "token", theme: AppTheme.darkTheme());
@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(
-              seedColor: Colors.deepPurple, brightness: Brightness.dark),
+              seedColor: Colors.deepPurple, brightness: Brightness.light),
           useMaterial3: true),
       initialRoute: '/',
       routes: {

@@ -44,7 +44,6 @@ class KagrApi {
       options: Options(headers: kagrtoken),
     );
 
-
     return FlowModel.fromJson(response.data["data"]);
   }
 }

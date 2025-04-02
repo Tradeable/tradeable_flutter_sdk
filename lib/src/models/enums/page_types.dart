@@ -18,40 +18,26 @@ enum PageId {
 }
 
 extension PageIdValue on PageId {
-  int get value {
-    switch (this) {
-      case PageId.allModule:
-        return 1;
-      case PageId.overview:
-        return 8;
-      case PageId.optionChain:
-        return 9;
-      case PageId.technicals:
-        return 10;
-      case PageId.events:
-        return 11;
-      case PageId.other:
-        return 12;
-      case PageId.sahiTechnicals:
-        return 18;
-      case PageId.sahiOptionChain:
-        return 17;
-      case PageId.sahiCandlestick:
-        return 16;
-      case PageId.sahiMarketDepth:
-        return 15;
-      case PageId.trends:
-        return 19;
-      case PageId.axisOverview:
-        return 20;
-      case PageId.axisOption:
-        return 21;
-      case PageId.axisTechnical:
-        return 22;
-      case PageId.axisScanners:
-        return 23;
-      case PageId.axisWatchlist:
-        return 24;
-    }
-  }
+  static const Map<PageId, List<int>> _values = {
+    PageId.allModule: [1, 1],
+    PageId.overview: [8, 102],
+    PageId.optionChain: [9, 103],
+    PageId.technicals: [10, 104],
+    PageId.events: [11, 105],
+    PageId.other: [12, 106],
+    PageId.sahiTechnicals: [18, 107],
+    PageId.sahiOptionChain: [17, 108],
+    PageId.sahiCandlestick: [16, 109],
+    PageId.sahiMarketDepth: [15, 110],
+    PageId.trends: [19, 111],
+    PageId.axisOverview: [20, 5],
+    PageId.axisOption: [21, 6],
+    PageId.axisTechnical: [22, 7],
+    PageId.axisScanners: [23, 8],
+    PageId.axisWatchlist: [24, 9],
+  };
+
+  int get pageId => _values[this]![0];
+
+  int get topicTagId => _values[this]![1];
 }

@@ -8,7 +8,7 @@ class Api {
   Future<List<ModuleModel>> getPages(PageId pageId) async {
     Response response = await Dio().get(
       "$baseUrl/v4/learn/pages",
-      queryParameters: {"id": pageId.value},
+      queryParameters: {"id": pageId.pageId},
       options: Options(headers: token),
     );
 

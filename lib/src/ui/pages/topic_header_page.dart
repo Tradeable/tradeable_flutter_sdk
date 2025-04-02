@@ -44,7 +44,7 @@ class _TopicHeaderWidgetState extends State<TopicHeaderWidget> {
   }
 
   void getFlows() async {
-    await KagrApi().fetchTopicById(widget.topic.topicId, 33).then((val) {
+    await KagrApi().fetchTopicById(widget.topic.topicId, 3).then((val) {
       setState(() {
         flows = (val.flows?.map((e) => TopicFlowsListModel(
                     flowId: e.id,
@@ -66,23 +66,34 @@ class _TopicHeaderWidgetState extends State<TopicHeaderWidget> {
         children: [
           _buildHeader(),
           isExpanded ? const SizedBox(height: 20) : SizedBox.shrink(),
-          isExpanded
-              ? FlowsList(
-                  flowModel: TopicFlowModel(
-                    topicId: widget.topic.topicId,
-                    userFlowsList: flows,
-                  ),
-                  onFlowSelected: (flowId) {
-                    setState(() {
+          AnimatedSize(
+            duration: Duration(milliseconds: 300),
+            curve: Curves.easeInOut,
+            onEnd: () {
+              if (!isExpanded) {
+                widget.onExpandChanged(
+                    ExpansionData(isExpanded, widget.topic.startFlow));
+              }
+            },
+            child: isExpanded
+                ? FlowsList(
+                    flowModel: TopicFlowModel(
+                      topicId: widget.topic.topicId,
+                      userFlowsList: flows,
+                    ),
+                    onFlowSelected: (flowId) {
                       setState(() {
-                        isExpanded = !isExpanded;
-                        currentFlowId = flowId;
+                        setState(() {
+                          isExpanded = !isExpanded;
+                          currentFlowId = flowId;
+                        });
+                        widget
+                            .onExpandChanged(ExpansionData(isExpanded, flowId));
                       });
-                      widget.onExpandChanged(ExpansionData(isExpanded, flowId));
-                    });
-                  },
-                )
-              : SizedBox.shrink(),
+                    },
+                  )
+                : SizedBox.shrink(),
+          ),
         ],
       ),
     );

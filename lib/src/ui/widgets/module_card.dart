@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:tradeable_flutter_sdk/src/models/module.model.dart';
+import 'package:tradeable_flutter_sdk/src/models/kagr/topic_user_model.dart';
 import 'package:tradeable_flutter_sdk/src/utils/color_util.dart';
 
 class ModuleCard extends StatelessWidget {
-  final ModuleModel moduleModel;
+  final TopicUserModel moduleModel;
   final VoidCallback onClick;
 
   const ModuleCard(
@@ -16,7 +16,7 @@ class ModuleCard extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         decoration: BoxDecoration(
-            color: getColorFromHex(moduleModel.bgColor ?? "FF81C1BD"),
+            color: Color(0xFFFFF2F8),
             borderRadius: BorderRadius.circular(8)),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -39,18 +39,18 @@ class ModuleCard extends StatelessWidget {
                           fontSize: 12,
                           fontWeight: FontWeight.w400,
                         )),
-                    Text(moduleModel.note ?? "",
-                        style: const TextStyle(
-                          fontSize: 10,
-                          fontWeight: FontWeight.w400,
-                        )),
+                    // Text(moduleModel.note ?? "",
+                    //     style: const TextStyle(
+                    //       fontSize: 10,
+                    //       fontWeight: FontWeight.w400,
+                    //     )),
                   ],
                 )),
             Flexible(
               flex: 3,
-              child: moduleModel.iconUrl != null
+              child: moduleModel.logo.url.isNotEmpty
                   ? Image.network(
-                      moduleModel.iconUrl!,
+                      moduleModel.logo.url,
                       fit: BoxFit.cover,
                       width: 64,
                       height: 64,
