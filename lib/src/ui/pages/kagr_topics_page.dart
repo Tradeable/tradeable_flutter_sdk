@@ -91,7 +91,7 @@ class _KAGRTopicsPageState extends State<KAGRTopicsPage> {
         gradient: LinearGradient(
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
-          colors: [colors.darkShade1, colors.darkShade2],
+          colors: [colors.drawerHeadingG1, colors.drawerHeadingG2],
         ),
       ),
       child: Center(
@@ -240,7 +240,7 @@ class _KAGRTopicsPageState extends State<KAGRTopicsPage> {
                 Text(
                   "COMPLETED ${topic.progress.completed}/${topic.progress.total}",
                   style: textStyles.smallNormal
-                      .copyWith(fontSize: 10, color: colors.progressIndColor1),
+                      .copyWith(fontSize: 10, color: colors.textColorSecondary),
                 ),
                 const SizedBox(width: 10),
                 SizedBox(

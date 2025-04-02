@@ -21,9 +21,11 @@ class DoubleLayerButtonWidget extends StatelessWidget {
         TFS().themeData?.customTextStyles ?? Theme.of(context).customTextStyles;
 
     return Container(
+      margin: const EdgeInsets.only(top: 20),
       padding: const EdgeInsets.all(6),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: colors.borderColorSecondary),
         gradient: LinearGradient(
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
@@ -36,7 +38,7 @@ class DoubleLayerButtonWidget extends StatelessWidget {
       child: InkWell(
         onTap: onClick,
         child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 12),
+          padding: const EdgeInsets.symmetric(vertical: 6),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20),
             gradient: LinearGradient(
@@ -53,7 +55,10 @@ class DoubleLayerButtonWidget extends StatelessWidget {
                     : textStyles.mediumBold.copyWith(
                         foreground: Paint()
                           ..shader = LinearGradient(
-                            colors: [colors.primary, colors.darkShade1],
+                            colors: [
+                              colors.drawerButtonTextColorG1,
+                              colors.drawerButtonTextColorG2
+                            ],
                           ).createShader(
                               const Rect.fromLTWH(0.0, 0.0, 400.0, 70.0)))),
           ),
