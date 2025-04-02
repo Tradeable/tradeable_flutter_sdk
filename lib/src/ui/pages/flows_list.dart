@@ -30,21 +30,27 @@ class _FlowsList extends State<FlowsList> {
   }
 
   void getTopicById() async {
-    await KagrApi().fetchTopicById(widget.flowModel.topicId, 1).then((val) {
+    if (widget.flowModel.userFlowsList.isEmpty) {
+      await KagrApi().fetchTopicById(widget.flowModel.topicId, 33).then((val) {
+        setState(() {
+          widget.flowModel.userFlowsList = (val.flows?.map((e) =>
+                      TopicFlowsListModel(
+                          flowId: e.id,
+                          isCompleted: e.isCompleted,
+                          logo: e.logo,
+                          category: e.category ?? "")) ??
+                  [])
+              .toList();
+          flows = widget.flowModel.userFlowsList;
+          isLoading = false;
+        });
+      });
+    } else {
       setState(() {
-        widget.flowModel.userFlowsList = (val.flows?.map((e) =>
-                    TopicFlowsListModel(
-                        flowId: e.id,
-                        isCompleted: e.isCompleted,
-                        logo: e.logo,
-                        category: e.category ?? "")) ??
-                [])
-            .toList();
-        flows = widget.flowModel.userFlowsList;
         isLoading = false;
       });
-    });
-    segregrateFlows(flows ?? []);
+      segregrateFlows(widget.flowModel.userFlowsList);
+    }
   }
 
   void segregrateFlows(List<TopicFlowsListModel> flows) {

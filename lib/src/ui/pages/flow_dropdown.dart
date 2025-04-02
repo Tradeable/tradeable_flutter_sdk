@@ -28,23 +28,28 @@ class _FlowDropdownHolder extends State<FlowDropdownHolder>
       clipBehavior: Clip.none,
       alignment: Alignment.bottomCenter,
       children: [
-        Container(
-          margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-          padding: EdgeInsets.symmetric(horizontal: 4, vertical: 6),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20),
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: widget.isExpanded
-                  ? [colors.containerShade1, colors.containerShade2]
-                  : [
-                      colors.cardColorSecondary.withOpacity(0.8),
-                      colors.cardColorSecondary.withOpacity(0.8)
-                    ],
+        Column(
+          children: [
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+              padding: EdgeInsets.symmetric(horizontal: 4, vertical: 6),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: widget.isExpanded
+                      ? [colors.containerShade1, colors.containerShade2]
+                      : [
+                          colors.cardColorSecondary.withOpacity(0.8),
+                          colors.cardColorSecondary.withOpacity(0.8)
+                        ],
+                ),
+              ),
+              child: widget.child,
             ),
-          ),
-          child: widget.child,
+            SizedBox(height: 10),
+          ],
         ),
         widget.toggleIcon,
       ],

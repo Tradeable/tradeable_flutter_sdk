@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tradeable_flutter_sdk/src/models/kagr/expansion_data.dart';
 import 'package:tradeable_flutter_sdk/src/models/kagr/topic_flow_model.dart';
 import 'package:tradeable_flutter_sdk/src/models/kagr/topic_user_model.dart';
+import 'package:tradeable_flutter_sdk/src/network/kagr_api.dart';
 import 'package:tradeable_flutter_sdk/src/tfs.dart';
 import 'package:tradeable_flutter_sdk/src/ui/pages/flow_controller.dart';
 import 'package:tradeable_flutter_sdk/src/ui/pages/flow_dropdown.dart';
@@ -27,6 +28,7 @@ class TopicHeaderWidget extends StatefulWidget {
 class _TopicHeaderWidgetState extends State<TopicHeaderWidget> {
   bool isExpanded = false;
   int currentFlowId = 1;
+  List<TopicFlowsListModel> flows = [];
 
   @override
   void initState() {
@@ -37,6 +39,21 @@ class _TopicHeaderWidgetState extends State<TopicHeaderWidget> {
         isExpanded = true;
       });
       widget.onExpandChanged(ExpansionData(isExpanded, currentFlowId));
+    });
+    getFlows();
+  }
+
+  void getFlows() async {
+    await KagrApi().fetchTopicById(widget.topic.topicId, 33).then((val) {
+      setState(() {
+        flows = (val.flows?.map((e) => TopicFlowsListModel(
+                    flowId: e.id,
+                    isCompleted: e.isCompleted,
+                    logo: e.logo,
+                    category: e.category ?? "")) ??
+                [])
+            .toList();
+      });
     });
   }
 
@@ -49,34 +66,23 @@ class _TopicHeaderWidgetState extends State<TopicHeaderWidget> {
         children: [
           _buildHeader(),
           isExpanded ? const SizedBox(height: 20) : SizedBox.shrink(),
-          AnimatedSize(
-            duration: Duration(milliseconds: 300),
-            curve: Curves.easeInOut,
-            onEnd: () {
-              if (!isExpanded) {
-                widget.onExpandChanged(
-                    ExpansionData(isExpanded, widget.topic.startFlow));
-              }
-            },
-            child: isExpanded
-                ? FlowsList(
-                    flowModel: TopicFlowModel(
-                      topicId: widget.topic.topicId,
-                      userFlowsList: [],
-                    ),
-                    onFlowSelected: (flowId) {
+          isExpanded
+              ? FlowsList(
+                  flowModel: TopicFlowModel(
+                    topicId: widget.topic.topicId,
+                    userFlowsList: flows,
+                  ),
+                  onFlowSelected: (flowId) {
+                    setState(() {
                       setState(() {
-                        setState(() {
-                          isExpanded = !isExpanded;
-                          currentFlowId = flowId;
-                        });
-                        widget
-                            .onExpandChanged(ExpansionData(isExpanded, flowId));
+                        isExpanded = !isExpanded;
+                        currentFlowId = flowId;
                       });
-                    },
-                  )
-                : SizedBox.shrink(),
-          ),
+                      widget.onExpandChanged(ExpansionData(isExpanded, flowId));
+                    });
+                  },
+                )
+              : SizedBox.shrink(),
         ],
       ),
     );
@@ -86,32 +92,29 @@ class _TopicHeaderWidgetState extends State<TopicHeaderWidget> {
     final colors =
         TFS().themeData?.customColors ?? Theme.of(context).customColors;
 
-    return Positioned(
-      bottom: -14,
-      child: GestureDetector(
-        onTap: () {
-          setState(() {
-            isExpanded = !isExpanded;
-          });
-          if (isExpanded) {
-            widget.onExpandChanged(
-                ExpansionData(isExpanded, widget.topic.startFlow));
-          }
-        },
-        child: Container(
-          width: 50,
-          decoration: BoxDecoration(
-            color: colors.borderColorPrimary,
-            borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(10),
-              bottomRight: Radius.circular(10),
-            ),
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          isExpanded = !isExpanded;
+        });
+        if (isExpanded) {
+          widget.onExpandChanged(
+              ExpansionData(isExpanded, widget.topic.startFlow));
+        }
+      },
+      child: Container(
+        width: 50,
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+          color: colors.borderColorPrimary,
+          borderRadius: BorderRadius.only(
+            bottomLeft: Radius.circular(10),
+            bottomRight: Radius.circular(10),
           ),
-          padding: const EdgeInsets.all(2),
-          child: isExpanded
-              ? Icon(Icons.keyboard_arrow_up, color: Colors.white)
-              : Icon(Icons.keyboard_arrow_down, color: Colors.white),
         ),
+        child: isExpanded
+            ? Icon(Icons.keyboard_arrow_up, color: Colors.white)
+            : Icon(Icons.keyboard_arrow_down, color: Colors.white),
       ),
     );
   }
