@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:tradeable_flutter_sdk/src/models/kagr/user_widgets_model.dart';
 import 'package:tradeable_flutter_sdk/src/network/kagr_api.dart';
@@ -93,13 +91,12 @@ class _WidgetPageState extends State<WidgetPage> {
   bool isLoading = false;
   List<WidgetsModel>? widgets;
 
-  @override void didUpdateWidget(covariant WidgetPage oldWidget) {
-    if(oldWidget.flowId!=widget.flowId) {
-      setState(() {
-        widgets = [];
-        getFlowByFlowId(widget.flowId);
-      });
-    }
+  @override
+  void didUpdateWidget(covariant WidgetPage oldWidget) {
+    setState(() {
+      widgets = [];
+      getFlowByFlowId(widget.flowId);
+    });
     super.didUpdateWidget(oldWidget);
   }
 
@@ -286,7 +283,6 @@ class _WidgetPageState extends State<WidgetPage> {
             model: RangeGridSliderModel.fromJson(data),
             onNextClick: () => onNextClick());
       case "dynamic_chart":
-        log(data.toString());
         return DynamicChartWidget(
             model: DynamicChartModel.fromJson(data),
             onNextClick: () => onNextClick());
@@ -299,18 +295,17 @@ class _WidgetPageState extends State<WidgetPage> {
   }
 
   void onNextClick() {
-    setState(() {
-      isLoading = true;
-    });
     Future.delayed(Duration(milliseconds: 100)).then((val) {
       setState(() {
         if (currentIndex < widgets!.length - 1) {
+          setState(() {
+            isLoading = true;
+          });
           currentIndex++;
           isLoading = false;
         } else {
           FlowController().openFlowsList(highlightNextFlow: true);
           isLoading = false;
-          currentIndex = 0;
         }
       });
     });

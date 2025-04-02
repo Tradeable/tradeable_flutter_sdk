@@ -15,9 +15,8 @@ class TopicDetailPage extends StatefulWidget {
   State<TopicDetailPage> createState() => _TopicDetailPageState();
 }
 
-class _TopicDetailPageState extends State<TopicDetailPage>
-    with SingleTickerProviderStateMixin {
-  final ValueNotifier<bool> isExpanded = ValueNotifier(false);
+class _TopicDetailPageState extends State<TopicDetailPage> {
+  bool isExpanded = false;
   List<WidgetsModel>? widgets;
   int flowId = 1;
 
@@ -38,16 +37,11 @@ class _TopicDetailPageState extends State<TopicDetailPage>
         child: Stack(
           children: [
             Positioned.fill(
-              child: ValueListenableBuilder<bool>(
-                valueListenable: isExpanded,
-                builder: (context, expanded, child) {
-                  return Container(
-                    margin: const EdgeInsets.only(top: 80),
-                    padding: const EdgeInsets.all(10),
-                    child: WidgetPage(
-                        topicId: widget.topic.topicId, flowId: flowId),
-                  );
-                },
+              child: Container(
+                margin: const EdgeInsets.only(top: 80),
+                padding: const EdgeInsets.all(10),
+                child:
+                    WidgetPage(topicId: widget.topic.topicId, flowId: flowId),
               ),
             ),
             Positioned(
@@ -58,10 +52,11 @@ class _TopicDetailPageState extends State<TopicDetailPage>
                 topic: widget.topic,
                 onBack: () => Navigator.of(context).pop(),
                 onExpandChanged: (expanded) {
-                  isExpanded.value = expanded.isExpanded;
-                  if (expanded.flowId != widget.topic.startFlow) {
+                  isExpanded = expanded.isExpanded;
+                  if (!isExpanded) {
                     setState(() {
                       flowId = expanded.flowId;
+                      widget.topic.startFlow = flowId;
                     });
                   }
                 },

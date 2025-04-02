@@ -55,7 +55,8 @@ class _ModuleListPageState extends State<ModuleListPage> {
                 description: e.description,
                 logo: e.logo,
                 progress: e.progress,
-                startFlow: e.startFlow ?? 1))
+                startFlow: e.startFlow ?? 1,
+                topicTagId: widget.pageId?.topicTagId ?? 3))
             .toList();
         _showShimmer = false;
       });

@@ -12,7 +12,7 @@ import 'package:tradeable_flutter_sdk/src/utils/app_theme.dart';
 class TopicHeaderWidget extends StatefulWidget {
   final TopicUserModel topic;
   final VoidCallback onBack;
-  final ValueChanged<ExpansionData> onExpandChanged;
+  final Function(ExpansionData) onExpandChanged;
 
   const TopicHeaderWidget({
     super.key,
@@ -44,7 +44,9 @@ class _TopicHeaderWidgetState extends State<TopicHeaderWidget> {
   }
 
   void getFlows() async {
-    await KagrApi().fetchTopicById(widget.topic.topicId, 3).then((val) {
+    await KagrApi()
+        .fetchTopicById(widget.topic.topicId, widget.topic.topicTagId)
+        .then((val) {
       setState(() {
         flows = (val.flows?.map((e) => TopicFlowsListModel(
                     flowId: e.id,
@@ -69,18 +71,12 @@ class _TopicHeaderWidgetState extends State<TopicHeaderWidget> {
           AnimatedSize(
             duration: Duration(milliseconds: 300),
             curve: Curves.easeInOut,
-            onEnd: () {
-              if (!isExpanded) {
-                widget.onExpandChanged(
-                    ExpansionData(isExpanded, widget.topic.startFlow));
-              }
-            },
             child: isExpanded
                 ? FlowsList(
                     flowModel: TopicFlowModel(
-                      topicId: widget.topic.topicId,
-                      userFlowsList: flows,
-                    ),
+                        topicId: widget.topic.topicId,
+                        userFlowsList: flows,
+                        topicTagId: widget.topic.topicTagId),
                     onFlowSelected: (flowId) {
                       setState(() {
                         setState(() {

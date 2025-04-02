@@ -14,7 +14,8 @@ class TopicUserModel {
   final String description;
   final Logo logo;
   final Progress progress;
-  final int startFlow;
+  int startFlow;
+  final int topicTagId;
 
   TopicUserModel(
       {required this.topicId,
@@ -22,5 +23,6 @@ class TopicUserModel {
       required this.description,
       required this.logo,
       required this.progress,
-      required this.startFlow});
+      required this.startFlow,
+      required this.topicTagId});
 }
