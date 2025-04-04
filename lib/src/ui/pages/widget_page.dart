@@ -88,8 +88,9 @@ class WidgetPage extends StatefulWidget {
 
 class _WidgetPageState extends State<WidgetPage> {
   int currentIndex = 0;
-  bool isLoading = false;
+  bool showLoader = false;
   List<WidgetsModel>? widgets;
+  bool fetchingData = true;
 
   @override
   void didUpdateWidget(covariant WidgetPage oldWidget) {
@@ -108,13 +109,16 @@ class _WidgetPageState extends State<WidgetPage> {
 
   void getFlowByFlowId(int flowId) async {
     setState(() {
+      currentIndex = 0;
       widgets = [];
+      fetchingData = true;
     });
     await KagrApi().fetchFlowById(widget.topicId, flowId, 33).then((val) {
       setState(() {
         widgets = (val.widgets ?? [])
             .map((e) => WidgetsModel(data: e.data, modelType: e.modelType))
             .toList();
+        fetchingData = false;
       });
     });
   }
@@ -122,12 +126,13 @@ class _WidgetPageState extends State<WidgetPage> {
   @override
   Widget build(BuildContext context) {
     return Center(
-        child: (widgets ?? []).isNotEmpty
-            ? isLoading
-                ? CircularProgressIndicator()
-                : getViewByType(widgets![currentIndex].modelType,
-                    widgets![currentIndex].data)
-            : CircularProgressIndicator());
+      child: showLoader || fetchingData
+          ? const CircularProgressIndicator()
+          : (widgets == null || widgets!.isEmpty)
+              ? const Text("No data found")
+              : getViewByType(widgets![currentIndex].modelType,
+                  widgets![currentIndex].data),
+    );
   }
 
   Widget getViewByType(String levelType, Map<String, dynamic>? data) {
@@ -295,19 +300,22 @@ class _WidgetPageState extends State<WidgetPage> {
   }
 
   void onNextClick() {
-    Future.delayed(Duration(milliseconds: 100)).then((val) {
-      setState(() {
-        if (currentIndex < widgets!.length - 1) {
-          setState(() {
-            isLoading = true;
-          });
+    setState(() {
+      showLoader = true;
+    });
+
+    Future.delayed(const Duration(milliseconds: 1000)).then((_) {
+      if (currentIndex < (widgets?.length ?? 0) - 1) {
+        setState(() {
           currentIndex++;
-          isLoading = false;
-        } else {
-          FlowController().openFlowsList(highlightNextFlow: true);
-          isLoading = false;
-        }
-      });
+          showLoader = false;
+        });
+      } else {
+        FlowController().openFlowsList(highlightNextFlow: true);
+        setState(() {
+          showLoader = false;
+        });
+      }
     });
   }
 }

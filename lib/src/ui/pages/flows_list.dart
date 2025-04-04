@@ -181,6 +181,8 @@ class _FlowsList extends State<FlowsList> {
         scrollDirection: Axis.horizontal,
         itemCount: flowsList.length,
         itemBuilder: (context, index) {
+          print(flowsList[index].logo.type);
+
           return InkWell(
             onTap: () {
               widget.onFlowSelected(flowsList[index].flowId);
@@ -194,44 +196,53 @@ class _FlowsList extends State<FlowsList> {
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Container(
-                margin: const EdgeInsets.all(4),
-                decoration: BoxDecoration(
-                  color: colors.gradientEndColor.withAlpha(21),
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: colors.secondary, width: 1),
-                ),
-                child: Container(
                   margin: const EdgeInsets.all(4),
                   decoration: BoxDecoration(
-                    color: colors.darkShade3,
+                    color: colors.gradientEndColor.withAlpha(21),
                     borderRadius: BorderRadius.circular(12),
-                    boxShadow: [
-                      BoxShadow(
-                          color: colors.gradientEndColor.withAlpha(65),
-                          blurRadius: 4,
-                          spreadRadius: 4,
-                          offset: Offset.zero,
-                          blurStyle: BlurStyle.normal),
-                    ],
-                    image: DecorationImage(
-                        image: NetworkImage(flowsList[index].logo.url)),
+                    border: Border.all(color: colors.secondary, width: 1),
                   ),
-                  child: Align(
-                    alignment: Alignment.bottomLeft,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(12),
                     child: Container(
-                      margin: const EdgeInsets.only(left: 6, bottom: 10),
-                      height: 14,
-                      width: 14,
-                      child: CircularProgressIndicator(
-                        color: colors.progressIndColor1,
-                        backgroundColor: colors.progressIndColor2,
-                        strokeWidth: 2,
-                        value: flowsList[index].isCompleted ? 1 : 0,
+                      margin: const EdgeInsets.all(4),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12),
+                        color: colors.darkShade3,
+                        boxShadow: [
+                          BoxShadow(
+                              color: colors.gradientEndColor.withAlpha(65),
+                              blurRadius: 4,
+                              spreadRadius: 4,
+                              offset: Offset.zero,
+                              blurStyle: BlurStyle.normal),
+                        ],
+                      ),
+                      child: Stack(
+                        children: [
+                          if (flowsList[index].logo.type == 'image/png')
+                            Positioned.fill(
+                              child: Image.network(flowsList[index].logo.url),
+                            ),
+                          Align(
+                            alignment: Alignment.bottomLeft,
+                            child: Container(
+                              margin:
+                                  const EdgeInsets.only(left: 6, bottom: 10),
+                              height: 14,
+                              width: 14,
+                              child: CircularProgressIndicator(
+                                color: colors.progressIndColor1,
+                                backgroundColor: colors.progressIndColor2,
+                                strokeWidth: 2,
+                                value: flowsList[index].isCompleted ? 1 : 0,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                  ),
-                ),
-              ),
+                  )),
             ),
           );
         },
