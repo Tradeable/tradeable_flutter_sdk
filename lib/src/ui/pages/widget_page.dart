@@ -300,22 +300,19 @@ class _WidgetPageState extends State<WidgetPage> {
   }
 
   void onNextClick() {
-    setState(() {
-      showLoader = true;
-    });
+    if (currentIndex < (widgets?.length ?? 0) - 1) {
+      setState(() {
+        showLoader = true;
+      });
 
-    Future.delayed(const Duration(milliseconds: 1000)).then((_) {
-      if (currentIndex < (widgets?.length ?? 0) - 1) {
+      Future.delayed(const Duration(milliseconds: 1000)).then((_) {
         setState(() {
           currentIndex++;
           showLoader = false;
         });
-      } else {
-        FlowController().openFlowsList(highlightNextFlow: true);
-        setState(() {
-          showLoader = false;
-        });
-      }
-    });
+      });
+    } else {
+      FlowController().openFlowsList(highlightNextFlow: true);
+    }
   }
 }
