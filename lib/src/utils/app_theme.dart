@@ -87,6 +87,8 @@ class ThemeColors {
   final Color drawerHeadingG2;
   final Color drawerButtonTextColorG1;
   final Color drawerButtonTextColorG2;
+  final Color gradientStartColor;
+  final Color gradientEndColor;
 
   ThemeColors(
       {required this.primary,
@@ -129,7 +131,9 @@ class ThemeColors {
       required this.drawerHeadingG1,
       required this.drawerHeadingG2,
       required this.drawerButtonTextColorG1,
-      required this.drawerButtonTextColorG2});
+      required this.drawerButtonTextColorG2,
+      required this.gradientStartColor,
+      required this.gradientEndColor});
 
   // Light theme colors factory
   static ThemeColors light() {
@@ -166,7 +170,7 @@ class ThemeColors {
       progressIndColor2: Color(0xffe2e2e2),
       dropdownShade1: Colors.grey.shade50,
       dropdownShade2: Colors.grey.shade100,
-      listBgColor: Color(0xff404040),
+      listBgColor: Color(0xffe2e2e2),
       listHeaderColor: Colors.white,
       containerShade1: Color(0xffE2E2E2),
       containerShade2: Color(0xffE2E2E2),
@@ -175,6 +179,8 @@ class ThemeColors {
       drawerHeadingG2: Color(0x00ED1164),
       drawerButtonTextColorG1: Color(0xff97144D),
       drawerButtonTextColorG2: Color(0xff97144D),
+      gradientStartColor: const Color(0xffffffff),
+      gradientEndColor: const Color(0xff000000),
     );
   }
 
@@ -222,6 +228,8 @@ class ThemeColors {
       drawerHeadingG2: Color(0xff50F3BF),
       drawerButtonTextColorG1: Color(0xff50F3BF),
       drawerButtonTextColorG2: Color(0xff1D1D1D),
+      gradientStartColor: const Color(0xff000000),
+      gradientEndColor: const Color(0xffffffff),
     );
   }
 }

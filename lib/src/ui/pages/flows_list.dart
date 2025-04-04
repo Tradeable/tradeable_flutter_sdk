@@ -6,6 +6,7 @@ import 'package:tradeable_flutter_sdk/src/tfs.dart';
 import 'package:tradeable_flutter_sdk/src/ui/widgets/container_layout_widget.dart';
 import 'package:tradeable_flutter_sdk/src/ui/widgets/suggestion_widget.dart';
 import 'package:tradeable_flutter_sdk/src/utils/app_theme.dart';
+import 'package:tradeable_flutter_sdk/src/utils/extensions.dart';
 
 class FlowsList extends StatefulWidget {
   final TopicFlowModel flowModel;
@@ -132,8 +133,8 @@ class _FlowsList extends State<FlowsList> {
           ),
         ),
         child: Center(
-          child:
-              Text(title, style: textStyles.smallBold.copyWith(fontSize: 12)),
+          child: Text(title.capitalize(),
+              style: textStyles.smallBold.copyWith(fontSize: 12)),
         ),
       ),
     );
@@ -188,22 +189,46 @@ class _FlowsList extends State<FlowsList> {
               width: 100,
               margin: EdgeInsets.only(right: 10),
               decoration: BoxDecoration(
-                image: DecorationImage(
-                    image: NetworkImage(flowsList[index].logo.url)),
                 color: colors.darkShade3,
-                borderRadius: BorderRadius.circular(20),
+                border: Border.all(color: colors.darkShade3, width: 1),
+                borderRadius: BorderRadius.circular(12),
               ),
-              child: Align(
-                alignment: Alignment.bottomLeft,
+              child: Container(
+                margin: const EdgeInsets.all(4),
+                decoration: BoxDecoration(
+                  color: colors.gradientEndColor.withAlpha(21),
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: colors.secondary, width: 1),
+                ),
                 child: Container(
-                  margin: const EdgeInsets.only(left: 6, bottom: 10),
-                  height: 14,
-                  width: 14,
-                  child: CircularProgressIndicator(
-                    color: colors.progressIndColor1,
-                    backgroundColor: colors.progressIndColor2,
-                    strokeWidth: 2,
-                    value: flowsList[index].isCompleted ? 1 : 0,
+                  margin: const EdgeInsets.all(4),
+                  decoration: BoxDecoration(
+                    color: colors.darkShade3,
+                    borderRadius: BorderRadius.circular(12),
+                    boxShadow: [
+                      BoxShadow(
+                          color: colors.gradientEndColor.withAlpha(65),
+                          blurRadius: 4,
+                          spreadRadius: 4,
+                          offset: Offset.zero,
+                          blurStyle: BlurStyle.normal),
+                    ],
+                    image: DecorationImage(
+                        image: NetworkImage(flowsList[index].logo.url)),
+                  ),
+                  child: Align(
+                    alignment: Alignment.bottomLeft,
+                    child: Container(
+                      margin: const EdgeInsets.only(left: 6, bottom: 10),
+                      height: 14,
+                      width: 14,
+                      child: CircularProgressIndicator(
+                        color: colors.progressIndColor1,
+                        backgroundColor: colors.progressIndColor2,
+                        strokeWidth: 2,
+                        value: flowsList[index].isCompleted ? 1 : 0,
+                      ),
+                    ),
                   ),
                 ),
               ),

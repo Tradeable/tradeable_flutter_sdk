@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:tradeable_flutter_sdk/src/models/kagr/topic_user_model.dart';
-import 'package:tradeable_flutter_sdk/src/utils/color_util.dart';
 
 class ModuleCard extends StatelessWidget {
   final TopicUserModel moduleModel;
@@ -16,8 +15,7 @@ class ModuleCard extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         decoration: BoxDecoration(
-            color: Color(0xFFFFF2F8),
-            borderRadius: BorderRadius.circular(8)),
+            color: Color(0xFFFFF2F8), borderRadius: BorderRadius.circular(8)),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
