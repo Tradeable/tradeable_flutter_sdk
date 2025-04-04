@@ -181,7 +181,6 @@ class _FlowsList extends State<FlowsList> {
         scrollDirection: Axis.horizontal,
         itemCount: flowsList.length,
         itemBuilder: (context, index) {
-          print(flowsList[index].logo.type);
 
           return InkWell(
             onTap: () {

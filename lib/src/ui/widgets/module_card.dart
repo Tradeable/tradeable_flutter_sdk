@@ -15,7 +15,7 @@ class ModuleCard extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         decoration: BoxDecoration(
-            color: Color(0xFFFFF2F8), borderRadius: BorderRadius.circular(8)),
+            color: Color(0xffF9EBEF), borderRadius: BorderRadius.circular(8)),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
