@@ -22,7 +22,7 @@ class SuggestionWidget extends StatelessWidget {
       padding: const EdgeInsets.all(6),
       child: Container(
         decoration: BoxDecoration(
-            color: const Color(0xff357D5B),
+            color: const Color(0xffeef3d4),
             borderRadius: BorderRadius.circular(20)),
         padding: const EdgeInsets.all(20),
         child: Row(
