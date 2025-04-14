@@ -29,7 +29,7 @@ import 'package:tradeable_learn_widget/drag_and_drop_match_widget/drag_and_drop_
 import 'package:tradeable_learn_widget/dynamic_chart/dynamic_chart_main.dart';
 import 'package:tradeable_learn_widget/dynamic_chart/dynamic_chart_model.dart';
 import 'package:tradeable_learn_widget/edu_cornerv1/edu_corner_model.dart';
-import 'package:tradeable_learn_widget/edu_cornerv1/edu_corner_v1.dart';
+import 'package:tradeable_learn_widget/educorner_v2/educorner_v2_main.dart';
 import 'package:tradeable_learn_widget/en1_matchthepair/en1_model.dart';
 import 'package:tradeable_learn_widget/en1_matchthepair/en1_widget.dart';
 import 'package:tradeable_learn_widget/expandable_edutile_widget/expandable_edutile_main.dart';
@@ -141,7 +141,7 @@ class _WidgetPageState extends State<WidgetPage> {
       // return LevelCompleteScreen(recommendations: recommendations);
       case "Edu_Corner":
         // case "EduCornerV1":
-        return EduCornerV1(
+        return EduCornerV2Main(
             model: EduCornerModel.fromJson(data),
             onNextClick: () => onNextClick());
       case "CA1.1":
