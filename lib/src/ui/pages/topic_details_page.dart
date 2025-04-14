@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tradeable_flutter_sdk/src/models/kagr/topic_user_model.dart';
 import 'package:tradeable_flutter_sdk/src/models/kagr/user_widgets_model.dart';
+import 'package:tradeable_flutter_sdk/src/network/kagr_api.dart';
 import 'package:tradeable_flutter_sdk/src/tfs.dart';
 import 'package:tradeable_flutter_sdk/src/ui/pages/topic_header_page.dart';
 import 'package:tradeable_flutter_sdk/src/ui/pages/widget_page.dart';
@@ -18,12 +19,25 @@ class TopicDetailPage extends StatefulWidget {
 class _TopicDetailPageState extends State<TopicDetailPage> {
   bool isExpanded = false;
   List<WidgetsModel>? widgets;
-  int flowId = 1;
+  int? flowId;
 
   @override
   void initState() {
     flowId = widget.topic.startFlow;
+    if (flowId == null) {
+      getFlows();
+    }
     super.initState();
+  }
+
+  void getFlows() async {
+    await KagrApi()
+        .fetchTopicById(widget.topic.topicId, widget.topic.topicTagId)
+        .then((val) {
+      setState(() {
+        flowId ??= val.flows!.first.id;
+      });
+    });
   }
 
   @override
@@ -40,8 +54,8 @@ class _TopicDetailPageState extends State<TopicDetailPage> {
               child: Container(
                 margin: const EdgeInsets.only(top: 80),
                 padding: const EdgeInsets.all(10),
-                child:
-                    WidgetPage(topicId: widget.topic.topicId, flowId: flowId),
+                child: WidgetPage(
+                    topicId: widget.topic.topicId, flowId: flowId ?? -1),
               ),
             ),
             Positioned(

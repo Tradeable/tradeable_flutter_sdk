@@ -27,19 +27,15 @@ class TopicHeaderWidget extends StatefulWidget {
 
 class _TopicHeaderWidgetState extends State<TopicHeaderWidget> {
   bool isExpanded = false;
-  int currentFlowId = 1;
+  int? currentFlowId;
   List<TopicFlowsListModel> flows = [];
 
   @override
   void initState() {
     super.initState();
-    currentFlowId = widget.topic.startFlow;
-    FlowController().registerCallback((highlightNextFlow) {
-      setState(() {
-        isExpanded = true;
-      });
-      widget.onExpandChanged(ExpansionData(isExpanded, currentFlowId));
-    });
+    if (widget.topic.startFlow != null) {
+      currentFlowId = widget.topic.startFlow!;
+    }
     getFlows();
   }
 
@@ -55,6 +51,15 @@ class _TopicHeaderWidgetState extends State<TopicHeaderWidget> {
                     category: e.category ?? "")) ??
                 [])
             .toList();
+
+        currentFlowId ??= flows.first.flowId;
+
+        FlowController().registerCallback((highlightNextFlow) {
+          setState(() {
+            isExpanded = true;
+          });
+          widget.onExpandChanged(ExpansionData(isExpanded, currentFlowId!));
+        });
       });
     });
   }
@@ -106,7 +111,7 @@ class _TopicHeaderWidgetState extends State<TopicHeaderWidget> {
         });
         if (isExpanded) {
           widget.onExpandChanged(
-              ExpansionData(isExpanded, widget.topic.startFlow));
+              ExpansionData(isExpanded, widget.topic.startFlow!));
         }
       },
       child: Container(

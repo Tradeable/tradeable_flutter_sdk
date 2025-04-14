@@ -67,6 +67,8 @@ import 'package:tradeable_learn_widget/range_grid_widget/range_grid_widget.dart'
 import 'package:tradeable_learn_widget/reading_option_chain/reading_option_chain.dart';
 import 'package:tradeable_learn_widget/rr_widget/rr_model.dart';
 import 'package:tradeable_learn_widget/rr_widget/rr_question.dart';
+import 'package:tradeable_learn_widget/sample_user_flow/sample_userflow_main.dart';
+import 'package:tradeable_learn_widget/sample_user_flow/sample_userflow_model.dart';
 import 'package:tradeable_learn_widget/trend_line/models/trendline_model.dart';
 import 'package:tradeable_learn_widget/trend_line/trend_line.dart';
 import 'package:tradeable_learn_widget/user_story_widget/models/user_story_model.dart';
@@ -96,14 +98,18 @@ class _WidgetPageState extends State<WidgetPage> {
   void didUpdateWidget(covariant WidgetPage oldWidget) {
     setState(() {
       widgets = [];
-      getFlowByFlowId(widget.flowId);
+      if (widget.flowId != -1) {
+        getFlowByFlowId(widget.flowId);
+      }
     });
     super.didUpdateWidget(oldWidget);
   }
 
   @override
   void initState() {
-    getFlowByFlowId(widget.flowId);
+    if (widget.flowId != -1) {
+      getFlowByFlowId(widget.flowId);
+    }
     super.initState();
   }
 
@@ -290,6 +296,10 @@ class _WidgetPageState extends State<WidgetPage> {
       case "dynamic_chart":
         return DynamicChartWidget(
             model: DynamicChartModel.fromJson(data),
+            onNextClick: () => onNextClick());
+      case "option_trade_demo":
+        return SampleUserflowScreen(
+            data: SampleUserflowModel.fromJson(data),
             onNextClick: () => onNextClick());
       default:
         return Container(

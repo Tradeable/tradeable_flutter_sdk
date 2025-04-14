@@ -34,7 +34,7 @@ class _KAGRTopicsPageState extends State<KAGRTopicsPage> {
                 description: e.description,
                 logo: e.logo,
                 progress: e.progress,
-                startFlow: e.startFlow ?? 1,
+                startFlow: e.startFlow,
                 topicTagId: 3))
             .toList();
       });
