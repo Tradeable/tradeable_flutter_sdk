@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:tradeable_flutter_sdk/src/tfs.dart';
-import 'package:tradeable_flutter_sdk/src/ui/widgets/dashboard/courses_list.dart';
+import 'package:tradeable_flutter_sdk/src/ui/widgets/dashboard/appbar_widget.dart';
+import 'package:tradeable_flutter_sdk/src/ui/widgets/dashboard/courses_horizontal_list.dart';
 import 'package:tradeable_flutter_sdk/src/ui/widgets/dashboard/custom_linear_progress_indicator.dart';
-import 'package:tradeable_flutter_sdk/src/ui/widgets/dashboard/progress_indicator.dart';
 import 'package:tradeable_flutter_sdk/src/ui/widgets/dashboard/webinars_list.dart';
 import 'package:tradeable_flutter_sdk/src/utils/app_theme.dart';
 
@@ -24,32 +24,8 @@ class _LearnDashboard extends State<LearnDashboard> {
     final textStyles =
         TFS().themeData?.customTextStyles ?? Theme.of(context).customTextStyles;
 
-    final progressItems = [
-      ProgressItem(
-        progress: 60,
-        label: 'Technical',
-        color: Colors.deepOrange,
-      ),
-      ProgressItem(
-        progress: 82,
-        label: 'Options',
-        color: Colors.lime,
-      ),
-      ProgressItem(
-        progress: 41,
-        label: 'Fundamentals',
-        color: Colors.pink,
-      ),
-    ];
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Learn Dashboard",
-            style: textStyles.mediumBold.copyWith(fontSize: 20)),
-        titleSpacing: 0,
-        actionsPadding: EdgeInsets.only(right: 10),
-        actions: [Icon(Icons.account_circle_outlined)],
-        leading: Icon(Icons.arrow_back),
-      ),
+      appBar: AppBarWidget(title: "Learn Dashboard"),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(14),
@@ -104,17 +80,9 @@ class _LearnDashboard extends State<LearnDashboard> {
               //   items: progressItems,
               //   overallProgress: 30,
               // ),
-              CustomLinearProgressIndicator(
-                title: 'Overall Progress',
-                items: const [
-                  ProgressItem(progress: 30, label: 'Technical', color: Colors.blue),
-                  ProgressItem(progress: 60, label: 'Options', color: Colors.green),
-                  ProgressItem(progress: 82, label: 'Fundamentals', color: Colors.orange),
-                  ProgressItem(progress: 41, label: 'Progress', color: Colors.purple),
-                ],
-              ),
+              CustomLinearProgressIndicator(title: 'Overall Progress'),
               const SizedBox(height: 20),
-              CoursesList(),
+              CoursesHorizontalList(),
               const SizedBox(height: 20),
               WebinarsList()
             ],
@@ -123,16 +91,4 @@ class _LearnDashboard extends State<LearnDashboard> {
       ),
     );
   }
-}
-
-class ProgressItem {
-  final double progress;
-  final String label;
-  final Color color;
-
-  const ProgressItem({
-    required this.progress,
-    required this.label,
-    required this.color,
-  });
 }

@@ -1,7 +1,6 @@
 import 'dart:math';
-
 import 'package:flutter/material.dart';
-import 'package:tradeable_flutter_sdk/src/ui/pages/learn_dashboard.dart';
+import 'package:tradeable_flutter_sdk/src/ui/widgets/dashboard/custom_linear_progress_indicator.dart';
 
 class ProgressWidget extends StatelessWidget {
   final List<ProgressItem> items;

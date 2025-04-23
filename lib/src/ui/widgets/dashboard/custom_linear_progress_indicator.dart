@@ -1,20 +1,52 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:tradeable_flutter_sdk/src/ui/pages/learn_dashboard.dart';
+import 'package:tradeable_flutter_sdk/src/models/kagr/course_progress_model.dart';
+import 'package:tradeable_flutter_sdk/src/network/kagr_api.dart';
 import 'package:tradeable_flutter_sdk/src/tfs.dart';
 import 'package:tradeable_flutter_sdk/src/utils/app_theme.dart';
 
-class CustomLinearProgressIndicator extends StatelessWidget {
-  final List<ProgressItem> items;
+class CustomLinearProgressIndicator extends StatefulWidget {
   final String title;
   final bool alternateLayout;
 
   const CustomLinearProgressIndicator({
     super.key,
-    required this.items,
     this.title = 'Overall Progress',
     this.alternateLayout = false,
   });
+
+  @override
+  State<StatefulWidget> createState() => _CustomLinearProgressIndicator();
+}
+
+class _CustomLinearProgressIndicator
+    extends State<CustomLinearProgressIndicator> {
+  List<CourseProgressModel> courseProgress = [];
+  List<ProgressItem> progressItems = [];
+
+  @override
+  void initState() {
+    getProgress();
+    super.initState();
+  }
+
+  void getProgress() async {
+    await KagrApi().getCourseProgress().then((val) {
+      setState(() {
+        courseProgress = val;
+        progressItems = courseProgress
+            .map((e) => ProgressItem(
+                  label: e.topicName,
+                  progress: e.progress.total == 0
+                      ? 0
+                      : ((e.progress.completed ?? 0).toDouble() /
+                          (e.progress.total ?? 0).toDouble()),
+                  color: Colors.blueAccent,
+                ))
+            .toList();
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,13 +66,14 @@ class CustomLinearProgressIndicator extends StatelessWidget {
         children: [
           Row(
             children: [
-              Text(title, style: textStyles.mediumBold),
+              Text(widget.title, style: textStyles.mediumBold),
               Spacer(),
-              Text("30%", style: textStyles.mediumBold)
+              Text("${_getOverallProgress().toStringAsFixed(2)}%",
+                  style: textStyles.mediumBold)
             ],
           ),
           const SizedBox(height: 20),
-          alternateLayout
+          widget.alternateLayout
               ? _buildAlternateLayout(context)
               : _buildDefaultLayout(context),
         ],
@@ -48,10 +81,17 @@ class CustomLinearProgressIndicator extends StatelessWidget {
     );
   }
 
+  double _getOverallProgress() {
+    if (progressItems.isEmpty) return 0;
+    double total = progressItems.fold(0, (sum, item) => sum + item.progress);
+    return total / progressItems.length;
+  }
+
   Widget _buildDefaultLayout(BuildContext context) {
     return Column(
-      children:
-          items.map((item) => _buildProgressItem(item, true, context)).toList(),
+      children: progressItems
+          .map((item) => _buildProgressItem(item, true, context))
+          .toList(),
     );
   }
 
@@ -61,8 +101,8 @@ class CustomLinearProgressIndicator extends StatelessWidget {
       children: [
         Expanded(
           child: Column(
-            children: items
-                .where((item) => items.indexOf(item) % 2 == 0)
+            children: progressItems
+                .where((item) => progressItems.indexOf(item) % 2 == 0)
                 .map((item) => _buildProgressItem(item, false, context))
                 .toList(),
           ),
@@ -70,8 +110,8 @@ class CustomLinearProgressIndicator extends StatelessWidget {
         const SizedBox(width: 16),
         Expanded(
           child: Column(
-            children: items
-                .where((item) => items.indexOf(item) % 2 != 0)
+            children: progressItems
+                .where((item) => progressItems.indexOf(item) % 2 != 0)
                 .map((item) => _buildProgressItem(item, false, context))
                 .toList(),
           ),
@@ -111,14 +151,15 @@ class CustomLinearProgressIndicator extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Text(
-                  '${item.progress.toInt()}%',
+                  '${item.progress.toStringAsFixed(2)}%',
                   style: textStyles.smallBold,
                 ),
                 AutoSizeText(
                   item.label,
                   minFontSize: 8,
                   maxFontSize: 14,
-                  maxLines: 1,
+                  maxLines: 2,
+                  textAlign: TextAlign.right,
                   style: textStyles.smallNormal
                       .copyWith(color: colors.textColorSecondary),
                 ),
@@ -129,4 +170,16 @@ class CustomLinearProgressIndicator extends StatelessWidget {
       ),
     );
   }
+}
+
+class ProgressItem {
+  final double progress;
+  final String label;
+  final Color color;
+
+  const ProgressItem({
+    required this.progress,
+    required this.label,
+    required this.color,
+  });
 }
