@@ -5,6 +5,7 @@ import 'package:tradeable_flutter_sdk/src/models/kagr/topic_user_model.dart';
 import 'package:tradeable_flutter_sdk/src/models/kagr/user_widgets_model.dart';
 import 'package:tradeable_flutter_sdk/src/models/module.model.dart';
 import 'package:tradeable_flutter_sdk/src/network/kagr_api.dart';
+import 'package:tradeable_flutter_sdk/src/ui/pages/learn_dashboard.dart';
 import 'package:tradeable_flutter_sdk/src/ui/pages/level_page.dart';
 import 'package:tradeable_flutter_sdk/src/ui/pages/topic_details_page.dart';
 import 'package:tradeable_flutter_sdk/src/ui/widgets/module_card.dart';
@@ -173,7 +174,10 @@ class _ModuleListPageState extends State<ModuleListPage> {
               ),
             const SizedBox(height: 20),
             InkWell(
-              onTap: () {},
+              onTap: () {
+                Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => LearnDashboard()));
+              },
               child: Container(
                 width: double.infinity,
                 padding: const EdgeInsets.all(10),
