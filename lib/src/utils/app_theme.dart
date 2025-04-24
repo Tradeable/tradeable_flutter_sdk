@@ -91,6 +91,7 @@ class ThemeColors {
   final Color gradientEndColor;
   final Color dropdownIconColor;
   final Color editProfileTextColor;
+  final Color iconColor;
 
   ThemeColors(
       {required this.primary,
@@ -137,7 +138,8 @@ class ThemeColors {
       required this.gradientStartColor,
       required this.gradientEndColor,
       required this.dropdownIconColor,
-      required this.editProfileTextColor});
+      required this.editProfileTextColor,
+      required this.iconColor});
 
   // Light theme colors factory
   static ThemeColors light() {
@@ -186,58 +188,59 @@ class ThemeColors {
         gradientStartColor: const Color(0xffffffff),
         gradientEndColor: const Color(0xff000000),
         dropdownIconColor: const Color(0xffeef3d4),
-        editProfileTextColor: const Color(0xffED1164));
+        editProfileTextColor: const Color(0xffED1164),
+        iconColor: const Color(0xff282828));
   }
 
   // Dark theme colors factory
   static ThemeColors dark() {
     return ThemeColors(
-      primary: const Color(0xff50F3BF),
-      secondary: const Color(0xffB4B4B4),
-      background: Color(0xff2A2929),
-      borderColorPrimary: const Color(0xff357D5B),
-      borderColorSecondary: Colors.transparent,
-      cardColorPrimary: const Color(0xff222838),
-      cardColorSecondary: const Color(0xff303030),
-      bullishColor: Colors.green,
-      bearishColor: Colors.red,
-      selectedItemColor: Colors.purple,
-      axisColor: Colors.white,
-      sipColor: Colors.orangeAccent,
-      lumpSumColor: Colors.blueAccent,
-      cardBasicBackground: Colors.black,
-      buttonColor: Colors.white,
-      buttonBorderColor: Colors.white38,
-      sliderColor: const Color(0xffED1164),
-      textColorSecondary: Colors.white,
-      disabledContainer: const Color(0xffB3BCB9),
-      supportItemColor: const Color(0xff165964),
-      darkShade1: const Color(0xff1D1D1D),
-      darkShade2: const Color(0xff1F1F1F),
-      darkShade3: const Color(0xff303030),
-      itemFocusColor: const Color(0xff666666),
-      itemUnfocusedColor: const Color(0xff1C1C1C),
-      listItemColor: const Color(0xff242424),
-      listItemTextColor1: const Color(0xffD3CABD),
-      listItemTextColor2: const Color(0xffD3CABD),
-      progressIndColor1: const Color(0xff919191),
-      progressIndColor2: const Color(0xff4A4949),
-      dropdownShade1: const Color(0xff204135),
-      dropdownShade2: const Color(0xff3D9D7F),
-      listBgColor: const Color(0xff1D1C1C),
-      listHeaderColor: const Color(0xff333131),
-      containerShade1: const Color(0xff363535),
-      containerShade2: const Color(0xff3D3D3D),
-      dropdownBgColor: const Color(0xff313030),
-      drawerHeadingG1: Color(0xff1D1D1D),
-      drawerHeadingG2: Color(0xff50F3BF),
-      drawerButtonTextColorG1: Color(0xff50F3BF),
-      drawerButtonTextColorG2: Color(0xff1D1D1D),
-      gradientStartColor: const Color(0xff000000),
-      gradientEndColor: const Color(0xffffffff),
-      dropdownIconColor: const Color(0xffeef3d4),
-      editProfileTextColor: const Color(0xffED1164),
-    );
+        primary: const Color(0xff50F3BF),
+        secondary: const Color(0xffB4B4B4),
+        background: Color(0xff2A2929),
+        borderColorPrimary: const Color(0xff357D5B),
+        borderColorSecondary: Colors.transparent,
+        cardColorPrimary: const Color(0xff222838),
+        cardColorSecondary: const Color(0xff303030),
+        bullishColor: Colors.green,
+        bearishColor: Colors.red,
+        selectedItemColor: Colors.purple,
+        axisColor: Colors.white,
+        sipColor: Colors.orangeAccent,
+        lumpSumColor: Colors.blueAccent,
+        cardBasicBackground: Colors.black,
+        buttonColor: Colors.white,
+        buttonBorderColor: Colors.white38,
+        sliderColor: const Color(0xffED1164),
+        textColorSecondary: Colors.white,
+        disabledContainer: const Color(0xffB3BCB9),
+        supportItemColor: const Color(0xff165964),
+        darkShade1: const Color(0xff1D1D1D),
+        darkShade2: const Color(0xff1F1F1F),
+        darkShade3: const Color(0xff303030),
+        itemFocusColor: const Color(0xff666666),
+        itemUnfocusedColor: const Color(0xff1C1C1C),
+        listItemColor: const Color(0xff242424),
+        listItemTextColor1: const Color(0xffD3CABD),
+        listItemTextColor2: const Color(0xffD3CABD),
+        progressIndColor1: const Color(0xff919191),
+        progressIndColor2: const Color(0xff4A4949),
+        dropdownShade1: const Color(0xff204135),
+        dropdownShade2: const Color(0xff3D9D7F),
+        listBgColor: const Color(0xff1D1C1C),
+        listHeaderColor: const Color(0xff333131),
+        containerShade1: const Color(0xff363535),
+        containerShade2: const Color(0xff3D3D3D),
+        dropdownBgColor: const Color(0xff313030),
+        drawerHeadingG1: Color(0xff1D1D1D),
+        drawerHeadingG2: Color(0xff50F3BF),
+        drawerButtonTextColorG1: Color(0xff50F3BF),
+        drawerButtonTextColorG2: Color(0xff1D1D1D),
+        gradientStartColor: const Color(0xff000000),
+        gradientEndColor: const Color(0xffffffff),
+        dropdownIconColor: const Color(0xffeef3d4),
+        editProfileTextColor: const Color(0xffED1164),
+        iconColor: const Color(0xff282828));
   }
 }
 
