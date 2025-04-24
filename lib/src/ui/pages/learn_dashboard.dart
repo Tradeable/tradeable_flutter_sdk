@@ -24,6 +24,7 @@ class _LearnDashboard extends State<LearnDashboard> {
         TFS().themeData?.customTextStyles ?? Theme.of(context).customTextStyles;
 
     return Scaffold(
+      backgroundColor: colors.background,
       appBar: AppBarWidget(title: "Learn Dashboard"),
       body: SingleChildScrollView(
         child: Padding(

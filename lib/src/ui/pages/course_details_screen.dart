@@ -41,6 +41,7 @@ class _CourseDetailsScreen extends State<CourseDetailsScreen> {
         TFS().themeData?.customTextStyles ?? Theme.of(context).customTextStyles;
 
     return Scaffold(
+      backgroundColor: colors.background,
       appBar: AppBarWidget(title: widget.model.name),
       body: coursesModel != null
           ? Column(

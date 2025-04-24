@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:tradeable_flutter_sdk/src/models/kagr/courses_model.dart';
 import 'package:tradeable_flutter_sdk/src/network/kagr_api.dart';
+import 'package:tradeable_flutter_sdk/src/ui/pages/course_details_screen.dart';
 import 'package:tradeable_flutter_sdk/src/utils/app_theme.dart';
 import 'package:tradeable_flutter_sdk/src/tfs.dart';
-import 'package:tradeable_flutter_sdk/src/ui/pages/courses_list_screen.dart';
 import 'package:tradeable_flutter_sdk/src/ui/widgets/dashboard/topic_progress_widget.dart';
 import 'package:tradeable_learn_widget/utils/button_widget.dart';
 
@@ -65,44 +65,47 @@ class _CourseTopicsBottomSheetState extends State<CourseTopicsBottomSheet> {
           Expanded(
             child: Container(
               width: double.infinity,
-              padding: EdgeInsets.all(16),
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
               ),
               child: coursesModel != null
                   ? Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.all(16.0),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            "TOPICS IN",
-                            style: textStyles.smallNormal
-                                .copyWith(color: colors.textColorSecondary),
-                          ),
+                          const SizedBox(height: 10),
+                          Text("TOPICS IN",
+                              style: textStyles.smallNormal
+                                  .copyWith(color: colors.textColorSecondary)),
                           Text(coursesModel!.name,
                               style: textStyles.mediumBold),
                           const SizedBox(height: 20),
-                          TopicProgressList(
+                          Expanded(
+                            child: TopicProgressList(
                               courseId: widget.courseId,
-                              topics: coursesModel!.topics ?? []),
-                          Spacer(),
+                              topics: coursesModel!.topics ?? [],
+                            ),
+                          ),
+                          SizedBox(height: 20),
                           ButtonWidget(
-                              color: colors.primary,
-                              btnContent: "View more",
-                              onTap: () {
-                                Navigator.of(context).pop();
-                                Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) =>
-                                        CoursesListScreen(courses: [])));
-                              })
+                            color: colors.primary,
+                            btnContent: "View more",
+                            onTap: () {
+                              Navigator.of(context).pop();
+                              Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) =>
+                                    CourseDetailsScreen(model: coursesModel!),
+                              ));
+                            },
+                          ),
                         ],
                       ),
                     )
                   : Center(child: CircularProgressIndicator()),
             ),
-          )
+          ),
         ],
       ),
     );

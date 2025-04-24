@@ -47,6 +47,7 @@ class _CoursesListScreen extends State<CoursesListScreen> {
         TFS().themeData?.customTextStyles ?? Theme.of(context).customTextStyles;
 
     return Scaffold(
+      backgroundColor: colors.background,
       appBar: AppBarWidget(title: "All Courses"),
       body: SingleChildScrollView(
         child: Padding(

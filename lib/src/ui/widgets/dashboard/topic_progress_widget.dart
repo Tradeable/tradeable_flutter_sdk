@@ -20,7 +20,7 @@ class TopicProgressList extends StatelessWidget {
         TFS().themeData?.customTextStyles ?? Theme.of(context).customTextStyles;
 
     return ListView.builder(
-      itemCount: topics.length > 3 ? 3 : topics.length,
+      itemCount: topics.length,
       shrinkWrap: true,
       itemBuilder: (context, index) {
         final topic = topics[index];
@@ -69,7 +69,7 @@ class TopicProgressList extends StatelessWidget {
                     topic.name,
                     style: textStyles.mediumNormal,
                   ),
-                  const SizedBox(width: 10),
+                  const SizedBox(width: 6),
                   Icon(Icons.chevron_right,
                       color: colors.borderColorPrimary, size: 20)
                 ],
