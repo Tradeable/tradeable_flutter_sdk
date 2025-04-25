@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:tradeable_flutter_sdk/src/ui/pages/kagr_topics_page.dart';
 import 'package:tradeable_flutter_sdk/src/ui/pages/module_list_page.dart';
 import 'package:tradeable_flutter_sdk/src/ui/widgets/tradeable_right_side_drawer.dart';
 import 'package:tradeable_flutter_sdk/tradeable_flutter_sdk.dart';
