@@ -75,7 +75,7 @@ class _CoursesListScreen extends State<CoursesListScreen> {
                           shrinkWrap: true,
                           physics: const NeverScrollableScrollPhysics(),
                           separatorBuilder: (_, __) =>
-                              const SizedBox(height: 12),
+                              const SizedBox(height: 16),
                           itemBuilder: (context, index) {
                             final item = courses[index];
                             return InkWell(
@@ -87,9 +87,14 @@ class _CoursesListScreen extends State<CoursesListScreen> {
                               child: Container(
                                 padding: const EdgeInsets.all(10),
                                 decoration: BoxDecoration(
+                                  color: index % 2 == 0
+                                      ? Color(0xFFFCF5E8)
+                                      : Color(0xFFFFE3F1),
                                   borderRadius: BorderRadius.circular(12),
                                   border: Border.all(
-                                      color: colors.borderColorSecondary),
+                                      color: index % 2 == 0
+                                          ? Color(0xFFFCF5E8)
+                                          : Color(0xFFFFE3F1)),
                                 ),
                                 child: Row(
                                   crossAxisAlignment: CrossAxisAlignment.center,
