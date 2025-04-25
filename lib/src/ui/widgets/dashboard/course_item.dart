@@ -8,8 +8,9 @@ import 'package:tradeable_flutter_sdk/src/tfs.dart';
 
 class CourseListItem extends StatelessWidget {
   final CoursesModel model;
+  final AutoSizeGroup group;
 
-  const CourseListItem({super.key, required this.model});
+  const CourseListItem({super.key, required this.model, required this.group});
 
   @override
   Widget build(BuildContext context) {
@@ -43,6 +44,7 @@ class CourseListItem extends StatelessWidget {
                         maxFontSize: 16,
                         minFontSize: 12,
                         style: textStyles.mediumBold,
+                        group: group,
                         maxLines: 2),
                   ),
                   const SizedBox(width: 6),

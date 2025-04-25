@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:tradeable_flutter_sdk/src/models/kagr/courses_model.dart';
 import 'package:tradeable_flutter_sdk/src/network/kagr_api.dart';
@@ -16,6 +17,7 @@ class CoursesHorizontalList extends StatefulWidget {
 
 class _CoursesList extends State<CoursesHorizontalList> {
   List<CoursesModel> courses = [];
+  AutoSizeGroup group = AutoSizeGroup();
 
   @override
   void initState() {
@@ -72,7 +74,10 @@ class _CoursesList extends State<CoursesHorizontalList> {
                     shrinkWrap: true,
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (context, index) {
-                      return CourseListItem(model: courses[index]);
+                      return CourseListItem(
+                        model: courses[index],
+                        group: group,
+                      );
                     }),
               )
             : CoursesListShimmer()
