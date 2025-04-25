@@ -9,17 +9,18 @@ class Topic {
   final int? startFlow;
   final List<TagModel> tags;
   List<FlowModel>? flows;
+  Map<String, int>? categoryCount;
 
-  Topic({
-    required this.id,
-    required this.name,
-    required this.description,
-    required this.logo,
-    required this.progress,
-    required this.startFlow,
-    required this.tags,
-    this.flows,
-  });
+  Topic(
+      {required this.id,
+      required this.name,
+      required this.description,
+      required this.logo,
+      required this.progress,
+      required this.startFlow,
+      required this.tags,
+      this.flows,
+      this.categoryCount});
 
   factory Topic.fromJson(Map<String, dynamic> json) {
     return Topic(
@@ -35,6 +36,9 @@ class Topic {
       flows: json["flows"] != null
           ? (json["flows"] as List).map((e) => FlowModel.fromJson(e)).toList()
           : [],
+      categoryCount: json["category_count"] != null
+          ? Map.from(json["category_count"])
+          : null,
     );
   }
 }

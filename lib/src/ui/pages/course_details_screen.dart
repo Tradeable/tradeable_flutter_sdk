@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tradeable_flutter_sdk/src/models/kagr/courses_model.dart';
+import 'package:tradeable_flutter_sdk/src/models/kagr/topic_model.dart';
 import 'package:tradeable_flutter_sdk/src/models/kagr/topic_user_model.dart';
 import 'package:tradeable_flutter_sdk/src/network/kagr_api.dart';
 import 'package:tradeable_flutter_sdk/src/tfs.dart';
@@ -53,7 +54,7 @@ class _CourseDetailsScreen extends State<CourseDetailsScreen> {
                   shrinkWrap: true,
                   separatorBuilder: (_, __) => const SizedBox(height: 12),
                   itemBuilder: (context, index) {
-                    final item = coursesModel!.topics![index];
+                    Topic item = coursesModel!.topics![index];
                     return InkWell(
                       onTap: () {
                         Navigator.of(context).push(MaterialPageRoute(
@@ -88,13 +89,27 @@ class _CourseDetailsScreen extends State<CourseDetailsScreen> {
                               ),
                             ),
                             const SizedBox(width: 6),
-                            Text("BEGIN",
-                                style: textStyles.smallBold.copyWith(
-                                    fontSize: 12,
-                                    color: colors.borderColorPrimary)),
-                            const SizedBox(width: 4),
-                            Icon(Icons.arrow_forward_ios,
-                                size: 10, color: colors.borderColorPrimary)
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                item.categoryCount != null
+                                    ? showIconSets(item)
+                                    : Container(),
+                                const SizedBox(height: 6),
+                                Row(
+                                  children: [
+                                    Text("BEGIN",
+                                        style: textStyles.smallBold.copyWith(
+                                            fontSize: 12,
+                                            color: colors.borderColorPrimary)),
+                                    const SizedBox(width: 4),
+                                    Icon(Icons.arrow_forward_ios,
+                                        size: 10,
+                                        color: colors.borderColorPrimary)
+                                  ],
+                                ),
+                              ],
+                            ),
                           ],
                         ),
                       ),
@@ -104,6 +119,28 @@ class _CourseDetailsScreen extends State<CourseDetailsScreen> {
               ],
             )
           : const Center(child: CircularProgressIndicator()),
+    );
+  }
+
+  Widget showIconSets(Topic item) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: {
+        "analysis":
+            "packages/tradeable_flutter_sdk/lib/assets/images/analysis.png",
+        "practice":
+            "packages/tradeable_flutter_sdk/lib/assets/images/practice.png",
+        "education":
+            "packages/tradeable_flutter_sdk/lib/assets/images/education.png",
+      }.entries.where((e) => item.categoryCount!.containsKey(e.key)).map((e) {
+        return Row(
+          children: [
+            Image.asset(e.value, width: 20, height: 20),
+            Text('x${item.categoryCount![e.key]}'),
+            const SizedBox(width: 10)
+          ],
+        );
+      }).toList(),
     );
   }
 }
