@@ -36,6 +36,7 @@ class _FlowsList extends State<FlowsList> {
         setState(() {
           widget.flowModel.userFlowsList = (val.flows?.map((e) =>
                       TopicFlowsListModel(
+                          name: e.name ?? "",
                           flowId: e.id,
                           isCompleted: e.isCompleted,
                           logo: e.logo,
@@ -176,73 +177,126 @@ class _FlowsList extends State<FlowsList> {
 
     return Padding(
       padding: const EdgeInsets.only(bottom: 16),
-      child: ListView.builder(
+      child: ListView.separated(
         controller: controller,
         scrollDirection: Axis.horizontal,
         itemCount: flowsList.length,
         itemBuilder: (context, index) {
-
-          return InkWell(
-            onTap: () {
-              widget.onFlowSelected(flowsList[index].flowId);
-            },
-            child: Container(
-              width: 100,
-              margin: EdgeInsets.only(right: 10),
-              decoration: BoxDecoration(
-                color: colors.darkShade3,
-                border: Border.all(color: colors.darkShade3, width: 1),
-                borderRadius: BorderRadius.circular(12),
+          return SizedBox(
+            width: 100,
+            height: 100,
+            child: MaterialButton(
+              padding: const EdgeInsets.all(0),
+              onPressed: () {
+                widget.onFlowSelected(flowsList[index].flowId);
+              },
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
               ),
               child: Container(
-                  margin: const EdgeInsets.all(4),
-                  decoration: BoxDecoration(
-                    color: colors.gradientEndColor.withAlpha(21),
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: colors.secondary, width: 1),
-                  ),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(12),
-                    child: Container(
-                      margin: const EdgeInsets.all(4),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(12),
-                        color: colors.darkShade3,
-                        boxShadow: [
-                          BoxShadow(
-                              color: colors.gradientEndColor.withAlpha(65),
-                              blurRadius: 4,
-                              spreadRadius: 4,
-                              offset: Offset.zero,
-                              blurStyle: BlurStyle.normal),
-                        ],
+                width: 100,
+                height: 100,
+                padding: const EdgeInsets.fromLTRB(4, 8, 4, 8),
+                decoration: BoxDecoration(
+                  color: colors.darkShade3,
+                  border: Border.all(color: colors.darkShade3, width: 1),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    if (flowsList[index].logo.type == 'image/png')
+                      SizedBox(
+                        width: 48,
+                        height: 48,
+                        child: Image.network(flowsList[index].logo.url),
                       ),
-                      child: Stack(
-                        children: [
-                          if (flowsList[index].logo.type == 'image/png')
-                            Positioned.fill(
-                              child: Image.network(flowsList[index].logo.url),
-                            ),
-                          Align(
-                            alignment: Alignment.bottomLeft,
-                            child: Container(
-                              margin:
-                                  const EdgeInsets.only(left: 6, bottom: 10),
-                              height: 14,
-                              width: 14,
-                              child: CircularProgressIndicator(
-                                color: colors.progressIndColor1,
-                                backgroundColor: colors.progressIndColor2,
-                                strokeWidth: 2,
-                                value: flowsList[index].isCompleted ? 1 : 0,
-                              ),
-                            ),
-                          ),
-                        ],
+                    Spacer(),
+                    Container(
+                      child: Text(
+                        flowsList[index].name ?? "",
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 10,
+                          height: 1.25,
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
                     ),
-                  )),
+                  ],
+                ),
+              ),
             ),
+          );
+          // return InkWell(
+          //   onTap: () {
+          //     widget.onFlowSelected(flowsList[index].flowId);
+          //   },
+          //   child: Container(
+          //     width: 100,
+          //     margin: EdgeInsets.only(right: 10),
+          //     decoration: BoxDecoration(
+          //       color: colors.darkShade3,
+          //       border: Border.all(color: colors.darkShade3, width: 1),
+          //       borderRadius: BorderRadius.circular(12),
+          //     ),
+          //     child: Container(
+          //         margin: const EdgeInsets.all(4),
+          //         decoration: BoxDecoration(
+          //           color: colors.gradientEndColor.withAlpha(21),
+          //           borderRadius: BorderRadius.circular(12),
+          //           border: Border.all(color: colors.secondary, width: 1),
+          //         ),
+          //         child: ClipRRect(
+          //           borderRadius: BorderRadius.circular(12),
+          //           child: Container(
+          //             margin: const EdgeInsets.all(4),
+          //             decoration: BoxDecoration(
+          //               borderRadius: BorderRadius.circular(12),
+          //               color: colors.darkShade3,
+          //               boxShadow: [
+          //                 BoxShadow(
+          //                     color: colors.gradientEndColor.withAlpha(65),
+          //                     blurRadius: 4,
+          //                     spreadRadius: 4,
+          //                     offset: Offset.zero,
+          //                     blurStyle: BlurStyle.normal),
+          //               ],
+          //             ),
+          //             child: Stack(
+          //               children: [
+          //                 if (flowsList[index].logo.type == 'image/png')
+          //                   Positioned.fill(
+          //                     child: Image.network(flowsList[index].logo.url),
+          //                   ),
+          //                 Align(
+          //                   alignment: Alignment.bottomLeft,
+          //                   child: Container(
+          //                     margin:
+          //                         const EdgeInsets.only(left: 6, bottom: 10),
+          //                     height: 14,
+          //                     width: 14,
+          //                     child: CircularProgressIndicator(
+          //                       color: colors.progressIndColor1,
+          //                       backgroundColor: colors.progressIndColor2,
+          //                       strokeWidth: 2,
+          //                       value: flowsList[index].isCompleted ? 1 : 0,
+          //                     ),
+          //                   ),
+          //                 ),
+          //               ],
+          //             ),
+          //           ),
+          //         )),
+          //   ),
+          // );
+        },
+        separatorBuilder: (BuildContext context, int index) {
+          return SizedBox(
+            width: 10,
           );
         },
       ),

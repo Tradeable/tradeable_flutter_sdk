@@ -13,4 +13,4 @@ const cookie = {
       "access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiMSIsIm9pZCI6MiwiaWF0IjoxNzM2NzYyMzYwLCJleHAiOjk5OTk5OTk5OTl9.zvJpXMweUjgokyYBcUQUrLLIescr6t0yzELM_hr2E3c; Path=/; HttpOnly; Secure; SameSite=None"
 };
 
-const baseUrl = "https://dev.api.tradeable.app";
+const baseUrl = "https://dev.api.tradeable.app/demo";

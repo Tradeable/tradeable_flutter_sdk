@@ -48,6 +48,7 @@ class _TopicHeaderWidgetState extends State<TopicHeaderWidget> {
                     flowId: e.id,
                     isCompleted: e.isCompleted,
                     logo: e.logo,
+                    name: e.name ?? "",
                     category: e.category ?? "")) ??
                 [])
             .toList();

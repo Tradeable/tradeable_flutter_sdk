@@ -12,13 +12,15 @@ class TopicFlowModel {
 }
 
 class TopicFlowsListModel {
+  final String? name;
   final int flowId;
   final bool isCompleted;
   final Logo logo;
   final String category;
 
   TopicFlowsListModel(
-      {required this.flowId,
+      {required this.name,
+      required this.flowId,
       required this.isCompleted,
       required this.logo,
       required this.category});

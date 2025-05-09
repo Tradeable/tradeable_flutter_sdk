@@ -4,6 +4,7 @@ class FlowModel {
   List<FlowWidget>? widgets;
   final Logo logo;
   final String? category;
+  final String? name;
 
   FlowModel({
     required this.id,
@@ -11,6 +12,7 @@ class FlowModel {
     this.widgets,
     required this.logo,
     required this.category,
+    this.name,
   });
 
   factory FlowModel.fromJson(Map<String, dynamic> json) {
@@ -22,6 +24,7 @@ class FlowModel {
           .toList(),
       logo: Logo.fromJson(json["logo"]),
       category: json["category"],
+      name: json["name"],
     );
   }
 }
