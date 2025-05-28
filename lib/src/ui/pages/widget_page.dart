@@ -69,6 +69,7 @@ import 'package:tradeable_learn_widget/rr_widget/rr_model.dart';
 import 'package:tradeable_learn_widget/rr_widget/rr_question.dart';
 import 'package:tradeable_learn_widget/sample_user_flow/sample_userflow_main.dart';
 import 'package:tradeable_learn_widget/sample_user_flow/sample_userflow_model.dart';
+import 'package:tradeable_learn_widget/tradeable_learn_widget.dart';
 import 'package:tradeable_learn_widget/trend_line/models/trendline_model.dart';
 import 'package:tradeable_learn_widget/trend_line/trend_line.dart';
 import 'package:tradeable_learn_widget/user_story_widget/models/user_story_model.dart';
@@ -301,6 +302,9 @@ class _WidgetPageState extends State<WidgetPage> {
         return SampleUserflowScreen(
             data: SampleUserflowModel.fromJson(data),
             onNextClick: () => onNextClick());
+      case "order_type_v1":
+        return OrderScreen(
+            model: OrderTypeV1.fromJson(data), onNextClick: onNextClick);
       default:
         return Container(
           padding: const EdgeInsets.all(8.0),

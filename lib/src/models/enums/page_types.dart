@@ -15,7 +15,8 @@ enum PageId {
   axisTechnical,
   axisScanners,
   axisWatchlist,
-  axisFundamentals
+  axisFundamentals,
+  axisOrderType,
 }
 
 extension PageIdValue on PageId {
@@ -37,6 +38,7 @@ extension PageIdValue on PageId {
     PageId.axisScanners: [23, 8],
     PageId.axisWatchlist: [24, 9],
     PageId.axisFundamentals: [25, 10],
+    PageId.axisOrderType: [26, 13]
   };
 
   int get pageId => _values[this]![0];
