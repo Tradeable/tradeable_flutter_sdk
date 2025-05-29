@@ -250,8 +250,8 @@ packages:
     dependency: transitive
     description:
       path: "."
-      ref: option_chain
-      resolved-ref: "17693a91a27279639194b704a8a9cae87fb5aef4"
+      ref: ui_updates
+      resolved-ref: "2dd0143f2ebaccab5e5396294d25040858eded80"
       url: "https://github.com/adityagohad/fin_chart.git"
     source: git
     version: "0.0.1"
@@ -767,7 +767,7 @@ packages:
     description:
       path: "."
       ref: tlw
-      resolved-ref: "5f21495586a59f5b22f0c3089c7f74fd292f1168"
+      resolved-ref: "0343b8285dc66f808cc3f4c90b9f907ad6b963e3"
       url: "https://github.com/Tradeable/tradeable_learn_widget.git"
     source: git
     version: "0.0.1"
