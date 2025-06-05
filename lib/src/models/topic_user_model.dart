@@ -1,5 +1,5 @@
-import 'package:tradeable_flutter_sdk/src/models/kagr/flow_model.dart';
-import 'package:tradeable_flutter_sdk/src/models/kagr/topic_model.dart';
+import 'package:tradeable_flutter_sdk/src/models/flow_model.dart';
+import 'package:tradeable_flutter_sdk/src/models/topic_model.dart';
 
 class ModuleUserModel {
   final int moduleId;

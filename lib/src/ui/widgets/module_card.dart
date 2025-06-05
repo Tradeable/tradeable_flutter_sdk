@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tradeable_flutter_sdk/src/models/kagr/topic_user_model.dart';
+import 'package:tradeable_flutter_sdk/src/models/topic_user_model.dart';
 
 class ModuleCard extends StatelessWidget {
   final TopicUserModel moduleModel;

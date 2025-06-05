@@ -1,4 +1,4 @@
-import 'package:tradeable_flutter_sdk/src/models/kagr/flow_model.dart';
+import 'package:tradeable_flutter_sdk/src/models/flow_model.dart';
 
 class TopicFlowModel {
   final int topicId;

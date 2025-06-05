@@ -7,16 +7,15 @@ class TradeableContainer extends StatefulWidget {
   final Widget child;
   final double learnBtnTopPos;
   final PageId? pageId;
-  final List<ModuleLabel>? modules;
   final bool isLearnBtnStatic;
 
-  const TradeableContainer(
-      {super.key,
-      required this.child,
-      this.learnBtnTopPos = 180,
-      this.isLearnBtnStatic = true,
-      this.pageId,
-      this.modules});
+  const TradeableContainer({
+    super.key,
+    required this.child,
+    this.learnBtnTopPos = 180,
+    this.isLearnBtnStatic = true,
+    this.pageId,
+  });
 
   @override
   State<TradeableContainer> createState() => _TradeableContainerState();
@@ -72,13 +71,7 @@ class _TradeableContainerState extends State<TradeableContainer>
                   gradient: LinearGradient(
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
-                    colors:
-                        // [
-                        //   Colors.red,
-                        //   Colors.red
-                        // ]
-                        [Color(0xffed1164), Color(0xff97144d)],
-                    //[Color(0xff4a4363), Color(0xff774a3d)]
+                    colors: [Color(0xffed1164), Color(0xff97144d)],
                   ),
                   borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(8),
@@ -101,16 +94,11 @@ class _TradeableContainerState extends State<TradeableContainer>
                       });
                     }
                   });
-                  // TradeableRightSideDrawer.open(
-                  //     context: context,
-                  //     drawerBorderRadius: 12,
-                  //     body: KAGRTopicsPage());
                   TradeableRightSideDrawer.open(
                       context: context,
                       drawerBorderRadius: 12,
                       body: ModuleListPage(
                         pageId: widget.pageId,
-                        pages: widget.modules,
                         onClose: () {
                           Navigator.of(context).pop();
                         },

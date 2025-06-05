@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:tradeable_flutter_sdk/src/models/kagr/courses_model.dart';
-import 'package:tradeable_flutter_sdk/src/models/kagr/topic_model.dart';
-import 'package:tradeable_flutter_sdk/src/models/kagr/topic_user_model.dart';
-import 'package:tradeable_flutter_sdk/src/network/kagr_api.dart';
+import 'package:tradeable_flutter_sdk/src/models/courses_model.dart';
+import 'package:tradeable_flutter_sdk/src/models/topic_model.dart';
+import 'package:tradeable_flutter_sdk/src/models/topic_user_model.dart';
+import 'package:tradeable_flutter_sdk/src/network/api.dart';
 import 'package:tradeable_flutter_sdk/src/tfs.dart';
 import 'package:tradeable_flutter_sdk/src/ui/pages/topic_details_page.dart';
 import 'package:tradeable_flutter_sdk/src/ui/widgets/dashboard/appbar_widget.dart';
@@ -28,7 +28,7 @@ class _CourseDetailsScreen extends State<CourseDetailsScreen> {
   }
 
   void getCourseTopicsById() async {
-    final val = await KagrApi().getTopicsInCourse(widget.model.id);
+    final val = await API().getTopicsInCourse(widget.model.id);
     setState(() {
       coursesModel = val;
     });

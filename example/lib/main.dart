@@ -1,15 +1,15 @@
-import 'package:example/pages/axis/axis_page_list.dart';
+import 'package:example/pages/page_list.dart';
 import 'package:flutter/material.dart';
 import 'package:tradeable_flutter_sdk/tradeable_flutter_sdk.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  String app = "Axis";
+  String app = "light";
   switch (app) {
-    case "Kagr":
+    case "dark":
       TFS().initialize(token: "token", theme: AppTheme.darkTheme());
       break;
-    case "Axis":
+    case "light":
       TFS().initialize(token: "token", theme: AppTheme.lightTheme());
       break;
   }
@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
           useMaterial3: true),
       initialRoute: '/',
       routes: {
-        '/': (context) => const AxisPageList(),
+        '/': (context) => const PageList(),
       },
     );
   }

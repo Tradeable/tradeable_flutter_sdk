@@ -1,7 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:tradeable_flutter_sdk/src/models/kagr/course_progress_model.dart';
-import 'package:tradeable_flutter_sdk/src/network/kagr_api.dart';
+import 'package:tradeable_flutter_sdk/src/models/course_progress_model.dart';
+import 'package:tradeable_flutter_sdk/src/network/api.dart';
 import 'package:tradeable_flutter_sdk/src/tfs.dart';
 import 'package:tradeable_flutter_sdk/src/utils/app_theme.dart';
 
@@ -31,7 +31,7 @@ class _CustomLinearProgressIndicator
   }
 
   void getProgress() async {
-    await KagrApi().getCourseProgress().then((val) {
+    await API().getCourseProgress().then((val) {
       setState(() {
         courseProgress = val;
         progressItems = courseProgress

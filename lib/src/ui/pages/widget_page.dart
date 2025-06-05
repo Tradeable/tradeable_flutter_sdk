@@ -1,83 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:tradeable_flutter_sdk/src/models/kagr/user_widgets_model.dart';
-import 'package:tradeable_flutter_sdk/src/network/kagr_api.dart';
+import 'package:tradeable_flutter_sdk/src/models/user_widgets_model.dart';
+import 'package:tradeable_flutter_sdk/src/network/api.dart';
 import 'package:tradeable_flutter_sdk/src/ui/pages/flow_controller.dart';
-import 'package:tradeable_learn_widget/atm_itm_dropdown_widget/atm_itm_dropdown_data_model.dart';
-import 'package:tradeable_learn_widget/atm_itm_dropdown_widget/atm_itm_dropdown_widget_main.dart';
-import 'package:tradeable_learn_widget/banana_widget/banana_model.dart';
-import 'package:tradeable_learn_widget/banana_widget/banana_widget.dart';
-import 'package:tradeable_learn_widget/bucket_widgetv1/bucket_container.dart';
-import 'package:tradeable_learn_widget/bucket_widgetv1/models/bucket_model.dart';
 import 'package:tradeable_learn_widget/buy_sell_widget/buy_sell.dart';
-import 'package:tradeable_learn_widget/calender_widget/calender_model.dart';
-import 'package:tradeable_learn_widget/calender_widget/calender_question.dart';
-import 'package:tradeable_learn_widget/candle_body_select/candle_body_select.dart';
-import 'package:tradeable_learn_widget/candle_body_select/candle_body_select_model.dart';
-import 'package:tradeable_learn_widget/candle_formation/candle_formation.dart';
 import 'package:tradeable_learn_widget/candle_formation/candle_formation_model.dart';
-import 'package:tradeable_learn_widget/candle_formation_v2/candle_formation_v2_main.dart';
-import 'package:tradeable_learn_widget/candle_formation_v2/candle_formation_v2_model.dart';
-import 'package:tradeable_learn_widget/candle_match_the_pair/candle_part_match.dart';
-import 'package:tradeable_learn_widget/candle_match_the_pair/match_the_pair_model.dart';
-import 'package:tradeable_learn_widget/candle_select_question/candle_select_model.dart';
-import 'package:tradeable_learn_widget/candle_select_question/candle_select_question.dart';
-import 'package:tradeable_learn_widget/column_match/column_data_model.dart';
-import 'package:tradeable_learn_widget/column_match/column_match.dart';
-import 'package:tradeable_learn_widget/demand_supply_educorner/demand_supply_educorner_main.dart';
-import 'package:tradeable_learn_widget/demand_supply_educorner/demand_supply_educorner_model.dart';
-import 'package:tradeable_learn_widget/drag_and_drop_match_widget/drag_and_drop_match.dart';
 import 'package:tradeable_learn_widget/dynamic_chart/dynamic_chart_main.dart';
 import 'package:tradeable_learn_widget/dynamic_chart/dynamic_chart_model.dart';
-import 'package:tradeable_learn_widget/edu_cornerv1/edu_corner_model.dart';
-import 'package:tradeable_learn_widget/educorner_v2/educorner_v2_main.dart';
-import 'package:tradeable_learn_widget/en1_matchthepair/en1_model.dart';
-import 'package:tradeable_learn_widget/en1_matchthepair/en1_widget.dart';
-import 'package:tradeable_learn_widget/expandable_edutile_widget/expandable_edutile_main.dart';
-import 'package:tradeable_learn_widget/expandable_edutile_widget/expandable_edutile_model.dart';
-import 'package:tradeable_learn_widget/fno_buy_story/option_intro_model.dart';
-import 'package:tradeable_learn_widget/fno_buy_story/page_intro.dart';
-import 'package:tradeable_learn_widget/fno_buy_story/price_decrease.dart';
-import 'package:tradeable_learn_widget/fno_buy_story/price_decrease_model.dart';
-import 'package:tradeable_learn_widget/formula_placeholder_widget/formula_placeholder_model.dart';
-import 'package:tradeable_learn_widget/formula_placeholder_widget/formula_placeholder_widget.dart';
-import 'package:tradeable_learn_widget/horizontal_line_question/horizontal_line_model.dart';
-import 'package:tradeable_learn_widget/horizontal_line_question/horizontal_line_question.dart';
-import 'package:tradeable_learn_widget/horizontal_line_v1/horizontal_line_model_v1.dart';
-import 'package:tradeable_learn_widget/horizontal_line_v1/horizontal_line_question_v1.dart';
-import 'package:tradeable_learn_widget/image_mcq/image_mcq.dart';
-import 'package:tradeable_learn_widget/image_mcq/image_mcq_model.dart';
-import 'package:tradeable_learn_widget/index_page/index_page.dart';
-import 'package:tradeable_learn_widget/index_page/index_page_model.dart';
-import 'package:tradeable_learn_widget/info_reel/info_reel.dart';
-import 'package:tradeable_learn_widget/info_reel/info_reel_model.dart';
-import 'package:tradeable_learn_widget/ladder_widget/ladder_data_model.dart';
-import 'package:tradeable_learn_widget/ladder_widget/ladder_widget_main.dart';
-import 'package:tradeable_learn_widget/ls11/ls11.dart';
-import 'package:tradeable_learn_widget/ls11/ls11_model.dart';
-import 'package:tradeable_learn_widget/markdown_preview_widget/markdown_preview_model.dart';
-import 'package:tradeable_learn_widget/markdown_preview_widget/markdown_preview_widget.dart';
-import 'package:tradeable_learn_widget/mcq_candle_question/mcq_candle_model.dart';
-import 'package:tradeable_learn_widget/mcq_candle_question/mcq_candle_question.dart';
-import 'package:tradeable_learn_widget/mcq_question/mcq_model.dart';
-import 'package:tradeable_learn_widget/mcq_question/mcq_question.dart';
-import 'package:tradeable_learn_widget/multiple_mcq_select/multiple_mcq_model.dart';
-import 'package:tradeable_learn_widget/multiple_mcq_select/multiple_mcq_question.dart';
-import 'package:tradeable_learn_widget/range_grid_widget/range_grid_model.dart';
-import 'package:tradeable_learn_widget/range_grid_widget/range_grid_widget.dart';
-import 'package:tradeable_learn_widget/reading_option_chain/reading_option_chain.dart';
-import 'package:tradeable_learn_widget/rr_widget/rr_model.dart';
-import 'package:tradeable_learn_widget/rr_widget/rr_question.dart';
-import 'package:tradeable_learn_widget/sample_user_flow/sample_userflow_main.dart';
-import 'package:tradeable_learn_widget/sample_user_flow/sample_userflow_model.dart';
 import 'package:tradeable_learn_widget/tradeable_learn_widget.dart';
-import 'package:tradeable_learn_widget/trend_line/models/trendline_model.dart';
-import 'package:tradeable_learn_widget/trend_line/trend_line.dart';
 import 'package:tradeable_learn_widget/user_story_widget/models/user_story_model.dart';
-import 'package:tradeable_learn_widget/user_story_widget/user_story_ui_main.dart';
-import 'package:tradeable_learn_widget/video_educorner/video_educorner.dart';
-import 'package:tradeable_learn_widget/video_educorner/video_educorner_model.dart';
-import 'package:tradeable_learn_widget/web_info_reel/web_info_reel.dart';
-import 'package:tradeable_learn_widget/web_info_reel/webpage_model.dart';
 
 class WidgetPage extends StatefulWidget {
   final int topicId;
@@ -120,7 +50,7 @@ class _WidgetPageState extends State<WidgetPage> {
       widgets = [];
       fetchingData = true;
     });
-    await KagrApi().fetchFlowById(widget.topicId, flowId, 33).then((val) {
+    await API().fetchFlowById(widget.topicId, flowId, 33).then((val) {
       setState(() {
         widgets = (val.widgets ?? [])
             .map((e) => WidgetsModel(data: e.data, modelType: e.modelType))

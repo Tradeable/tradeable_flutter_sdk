@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:tradeable_flutter_sdk/src/models/kagr/courses_model.dart';
-import 'package:tradeable_flutter_sdk/src/network/kagr_api.dart';
+import 'package:tradeable_flutter_sdk/src/models/courses_model.dart';
+import 'package:tradeable_flutter_sdk/src/network/api.dart';
 import 'package:tradeable_flutter_sdk/src/ui/pages/course_details_screen.dart';
 import 'package:tradeable_flutter_sdk/src/ui/widgets/dashboard/appbar_widget.dart';
 import 'package:tradeable_flutter_sdk/src/utils/app_theme.dart';
@@ -31,7 +31,7 @@ class _CoursesListScreen extends State<CoursesListScreen> {
   }
 
   void getModules() async {
-    await KagrApi().getModules().then((val) {
+    await API().getModules().then((val) {
       setState(() {
         courses = val;
         isLoading = false;

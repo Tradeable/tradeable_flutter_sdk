@@ -1,7 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:tradeable_flutter_sdk/src/models/kagr/courses_model.dart';
-import 'package:tradeable_flutter_sdk/src/network/kagr_api.dart';
+import 'package:tradeable_flutter_sdk/src/models/courses_model.dart';
+import 'package:tradeable_flutter_sdk/src/network/api.dart';
 import 'package:tradeable_flutter_sdk/src/tfs.dart';
 import 'package:tradeable_flutter_sdk/src/ui/pages/courses_list_screen.dart';
 import 'package:tradeable_flutter_sdk/src/ui/widgets/courses_shimmer_list.dart';
@@ -26,7 +26,7 @@ class _CoursesList extends State<CoursesHorizontalList> {
   }
 
   void getModules() async {
-    await KagrApi().getModules().then((val) {
+    await API().getModules().then((val) {
       setState(() {
         courses = val;
       });

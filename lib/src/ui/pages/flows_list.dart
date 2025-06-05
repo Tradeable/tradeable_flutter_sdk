@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:tradeable_flutter_sdk/src/models/kagr/suggestion_model.dart';
-import 'package:tradeable_flutter_sdk/src/models/kagr/topic_flow_model.dart';
-import 'package:tradeable_flutter_sdk/src/network/kagr_api.dart';
+import 'package:tradeable_flutter_sdk/src/models/suggestion_model.dart';
+import 'package:tradeable_flutter_sdk/src/models/topic_flow_model.dart';
+import 'package:tradeable_flutter_sdk/src/network/api.dart';
 import 'package:tradeable_flutter_sdk/src/tfs.dart';
 import 'package:tradeable_flutter_sdk/src/ui/widgets/container_layout_widget.dart';
 import 'package:tradeable_flutter_sdk/src/ui/widgets/suggestion_widget.dart';
@@ -32,7 +32,7 @@ class _FlowsList extends State<FlowsList> {
 
   void getTopicById() async {
     if (widget.flowModel.userFlowsList.isEmpty) {
-      await KagrApi().fetchTopicById(widget.flowModel.topicId, 3).then((val) {
+      await API().fetchTopicById(widget.flowModel.topicId, 3).then((val) {
         setState(() {
           widget.flowModel.userFlowsList = (val.flows?.map((e) =>
                       TopicFlowsListModel(
@@ -213,17 +213,15 @@ class _FlowsList extends State<FlowsList> {
                         child: Image.network(flowsList[index].logo.url),
                       ),
                     Spacer(),
-                    Container(
-                      child: Text(
-                        flowsList[index].name ?? "",
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 10,
-                          height: 1.25,
-                          fontWeight: FontWeight.w500,
-                        ),
+                    Text(
+                      flowsList[index].name ?? "",
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 10,
+                        height: 1.25,
+                        fontWeight: FontWeight.w500,
                       ),
                     ),
                   ],

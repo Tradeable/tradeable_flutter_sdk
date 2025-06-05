@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:tradeable_flutter_sdk/src/models/kagr/topic_user_model.dart';
-import 'package:tradeable_flutter_sdk/src/models/kagr/user_widgets_model.dart';
-import 'package:tradeable_flutter_sdk/src/network/kagr_api.dart';
+import 'package:tradeable_flutter_sdk/src/models/topic_user_model.dart';
+import 'package:tradeable_flutter_sdk/src/models/user_widgets_model.dart';
+import 'package:tradeable_flutter_sdk/src/network/api.dart';
 import 'package:tradeable_flutter_sdk/src/tfs.dart';
 import 'package:tradeable_flutter_sdk/src/ui/pages/topic_header_page.dart';
 import 'package:tradeable_flutter_sdk/src/ui/pages/widget_page.dart';
@@ -31,7 +31,7 @@ class _TopicDetailPageState extends State<TopicDetailPage> {
   }
 
   void getFlows() async {
-    await KagrApi()
+    await API()
         .fetchTopicById(widget.topic.topicId, widget.topic.topicTagId)
         .then((val) {
       setState(() {

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:tradeable_flutter_sdk/src/models/kagr/topic_model.dart';
-import 'package:tradeable_flutter_sdk/src/models/kagr/topic_user_model.dart';
+import 'package:tradeable_flutter_sdk/src/models/topic_model.dart';
+import 'package:tradeable_flutter_sdk/src/models/topic_user_model.dart';
 import 'package:tradeable_flutter_sdk/src/ui/pages/topic_details_page.dart';
 import 'package:tradeable_flutter_sdk/src/utils/app_theme.dart';
 import 'package:tradeable_flutter_sdk/src/tfs.dart';

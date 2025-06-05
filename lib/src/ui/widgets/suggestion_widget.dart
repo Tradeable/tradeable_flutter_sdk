@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tradeable_flutter_sdk/src/models/kagr/suggestion_model.dart';
+import 'package:tradeable_flutter_sdk/src/models/suggestion_model.dart';
 import 'package:tradeable_flutter_sdk/src/tfs.dart';
 import 'package:tradeable_flutter_sdk/src/utils/app_theme.dart';
 
