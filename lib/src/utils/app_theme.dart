@@ -284,7 +284,6 @@ class AppTheme {
         primary: customColors.primary,
         secondary: customColors.secondary,
         surface: customColors.cardBasicBackground,
-        background: Colors.white,
         error: customColors.bearishColor,
       ),
       cardTheme: CardTheme(
@@ -369,15 +368,15 @@ class AppTheme {
       ),
       sliderTheme: SliderThemeData(
         activeTrackColor: customColors.sliderColor,
-        inactiveTrackColor: customColors.sliderColor.withOpacity(0.3),
+        inactiveTrackColor: customColors.sliderColor.withAlpha(77),
         thumbColor: customColors.sliderColor,
-        overlayColor: customColors.sliderColor.withOpacity(0.2),
+        overlayColor: customColors.sliderColor.withAlpha(21),
         valueIndicatorColor: customColors.sliderColor,
         valueIndicatorTextStyle: const TextStyle(color: Colors.white),
       ),
       checkboxTheme: CheckboxThemeData(
-        fillColor: MaterialStateProperty.resolveWith((states) {
-          if (states.contains(MaterialState.selected)) {
+        fillColor: WidgetStateProperty.resolveWith((states) {
+          if (states.contains(WidgetState.selected)) {
             return customColors.primary;
           }
           return null;
@@ -385,25 +384,25 @@ class AppTheme {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
       ),
       radioTheme: RadioThemeData(
-        fillColor: MaterialStateProperty.resolveWith((states) {
-          if (states.contains(MaterialState.selected)) {
+        fillColor: WidgetStateProperty.resolveWith((states) {
+          if (states.contains(WidgetState.selected)) {
             return customColors.primary;
           }
           return null;
         }),
       ),
       switchTheme: SwitchThemeData(
-        thumbColor: MaterialStateProperty.resolveWith((states) {
-          if (states.contains(MaterialState.selected)) {
+        thumbColor: WidgetStateProperty.resolveWith((states) {
+          if (states.contains(WidgetState.selected)) {
             return customColors.primary;
           }
           return Colors.grey;
         }),
-        trackColor: MaterialStateProperty.resolveWith((states) {
-          if (states.contains(MaterialState.selected)) {
-            return customColors.primary.withOpacity(0.5);
+        trackColor: WidgetStateProperty.resolveWith((states) {
+          if (states.contains(WidgetState.selected)) {
+            return customColors.primary.withAlpha(128);
           }
-          return Colors.grey.withOpacity(0.5);
+          return Colors.grey.withAlpha(128);
         }),
       ),
       tabBarTheme: TabBarTheme(
@@ -414,7 +413,7 @@ class AppTheme {
         ),
       ),
       dividerTheme: DividerThemeData(
-        color: customColors.borderColorSecondary.withOpacity(0.5),
+        color: customColors.borderColorSecondary.withAlpha(128),
         thickness: 1,
         space: 1,
       ),
@@ -467,7 +466,6 @@ class AppTheme {
         primary: customColors.primary,
         secondary: customColors.secondary,
         surface: customColors.cardColorPrimary,
-        background: const Color(0xFF161A26),
         error: customColors.bearishColor,
       ),
       cardTheme: CardTheme(
@@ -554,15 +552,15 @@ class AppTheme {
       ),
       sliderTheme: SliderThemeData(
         activeTrackColor: customColors.sliderColor,
-        inactiveTrackColor: customColors.sliderColor.withOpacity(0.3),
+        inactiveTrackColor: customColors.sliderColor.withAlpha(77),
         thumbColor: customColors.sliderColor,
-        overlayColor: customColors.sliderColor.withOpacity(0.2),
+        overlayColor: customColors.sliderColor.withAlpha(51),
         valueIndicatorColor: customColors.sliderColor,
         valueIndicatorTextStyle: const TextStyle(color: Colors.white),
       ),
       checkboxTheme: CheckboxThemeData(
-        fillColor: MaterialStateProperty.resolveWith((states) {
-          if (states.contains(MaterialState.selected)) {
+        fillColor: WidgetStateProperty.resolveWith((states) {
+          if (states.contains(WidgetState.selected)) {
             return customColors.primary;
           }
           return null;
@@ -570,25 +568,25 @@ class AppTheme {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
       ),
       radioTheme: RadioThemeData(
-        fillColor: MaterialStateProperty.resolveWith((states) {
-          if (states.contains(MaterialState.selected)) {
+        fillColor: WidgetStateProperty.resolveWith((states) {
+          if (states.contains(WidgetState.selected)) {
             return customColors.primary;
           }
           return null;
         }),
       ),
       switchTheme: SwitchThemeData(
-        thumbColor: MaterialStateProperty.resolveWith((states) {
-          if (states.contains(MaterialState.selected)) {
+        thumbColor: WidgetStateProperty.resolveWith((states) {
+          if (states.contains(WidgetState.selected)) {
             return customColors.primary;
           }
           return Colors.grey;
         }),
-        trackColor: MaterialStateProperty.resolveWith((states) {
-          if (states.contains(MaterialState.selected)) {
-            return customColors.primary.withOpacity(0.5);
+        trackColor: WidgetStateProperty.resolveWith((states) {
+          if (states.contains(WidgetState.selected)) {
+            return customColors.primary.withAlpha(128);
           }
-          return Colors.grey.withOpacity(0.5);
+          return Colors.grey.withAlpha(128);
         }),
       ),
       tabBarTheme: TabBarTheme(
@@ -599,7 +597,7 @@ class AppTheme {
         ),
       ),
       dividerTheme: DividerThemeData(
-        color: Colors.grey.withOpacity(0.3),
+        color: Colors.grey.withAlpha(77),
         thickness: 1,
         space: 1,
       ),
@@ -633,8 +631,8 @@ class AppTheme {
       ),
       progressIndicatorTheme: ProgressIndicatorThemeData(
         color: customColors.primary,
-        circularTrackColor: customColors.cardColorPrimary.withOpacity(0.5),
-        linearTrackColor: customColors.cardColorPrimary.withOpacity(0.5),
+        circularTrackColor: customColors.cardColorPrimary.withAlpha(128),
+        linearTrackColor: customColors.cardColorPrimary.withAlpha(128),
       ),
     );
   }
