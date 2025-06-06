@@ -115,19 +115,28 @@ class _TopicHeaderWidgetState extends State<TopicHeaderWidget> {
               ExpansionData(isExpanded, widget.topic.startFlow!));
         }
       },
-      child: Container(
-        width: 50,
+      child: Stack(
+        clipBehavior: Clip.none,
         alignment: Alignment.center,
-        decoration: BoxDecoration(
-          color: colors.borderColorPrimary,
-          borderRadius: BorderRadius.only(
-            bottomLeft: Radius.circular(10),
-            bottomRight: Radius.circular(10),
+        children: [
+          Container(
+            width: 50,
+            height: 14,
+            decoration: BoxDecoration(
+              color: colors.primary,
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(8),
+                bottomRight: Radius.circular(8),
+              ),
+            ),
           ),
-        ),
-        child: isExpanded
-            ? Icon(Icons.keyboard_arrow_up, color: Colors.white)
-            : Icon(Icons.keyboard_arrow_down, color: Colors.white),
+          Positioned(
+            top: -4,
+            child: isExpanded
+                ? Icon(Icons.arrow_drop_up, color: Colors.white, size: 20)
+                : Icon(Icons.arrow_drop_down, color: Colors.white, size: 20),
+          ),
+        ],
       ),
     );
   }
@@ -154,28 +163,48 @@ class _TopicHeaderWidgetState extends State<TopicHeaderWidget> {
           GestureDetector(
             onTap: widget.onBack,
             child: Container(
-              margin: EdgeInsets.only(left: 20),
-              height: 20,
-              width: 20,
-              child: Icon(Icons.arrow_back_ios, size: 16),
+              decoration: BoxDecoration(
+                color: colors.buttonColor,
+                borderRadius: BorderRadius.circular(4),
+              ),
+              margin: EdgeInsets.only(left: 10),
+              height: 24,
+              width: 24,
+              child: Center(
+                child: Icon(
+                  Icons.arrow_left,
+                  size: 24,
+                  color: colors.borderColorPrimary,
+                ),
+              ),
             ),
           ),
           Spacer(),
           Text(widget.topic.name,
-              style: textStyles.mediumBold.copyWith(fontSize: 18)),
+              style: textStyles.mediumBold
+                  .copyWith(fontSize: 18, color: colors.borderColorPrimary)),
           Spacer(),
           Container(
             margin: EdgeInsets.only(right: 20),
-            height: 20,
-            width: 20,
-            child: CircularProgressIndicator(
-              color: colors.progressIndColor1,
-              backgroundColor: colors.progressIndColor2,
-              strokeWidth: 2,
-              value: widget.topic.progress.completed! /
-                  widget.topic.progress.total!,
+            height: 28,
+            width: 28,
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+                CircularProgressIndicator(
+                  color: colors.progressIndColor1,
+                  backgroundColor: colors.progressIndColor2,
+                  strokeWidth: 4,
+                  value: widget.topic.progress.completed! /
+                      widget.topic.progress.total!,
+                ),
+                Text(
+                  '${widget.topic.progress.completed}/${widget.topic.progress.total}',
+                  style: TextStyle(fontSize: 10, color: Colors.black),
+                ),
+              ],
             ),
-          ),
+          )
         ],
       ),
     );
