@@ -1,3 +1,4 @@
+import 'package:example/pages/scan_page.dart';
 import 'package:flutter/material.dart';
 import 'package:tradeable_flutter_sdk/tradeable_flutter_sdk.dart';
 
@@ -33,7 +34,9 @@ class _PageListState extends State<PageList> {
                 children: [
                   DropdownButton<PageId>(
                     value: selectedPage,
-                    items: PageId.values.map((PageId page) {
+                    items: PageId.values
+                        .where((e) => !e.name.toLowerCase().contains("demo"))
+                        .map((PageId page) {
                       return DropdownMenuItem<PageId>(
                         value: page,
                         child: Text(page.name),
@@ -56,6 +59,35 @@ class _PageListState extends State<PageList> {
                       icon: const Icon(Icons.cancel_rounded))
                 ],
               ),
+              Spacer(),
+              Row(
+                children: [
+                  MaterialButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ScanPage(
+                              assetPath: 'assets/images/indicators.png'),
+                        ),
+                      );
+                    },
+                    child: Text("Pgee 1"),
+                  ),
+                  MaterialButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              ScanPage(assetPath: 'assets/images/overview.png'),
+                        ),
+                      );
+                    },
+                    child: Text("Pgee 2"),
+                  ),
+                ],
+              )
             ],
           ),
         ),

@@ -8,10 +8,12 @@ class TradeableContainer extends StatefulWidget {
   final double learnBtnTopPos;
   final PageId? pageId;
   final bool isLearnBtnStatic;
+  final VoidCallback? onLongPress;
 
   const TradeableContainer({
     super.key,
     required this.child,
+    this.onLongPress,
     this.learnBtnTopPos = 180,
     this.isLearnBtnStatic = true,
     this.pageId,
@@ -86,6 +88,11 @@ class _TradeableContainerState extends State<TradeableContainer>
                     bottomRight: Radius.zero,
                   ),
                 ),
+                onLongPress: () {
+                  if (widget.onLongPress != null) {
+                    widget.onLongPress!();
+                  }
+                },
                 onPressed: () {
                   StorageManager().setSideDrawerOpened(true).then((value) {
                     {
