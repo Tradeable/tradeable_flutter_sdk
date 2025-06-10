@@ -31,7 +31,7 @@ class _FlowDropdownHolder extends State<FlowDropdownHolder>
         Column(
           children: [
             Container(
-              margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+              margin: EdgeInsets.only(left: 10, right: 10, top: 14, bottom: 4),
               padding: EdgeInsets.symmetric(horizontal: 6, vertical: 6),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
