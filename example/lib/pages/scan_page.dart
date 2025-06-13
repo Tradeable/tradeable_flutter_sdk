@@ -46,11 +46,11 @@ class _ScanPageState extends State<ScanPage>
       if (mounted) {
         setState(() {
           _showAnimation = false;
-          if (widget.assetPath == "assets/images/overview.png") {
-            pageId = PageId.axisOverview;
+          if (widget.assetPath == "assets/images/besoft.png") {
+            pageId = PageId.demo;
           }
-          if (widget.assetPath == "assets/images/indicators.png") {
-            pageId = PageId.paisaDemo;
+          if (widget.assetPath == "assets/images/deepakntr.png") {
+            pageId = PageId.demo;
           }
         });
       }

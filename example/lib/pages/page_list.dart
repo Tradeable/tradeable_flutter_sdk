@@ -32,23 +32,31 @@ class _PageListState extends State<PageList> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  DropdownButton<PageId>(
-                    value: selectedPage,
-                    items: PageId.values
-                        .where((e) => !e.name.toLowerCase().contains("demo"))
-                        .map((PageId page) {
-                      return DropdownMenuItem<PageId>(
-                        value: page,
-                        child: Text(page.name),
-                      );
-                    }).toList(),
-                    onChanged: (PageId? newValue) {
-                      if (newValue != null) {
-                        setState(() {
-                          selectedPage = newValue;
-                        });
-                      }
-                    },
+                  Container(
+                    padding: EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      border: Border.all(color: Colors.black),
+                      borderRadius: BorderRadius.circular(4.0),
+                    ),
+                    child: DropdownButton<PageId>(
+                      value: selectedPage,
+                      items: PageId.values
+                          //.where((e) => !e.name.toLowerCase().contains("demo"))
+                          .map((PageId page) {
+                        return DropdownMenuItem<PageId>(
+                          value: page,
+                          child: Text(page.name.replaceAll("axis", "")),
+                        );
+                      }).toList(),
+                      onChanged: (PageId? newValue) {
+                        if (newValue != null) {
+                          setState(() {
+                            selectedPage = newValue;
+                          });
+                        }
+                      },
+                    ),
                   ),
                   IconButton(
                       onPressed: () {
@@ -67,24 +75,24 @@ class _PageListState extends State<PageList> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => ScanPage(
-                              assetPath: 'assets/images/indicators.png'),
+                          builder: (context) =>
+                              ScanPage(assetPath: 'assets/images/besoft.png'),
                         ),
                       );
                     },
-                    child: Text("Pgee 1"),
+                    child: Text("Page 1"),
                   ),
                   MaterialButton(
                     onPressed: () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) =>
-                              ScanPage(assetPath: 'assets/images/overview.png'),
+                          builder: (context) => ScanPage(
+                              assetPath: 'assets/images/deepakntr.png'),
                         ),
                       );
                     },
-                    child: Text("Pgee 2"),
+                    child: Text("Page 2"),
                   ),
                 ],
               )
