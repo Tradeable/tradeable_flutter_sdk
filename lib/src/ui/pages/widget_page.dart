@@ -228,10 +228,10 @@ class _WidgetPageState extends State<WidgetPage> {
         return DynamicChartWidget(
             model: DynamicChartModel.fromJson(data),
             onNextClick: () => onNextClick());
-      case "option_trade_demo":
-        return SampleUserflowScreen(
-            data: SampleUserflowModel.fromJson(data),
-            onNextClick: () => onNextClick());
+      // case "option_trade_demo":
+      //   return SampleUserflowScreen(
+      //       data: SampleUserflowModel.fromJson(data),
+      //       onNextClick: () => onNextClick());
       case "order_type_v1":
         return OrderScreen(
             model: OrderTypeV1.fromJson(data), onNextClick: onNextClick);
