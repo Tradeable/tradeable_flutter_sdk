@@ -10,7 +10,7 @@ import 'package:tradeable_learn_widget/tradeable_learn_widget.dart';
 import 'package:tradeable_learn_widget/user_story_widget/models/user_story_model.dart';
 
 class WidgetPage extends StatefulWidget {
-  final int topicId;
+  final int? topicId;
   final int flowId;
 
   const WidgetPage({super.key, required this.topicId, required this.flowId});
