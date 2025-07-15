@@ -35,15 +35,15 @@ class API {
   }
 
   Future<FlowModel> fetchFlowById(
-    int topicId,
+    int? topicId,
     int flowId,
     int topicTagId,
   ) async {
     Response response = await Dio().get(
       "$baseUrl/v0/sdk/flows/$flowId",
-      queryParameters: {
-        "topic_tag_id": topicTagId,
-      },
+      // queryParameters: {
+      //   "topic_tag_id": topicTagId,
+      // },
       options: Options(headers: kagrtoken),
     );
 
