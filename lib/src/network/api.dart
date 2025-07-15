@@ -40,7 +40,7 @@ class API {
     int topicTagId,
   ) async {
     Response response = await Dio().get(
-      "$baseUrl/v0/sdk/topics/$topicId/flows/$flowId",
+      "$baseUrl/v0/sdk/flows/$flowId",
       queryParameters: {
         "topic_tag_id": topicTagId,
       },
