@@ -14,3 +14,6 @@ export 'src/ui/pages/learn_dashboard.dart';
 export 'src/utils/app_theme.dart';
 export 'src/ui/pages/widget_page.dart';
 export 'src/network/api.dart';
+
+export 'src/ui/pages/courses_list_screen.dart';
+export 'src/ui/pages/course_details_screen.dart';
