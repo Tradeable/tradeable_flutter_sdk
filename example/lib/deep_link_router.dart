@@ -3,13 +3,17 @@ import 'package:tradeable_flutter_sdk/src/ui/pages/learn_dashboard.dart';
 import 'package:tradeable_flutter_sdk/src/ui/pages/courses_list_screen.dart';
 import 'package:tradeable_flutter_sdk/src/ui/pages/course_details_screen.dart';
 import 'package:tradeable_flutter_sdk/src/ui/pages/widget_page.dart';
+import 'package:tradeable_flutter_sdk/tradeable_flutter_sdk.dart';
 
 class DeepLinkRouter {
   final GlobalKey<NavigatorState> navigatorKey;
+
   DeepLinkRouter(this.navigatorKey);
 
   String? parseRouteFromUri(Uri? uri) {
-    if (uri != null && uri.pathSegments.isNotEmpty && uri.pathSegments.first == 'app') {
+    if (uri != null &&
+        uri.pathSegments.isNotEmpty &&
+        uri.pathSegments.first == 'app') {
       if (uri.pathSegments.length > 1) {
         return '/${uri.pathSegments[1]}';
       }
@@ -52,6 +56,16 @@ class DeepLinkRouter {
           );
         }
         break;
+      case "/topicById":
+        final topicIdStr = queryParams?['topicId'];
+        final topicId = topicIdStr != null ? int.tryParse(topicIdStr) : null;
+        if (topicId != null) {
+          navigatorKey.currentState?.push(
+            MaterialPageRoute(
+                builder: (_) => TopicDetailPage(topicId: topicId)),
+          );
+        }
+        break;
     }
   }
-} 
+}

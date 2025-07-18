@@ -25,4 +25,17 @@ class TopicUserModel {
       required this.progress,
       this.startFlow,
       required this.topicTagId});
+
+  // Add this factory constructor
+  factory TopicUserModel.fromTopic(Topic topic) {
+    return TopicUserModel(
+      topicId: topic.id,
+      name: topic.name,
+      description: topic.description,
+      logo: topic.logo,
+      progress: topic.progress,
+      startFlow: topic.startFlow,
+      topicTagId: 33,
+    );
+  }
 }
