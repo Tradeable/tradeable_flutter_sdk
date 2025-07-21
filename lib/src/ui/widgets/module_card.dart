@@ -4,9 +4,14 @@ import 'package:tradeable_flutter_sdk/src/models/topic_user_model.dart';
 class ModuleCard extends StatelessWidget {
   final TopicUserModel moduleModel;
   final VoidCallback onClick;
+  final Color cardColor;
 
-  const ModuleCard(
-      {super.key, required this.moduleModel, required this.onClick});
+  const ModuleCard({
+    super.key,
+    required this.moduleModel,
+    required this.onClick,
+    required this.cardColor,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +20,7 @@ class ModuleCard extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         decoration: BoxDecoration(
-            color: Color(0xffF9EBEF), borderRadius: BorderRadius.circular(8)),
+            color: cardColor, borderRadius: BorderRadius.circular(8)),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
