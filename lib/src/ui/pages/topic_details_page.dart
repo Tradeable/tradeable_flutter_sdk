@@ -8,9 +8,10 @@ import 'package:tradeable_flutter_sdk/src/ui/pages/widget_page.dart';
 import 'package:tradeable_flutter_sdk/src/utils/app_theme.dart';
 
 class TopicDetailPage extends StatefulWidget {
-  final TopicUserModel topic;
+  final TopicUserModel? topic;
+  final int? topicId;
 
-  const TopicDetailPage({super.key, required this.topic});
+  const TopicDetailPage({super.key, this.topic, this.topicId});
 
   @override
   State<TopicDetailPage> createState() => _TopicDetailPageState();
@@ -20,19 +21,42 @@ class _TopicDetailPageState extends State<TopicDetailPage> {
   bool isExpanded = false;
   List<WidgetsModel>? widgets;
   int? flowId;
+  TopicUserModel? _topicUserModel;
+  bool _loading = false;
 
   @override
   void initState() {
-    flowId = widget.topic.startFlow;
-    if (flowId == null) {
-      getFlows();
-    }
     super.initState();
+    if (widget.topic != null) {
+      _topicUserModel = widget.topic;
+      flowId = _topicUserModel!.startFlow;
+      if (flowId == null) {
+        getFlows();
+      }
+    } else if (widget.topicId != null) {
+      _fetchTopicUserModel();
+    }
   }
 
-  void getFlows() async {
+  Future<void> _fetchTopicUserModel() async {
+    setState(() {
+      _loading = true;
+    });
+    final topic = await API().fetchTopicById(widget.topicId!, 33);
+    _topicUserModel = TopicUserModel.fromTopic(topic);
+    flowId = _topicUserModel!.startFlow;
+    if (flowId == null) {
+      await getFlows();
+    }
+    setState(() {
+      _loading = false;
+    });
+  }
+
+  Future<void> getFlows() async {
+    if (_topicUserModel == null) return;
     await API()
-        .fetchTopicById(widget.topic.topicId, widget.topic.topicTagId)
+        .fetchTopicById(_topicUserModel!.topicId, _topicUserModel!.topicTagId)
         .then((val) {
       setState(() {
         flowId ??= val.flows!.first.id;
@@ -45,6 +69,13 @@ class _TopicDetailPageState extends State<TopicDetailPage> {
     final colors =
         TFS().themeData?.customColors ?? Theme.of(context).customColors;
 
+    if (_topicUserModel == null || _loading) {
+      return Scaffold(
+        backgroundColor: colors.background,
+        body: const Center(child: CircularProgressIndicator()),
+      );
+    }
+
     return Scaffold(
       backgroundColor: colors.background,
       body: SafeArea(
@@ -55,7 +86,7 @@ class _TopicDetailPageState extends State<TopicDetailPage> {
                 margin: const EdgeInsets.only(top: 80),
                 padding: const EdgeInsets.all(10),
                 child: WidgetPage(
-                    topicId: widget.topic.topicId, flowId: flowId ?? -1),
+                    topicId: _topicUserModel!.topicId, flowId: flowId ?? -1),
               ),
             ),
             Positioned(
@@ -63,14 +94,14 @@ class _TopicDetailPageState extends State<TopicDetailPage> {
               left: 0,
               right: 0,
               child: TopicHeaderWidget(
-                topic: widget.topic,
+                topic: _topicUserModel!,
                 onBack: () => Navigator.of(context).pop(),
                 onExpandChanged: (expanded) {
                   isExpanded = expanded.isExpanded;
                   if (!isExpanded) {
                     setState(() {
                       flowId = expanded.flowId;
-                      widget.topic.startFlow = flowId;
+                      _topicUserModel!.startFlow = flowId;
                     });
                   }
                 },
