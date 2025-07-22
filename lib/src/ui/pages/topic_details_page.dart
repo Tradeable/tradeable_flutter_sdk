@@ -3,8 +3,9 @@ import 'package:tradeable_flutter_sdk/src/models/topic_user_model.dart';
 import 'package:tradeable_flutter_sdk/src/models/user_widgets_model.dart';
 import 'package:tradeable_flutter_sdk/src/network/api.dart';
 import 'package:tradeable_flutter_sdk/src/tfs.dart';
-import 'package:tradeable_flutter_sdk/src/ui/pages/topic_header_page.dart';
+import 'package:tradeable_flutter_sdk/src/ui/pages/flow_controller.dart';
 import 'package:tradeable_flutter_sdk/src/ui/pages/widget_page.dart';
+import 'package:tradeable_flutter_sdk/src/ui/widgets/flows_bottom_sheet.dart';
 import 'package:tradeable_flutter_sdk/src/utils/app_theme.dart';
 
 class TopicDetailPage extends StatefulWidget {
@@ -62,6 +63,11 @@ class _TopicDetailPageState extends State<TopicDetailPage> {
         flowId ??= val.flows!.first.id;
       });
     });
+    FlowController().registerCallback((highlightNextFlow) {
+      setState(() {
+        isExpanded = true;
+      });
+    });
   }
 
   @override
@@ -99,7 +105,7 @@ class _TopicDetailPageState extends State<TopicDetailPage> {
                               _topicUserModel!.progress.total!,
                         ),
                         Text(
-                          '${_topicUserModel?.progress.completed}/${widget.topic?.progress.total}',
+                          '${_topicUserModel?.progress.completed}/${_topicUserModel?.progress.total}',
                           style: TextStyle(fontSize: 10, color: Colors.black),
                         ),
                       ],
@@ -110,7 +116,24 @@ class _TopicDetailPageState extends State<TopicDetailPage> {
         ),
         body: SafeArea(
           child: WidgetPage(
-              topicId: _topicUserModel!.topicId, flowId: flowId ?? -1),
+              topicId: _topicUserModel!.topicId,
+              flowId: flowId ?? -1,
+              onMenuClick: () {
+                showModalBottomSheet(
+                    isScrollControlled: true,
+                    backgroundColor: Colors.transparent,
+                    context: context,
+                    builder: (context) {
+                      return FractionallySizedBox(
+                          heightFactor: 0.7,
+                          child: FlowsBottomSheet(
+                            topic: _topicUserModel!,
+                            onFlowItemClicked: (id) => setState(() {
+                              flowId = id;
+                            }),
+                          ));
+                    });
+              }),
         ));
     // return Scaffold(
     //   backgroundColor: colors.background,

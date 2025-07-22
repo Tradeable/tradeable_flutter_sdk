@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tradeable_flutter_sdk/src/models/user_widgets_model.dart';
 import 'package:tradeable_flutter_sdk/src/network/api.dart';
-import 'package:tradeable_flutter_sdk/src/ui/pages/flow_controller.dart';
 import 'package:tradeable_learn_widget/buy_sell_widget/buy_sell.dart';
 import 'package:tradeable_learn_widget/candle_formation/candle_formation_model.dart';
 import 'package:tradeable_learn_widget/dynamic_chart/dynamic_chart_main.dart';
@@ -12,8 +11,13 @@ import 'package:tradeable_learn_widget/user_story_widget/models/user_story_model
 class WidgetPage extends StatefulWidget {
   final int? topicId;
   final int flowId;
+  final VoidCallback? onMenuClick;
 
-  const WidgetPage({super.key, required this.topicId, required this.flowId});
+  const WidgetPage(
+      {super.key,
+      required this.topicId,
+      required this.flowId,
+      this.onMenuClick});
 
   @override
   State<WidgetPage> createState() => _WidgetPageState();
@@ -75,159 +79,201 @@ class _WidgetPageState extends State<WidgetPage> {
   Widget getViewByType(String levelType, Map<String, dynamic>? data) {
     switch (levelType) {
       case "End":
-      // return LevelCompleteScreen(recommendations: recommendations);
+        // return LevelCompleteScreen(recommendations: recommendations);
+        return Container();
       case "Edu_Corner":
         // case "EduCornerV1":
         return EduCornerV2Main(
             model: EduCornerModel.fromJson(data),
-            onNextClick: () => onNextClick());
+            onNextClick: () => onNextClick(),
+            onMenuClick: widget.onMenuClick);
       case "CA1.1":
         return CandleBodySelect(
             model: CandlePartSelectModel.fromJson(data),
-            onNextClick: () => onNextClick());
+            onNextClick: () => onNextClick(),
+            onMenuClick: widget.onMenuClick);
       case "ladder_question":
         return LadderWidgetMain(
             ladderModel: LadderModel.fromJson(data),
-            onNextClick: () => onNextClick());
+            onNextClick: () => onNextClick(),
+            onMenuClick: widget.onMenuClick);
       case "call_put_atm":
         return ATMWidget(
             model: ATMWidgetModel.fromJson(data),
-            onNextClick: () => onNextClick());
+            onNextClick: () => onNextClick(),
+            onMenuClick: widget.onMenuClick);
       case "expandableEduTileModelData":
         return ExpandableEduTileMain(
             model: ExpandableEduTileModel.fromJson(data),
-            onNextClick: () => onNextClick());
+            onNextClick: () => onNextClick(),
+            onMenuClick: widget.onMenuClick);
       case "CA1.2":
         return CandlePartMatchLink(
             model: CandleMatchThePairModel.fromJson(data),
-            onNextClick: () => onNextClick());
+            onNextClick: () => onNextClick(),
+            onMenuClick: widget.onMenuClick);
       case "EN1":
         return EN1(
-            model: EN1Model.fromJson(data), onNextClick: () => onNextClick());
+            model: EN1Model.fromJson(data),
+            onNextClick: () => onNextClick(),
+            onMenuClick: widget.onMenuClick);
       case "MultipleCandleSelect_STATIC":
       case "MultipleCandleSelect_DYNAMIC":
         return CandleSelectQuestion(
             model: CandleSelectModel.fromJson(data),
-            onNextClick: () => onNextClick());
+            onNextClick: () => onNextClick(),
+            onMenuClick: widget.onMenuClick);
       case "MCQ_STATIC":
       case "MCQ_DYNAMIC":
         return MCQQuestion(
-            model: MCQModel.fromJson(data), onNextClick: () => onNextClick());
+            model: MCQModel.fromJson(data),
+            onNextClick: () => onNextClick(),
+            onMenuClick: widget.onMenuClick);
       case "HorizontalLine_STATIC":
       case "HorizontalLine_DYNAMIC":
       case "MultipleHorizontalLine_STATIC":
       case "MultipleHorizontalLine_DYNAMIC":
         return HorizontalLineQuestion(
             model: HorizontalLineModel.fromJson(data),
-            onNextClick: () => onNextClick());
+            onNextClick: () => onNextClick(),
+            onMenuClick: widget.onMenuClick);
       case "MCQ_CANDLE":
         return MCQCandleQuestion(
             model: MCQCandleModel.fromJson(data),
-            onNextClick: () => onNextClick());
+            onNextClick: () => onNextClick(),
+            onMenuClick: widget.onMenuClick);
       case "video_educorner":
         return VideoEduCorner(
             model: VideoEduCornerModel.fromJson(data),
-            onNextClick: () => onNextClick());
+            onNextClick: () => onNextClick(),
+            onMenuClick: widget.onMenuClick);
       case "drag_and_drop_match":
       case "fno_scenario_1":
         return DragAndDropMatch(
             model: LadderModel.fromJson(data),
-            onNextClick: () => onNextClick());
+            onNextClick: () => onNextClick(),
+            onMenuClick: widget.onMenuClick);
       case "Bucket_containerv1":
       case "drag_drop_logo":
         return BucketContainerV1(
             model: BucketContainerModel.fromJson(data),
-            onNextClick: () => onNextClick());
+            onNextClick: () => onNextClick(),
+            onMenuClick: widget.onMenuClick);
       case "content_preview":
         return MarkdownPreviewWidget(
             model: MarkdownPreviewModel.fromJson(data),
-            onNextClick: () => onNextClick());
+            onNextClick: () => onNextClick(),
+            onMenuClick: widget.onMenuClick);
       case "Calender_Question":
         return CalenderQuestion(
             model: CalenderQuestionModel.fromJson(data),
-            onNextClick: () => onNextClick());
+            onNextClick: () => onNextClick(),
+            onMenuClick: widget.onMenuClick);
       case "formula_placeholder":
         return FormulaPlaceholderWidget(
             model: FormulaPlaceHolderModel.fromJson(data),
-            onNextClick: () => onNextClick());
+            onNextClick: () => onNextClick(),
+            onMenuClick: widget.onMenuClick);
       case "candle_formationv2":
         return CandleFormationV2Main(
             model: CandleFormationV2Model.fromJson(data),
-            onNextClick: () => onNextClick());
+            onNextClick: () => onNextClick(),
+            onMenuClick: widget.onMenuClick);
       case "multiple_select_mcq":
         return MultipleMCQSelect(
             model: MultipleMCQModel.fromJson(data),
-            onNextClick: () => onNextClick());
+            onNextClick: () => onNextClick(),
+            onMenuClick: widget.onMenuClick);
       case "trend_line":
         return TrendLineWidget(
             model: TrendLineModel.fromJson(data),
-            onNextClick: () => onNextClick());
+            onNextClick: () => onNextClick(),
+            onMenuClick: widget.onMenuClick);
       case "supply_demand_educorner":
         return DemandSuplyEduCornerMain(
             model: DemandSupplyEduCornerModel.fromJson(data),
-            onNextClick: () => onNextClick());
+            onNextClick: () => onNextClick(),
+            onMenuClick: widget.onMenuClick);
       case "user_story":
         return UserStoryUIMain(
             model: UserStoryModel.fromJson(data),
-            onNextClick: () => onNextClick());
+            onNextClick: () => onNextClick(),
+            onMenuClick: widget.onMenuClick);
       case "horizontal_line_v1":
         return HorizontalLineQuestionV1(
             model: HorizontalLineModelV1.fromJson(data),
-            onNextClick: () => onNextClick());
+            onNextClick: () => onNextClick(),
+            onMenuClick: widget.onMenuClick);
       case "Buy_Sell":
         return BuySellV1();
       case "Reading_Option_Chain":
-        return ReadingOptionChain(onNextClick: () => onNextClick());
+        return ReadingOptionChain(
+            onNextClick: () => onNextClick(), onMenuClick: widget.onMenuClick);
       case "scenario_intro":
         return ScenarioIntroWidget(
             model: OptionIntroModel.fromJson(data),
-            onNextClick: () => onNextClick());
+            onNextClick: () => onNextClick(),
+            onMenuClick: widget.onMenuClick);
       case "fno_buy_page_3":
         return PriceDecreased(
             model: PriceDecreaseModel.fromJson(data),
-            onNextClick: () => onNextClick());
+            onNextClick: () => onNextClick(),
+            onMenuClick: widget.onMenuClick);
       case "index_page":
         return IndexPage(
             model: IndexPageModel.fromJson(data),
-            onNextClick: () => onNextClick());
+            onNextClick: () => onNextClick(),
+            onMenuClick: widget.onMenuClick);
       case "info":
         return InfoReel(
             model: InfoReelModel.fromJson(data),
-            onNextClick: () => onNextClick());
+            onNextClick: () => onNextClick(),
+            onMenuClick: widget.onMenuClick);
       case "webpage":
         return WebInfoReel(
             model: WebpageModel.fromJson(data),
-            onNextClick: () => onNextClick());
+            onNextClick: () => onNextClick(),
+            onMenuClick: widget.onMenuClick);
       case "LS11":
         return LS11(
             model: LS11Model.fromJson(data), onNextClick: () => onNextClick());
       case "RR_DYNAMIC":
         return RRQuestion(
-            model: RRModel.fromJson(data), onNextClick: () => onNextClick());
+            model: RRModel.fromJson(data),
+            onNextClick: () => onNextClick(),
+            onMenuClick: widget.onMenuClick);
       case "candle_formation":
         return CandleFormation(
             model: CandleFormationModel.fromJson(data),
-            onNextClick: () => onNextClick());
+            onNextClick: () => onNextClick(),
+            onMenuClick: widget.onMenuClick);
       case "banana_widget":
         return BananaWidget(
             model: BananaModel.fromJson(data),
-            onNextClick: () => onNextClick());
+            onNextClick: () => onNextClick(),
+            onMenuClick: widget.onMenuClick);
       case "image_mcq":
         return ImageMcq(
             model: ImageMCQModel.fromJson(data),
-            onNextClick: () => onNextClick());
+            onNextClick: () => onNextClick(),
+            onMenuClick: widget.onMenuClick);
       case "column_match":
         return ColumnMatch(
             model: ColumnModel.fromJson(data),
-            onNextClick: () => onNextClick());
+            onNextClick: () => onNextClick(),
+            onMenuClick: widget.onMenuClick);
       case "range_grid_slider":
         return RatingWidget(
             model: RangeGridSliderModel.fromJson(data),
-            onNextClick: () => onNextClick());
+            onNextClick: () => onNextClick(),
+            onMenuClick: widget.onMenuClick);
       case "dynamic_chart":
         return DynamicChartWidget(
             model: DynamicChartModel.fromJson(data),
-            onNextClick: () => onNextClick());
+            onNextClick: () {
+              onNextClick();
+            },
+            onMenuClick: widget.onMenuClick);
       // case "option_trade_demo":
       //   return SampleUserflowScreen(
       //       data: SampleUserflowModel.fromJson(data),
@@ -256,7 +302,8 @@ class _WidgetPageState extends State<WidgetPage> {
         });
       });
     } else {
-      FlowController().openFlowsList(highlightNextFlow: true);
+      // FlowController().openFlowsList(highlightNextFlow: true);
+      widget.onMenuClick?.call();
     }
   }
 }

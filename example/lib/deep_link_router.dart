@@ -1,8 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:tradeable_flutter_sdk/src/ui/pages/learn_dashboard.dart';
-import 'package:tradeable_flutter_sdk/src/ui/pages/courses_list_screen.dart';
-import 'package:tradeable_flutter_sdk/src/ui/pages/course_details_screen.dart';
-import 'package:tradeable_flutter_sdk/src/ui/pages/widget_page.dart';
 import 'package:tradeable_flutter_sdk/tradeable_flutter_sdk.dart';
 
 class DeepLinkRouter {
