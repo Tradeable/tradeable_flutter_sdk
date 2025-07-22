@@ -25,14 +25,23 @@ class ModuleListPage extends StatefulWidget {
 class _ModuleListPageState extends State<ModuleListPage> {
   bool _showShimmer = true;
   List<TopicUserModel>? topicUserModel;
+  List<TopicUserModel> relatedTopics = [];
 
   @override
   void initState() {
     super.initState();
-    fetchTopics();
+    fetchTopics().then((v) {
+      fetchRelatedTopics().then((val) {
+        setState(() {
+          relatedTopics = {
+            for (TopicUserModel topic in relatedTopics) topic.topicId: topic
+          }.values.toList();
+        });
+      });
+    });
   }
 
-  void fetchTopics() async {
+  Future<void> fetchTopics() async {
     await API().fetchTopicByTagId(widget.pageId?.topicTagId ?? 3).then((data) {
       setState(() {
         topicUserModel = data
@@ -48,6 +57,27 @@ class _ModuleListPageState extends State<ModuleListPage> {
         _showShimmer = false;
       });
     });
+  }
+
+  Future<void> fetchRelatedTopics() async {
+    for (int i = 0; i < (topicUserModel ?? []).length; i++) {
+      await API()
+          .fetchRelatedTopics(
+              widget.pageId?.topicTagId ?? 3, topicUserModel![i].topicId)
+          .then((e) {
+        for (int i = 0; i < e.length; i++) {
+          relatedTopics.add(TopicUserModel(
+              topicId: e[i].id,
+              name: e[i].name,
+              description: e[i].description,
+              logo: e[i].logo,
+              progress: e[i].progress,
+              startFlow: e[i].startFlow,
+              topicTagId: widget.pageId?.topicTagId ?? 3));
+        }
+      });
+    }
+    print(relatedTopics.length);
   }
 
   @override
@@ -119,14 +149,18 @@ class _ModuleListPageState extends State<ModuleListPage> {
                       }).toList(),
                     ),
                   const SizedBox(height: 20),
-                  const Text(
-                    'Other related topics',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                  const SizedBox(height: 12),
+                  ...relatedTopics.isEmpty
+                      ? []
+                      : [
+                          const Text(
+                            'Other related topics',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                          const SizedBox(height: 12),
+                        ],
                   Padding(
                     padding: const EdgeInsets.all(4),
                     child: buildOtherRelatedTopics(),
@@ -145,7 +179,7 @@ class _ModuleListPageState extends State<ModuleListPage> {
   Widget buildOtherRelatedTopics() {
     return Column(
       children: List.generate(
-          5,
+          relatedTopics.length,
           (index) => Padding(
                 padding: const EdgeInsets.only(bottom: 10),
                 child: Container(
@@ -155,8 +189,8 @@ class _ModuleListPageState extends State<ModuleListPage> {
                     border: Border.all(color: Color(0xFFE2E2E2)),
                   ),
                   child: ListTile(
-                    title: const AutoSizeText(
-                      'Supply & Demand',
+                    title: AutoSizeText(
+                      relatedTopics[index].name,
                       maxFontSize: 16,
                       minFontSize: 1,
                       maxLines: 2,
