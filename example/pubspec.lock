@@ -815,7 +815,7 @@ packages:
     description:
       path: "."
       ref: next_btn_rewamp
-      resolved-ref: b6dce6fe9265b88057c9c23c28e2f39af4168d43
+      resolved-ref: ac71794a97d6c02ae77875270641231352a2e61c
       url: "https://github.com/Tradeable/tradeable_learn_widget.git"
     source: git
     version: "0.0.1"
