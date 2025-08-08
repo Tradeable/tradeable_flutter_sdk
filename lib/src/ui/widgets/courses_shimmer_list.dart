@@ -43,7 +43,7 @@ class CourseListItemShimmer extends StatelessWidget {
           border: Border.all(color: colors.borderColorSecondary)),
       child: Shimmer.fromColors(
         baseColor: colors.borderColorSecondary,
-        highlightColor: colors.cardBasicBackground.withOpacity(0.3),
+        highlightColor: colors.cardBasicBackground.withAlpha(77),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

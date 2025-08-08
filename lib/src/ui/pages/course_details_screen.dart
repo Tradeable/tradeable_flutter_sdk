@@ -9,9 +9,10 @@ import 'package:tradeable_flutter_sdk/src/ui/widgets/dashboard/appbar_widget.dar
 import 'package:tradeable_flutter_sdk/src/utils/app_theme.dart';
 
 class CourseDetailsScreen extends StatefulWidget {
-  final CoursesModel model;
+  final CoursesModel? model;
+  final int? courseId;
 
-  const CourseDetailsScreen({super.key, required this.model});
+  const CourseDetailsScreen({super.key, this.model, this.courseId});
 
   @override
   State<StatefulWidget> createState() => _CourseDetailsScreen();
@@ -22,13 +23,14 @@ class _CourseDetailsScreen extends State<CourseDetailsScreen> {
 
   @override
   void initState() {
-    coursesModel = widget.model;
     super.initState();
     getCourseTopicsById();
   }
 
   void getCourseTopicsById() async {
-    final val = await API().getTopicsInCourse(widget.model.id);
+    coursesModel = widget.model;
+    final courseId = coursesModel != null ? coursesModel?.id : widget.courseId;
+    final val = await API().getTopicsInCourse(courseId!);
     setState(() {
       coursesModel = val;
     });
@@ -43,7 +45,7 @@ class _CourseDetailsScreen extends State<CourseDetailsScreen> {
 
     return Scaffold(
       backgroundColor: colors.background,
-      appBar: AppBarWidget(title: widget.model.name),
+      appBar: AppBarWidget(title: (coursesModel?.name ?? "")),
       body: coursesModel != null
           ? Column(
               crossAxisAlignment: CrossAxisAlignment.start,

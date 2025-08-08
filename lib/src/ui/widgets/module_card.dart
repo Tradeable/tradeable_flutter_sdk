@@ -4,9 +4,14 @@ import 'package:tradeable_flutter_sdk/src/models/topic_user_model.dart';
 class ModuleCard extends StatelessWidget {
   final TopicUserModel moduleModel;
   final VoidCallback onClick;
+  final Color cardColor;
 
-  const ModuleCard(
-      {super.key, required this.moduleModel, required this.onClick});
+  const ModuleCard({
+    super.key,
+    required this.moduleModel,
+    required this.onClick,
+    required this.cardColor,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +20,7 @@ class ModuleCard extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         decoration: BoxDecoration(
-            color: Color(0xffF9EBEF), borderRadius: BorderRadius.circular(8)),
+            color: cardColor, borderRadius: BorderRadius.circular(8)),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -31,17 +36,27 @@ class ModuleCard extends StatelessWidget {
                           fontSize: 12,
                           fontWeight: FontWeight.w700,
                         )),
-                    Text(moduleModel.description,
+                    SizedBox(
+                      height: 2,
+                    ),
+                    Text(
+                        moduleModel.description.trim().isEmpty
+                            ? "dolor sit amet, consectetur"
+                            : moduleModel.description,
                         maxLines: 2,
                         style: const TextStyle(
                           fontSize: 12,
                           fontWeight: FontWeight.w400,
                         )),
-                    // Text(moduleModel.note ?? "",
-                    //     style: const TextStyle(
-                    //       fontSize: 10,
-                    //       fontWeight: FontWeight.w400,
-                    //     )),
+                    SizedBox(
+                      height: 2,
+                    ),
+                    Text("Not completed yet",
+                        style: const TextStyle(
+                          fontSize: 10,
+                          color: Colors.grey,
+                          fontWeight: FontWeight.w400,
+                        )),
                   ],
                 )),
             Flexible(

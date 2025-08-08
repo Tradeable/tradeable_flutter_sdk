@@ -1,10 +1,8 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:tradeable_flutter_sdk/src/models/suggestion_model.dart';
 import 'package:tradeable_flutter_sdk/src/models/topic_flow_model.dart';
 import 'package:tradeable_flutter_sdk/src/network/api.dart';
 import 'package:tradeable_flutter_sdk/src/tfs.dart';
-import 'package:tradeable_flutter_sdk/src/ui/widgets/container_layout_widget.dart';
-import 'package:tradeable_flutter_sdk/src/ui/widgets/suggestion_widget.dart';
 import 'package:tradeable_flutter_sdk/src/utils/app_theme.dart';
 import 'package:tradeable_flutter_sdk/src/utils/extensions.dart';
 
@@ -26,33 +24,35 @@ class _FlowsList extends State<FlowsList> {
 
   @override
   void initState() {
-    getTopicById();
     super.initState();
+    flows = widget.flowModel.userFlowsList;
+    if (flows == null || flows!.isEmpty) {
+      getTopicById();
+    } else {
+      isLoading = false;
+      segregrateFlows(flows!);
+    }
   }
 
   void getTopicById() async {
-    if (widget.flowModel.userFlowsList.isEmpty) {
-      await API().fetchTopicById(widget.flowModel.topicId, 3).then((val) {
-        setState(() {
-          widget.flowModel.userFlowsList = (val.flows?.map((e) =>
-                      TopicFlowsListModel(
-                          name: e.name ?? "",
-                          flowId: e.id,
-                          isCompleted: e.isCompleted,
-                          logo: e.logo,
-                          category: e.category ?? "")) ??
-                  [])
-              .toList();
-          flows = widget.flowModel.userFlowsList;
-          isLoading = false;
-        });
-      });
-    } else {
-      setState(() {
-        isLoading = false;
-      });
-      segregrateFlows(widget.flowModel.userFlowsList);
-    }
+    final val = await API()
+        .fetchTopicById(widget.flowModel.topicId, widget.flowModel.topicTagId);
+    final fetchedFlows = (val.flows
+            ?.map((e) => TopicFlowsListModel(
+                  name: e.name ?? "",
+                  flowId: e.id,
+                  isCompleted: e.isCompleted,
+                  logo: e.logo,
+                  category: e.category ?? "",
+                ))
+            .toList()) ??
+        [];
+
+    setState(() {
+      flows = fetchedFlows;
+      isLoading = false;
+      segregrateFlows(fetchedFlows);
+    });
   }
 
   void segregrateFlows(List<TopicFlowsListModel> flows) {
@@ -74,21 +74,34 @@ class _FlowsList extends State<FlowsList> {
     final colors =
         TFS().themeData?.customColors ?? Theme.of(context).customColors;
 
-    return ContainerLayoutWidget(
-      childWidget: Column(
+    return SingleChildScrollView(
+      child: Column(
         children: [
           isLoading
-              ? CircularProgressIndicator(
-                  color: colors.progressIndColor1,
-                  backgroundColor: colors.progressIndColor2,
+              ? Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: CircularProgressIndicator(
+                    color: colors.progressIndColor1,
+                    backgroundColor: colors.progressIndColor2,
+                  ),
                 )
               : segregratedFlows.isEmpty
                   ? Text("No data found")
                   : Column(
                       children: [
-                        ...segregratedFlows
-                            .map((flow) => _buildHorizontalList(flow)),
-                        SuggestionWidget(model: SuggestionModel())
+                        const SizedBox(height: 24),
+                        ...segregratedFlows.asMap().entries.map((entry) {
+                          final index = entry.key;
+                          final flow = entry.value;
+                          final isLast = index == segregratedFlows.length - 1;
+                          return _buildHorizontalList(flow, isLast);
+                        }),
+                        Padding(
+                          padding: const EdgeInsets.all(18),
+                          child: Image.asset(
+                            "packages/tradeable_flutter_sdk/lib/assets/images/flow_banner.png",
+                          ),
+                        )
                       ],
                     ),
         ],
@@ -96,47 +109,27 @@ class _FlowsList extends State<FlowsList> {
     );
   }
 
-  Widget _buildHorizontalList(CategorisedFlow flow) {
-    final colors =
-        TFS().themeData?.customColors ?? Theme.of(context).customColors;
-
-    return Container(
-      margin: EdgeInsets.symmetric(vertical: 10, horizontal: 6),
-      decoration: BoxDecoration(
-        color: colors.listBgColor,
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _buildListTitle(flow.category),
-          _buildScrollableList(flow.flowsList),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildListTitle(String title) {
+  Widget _buildHorizontalList(CategorisedFlow flow, bool isLast) {
     final colors =
         TFS().themeData?.customColors ?? Theme.of(context).customColors;
     final textStyles =
         TFS().themeData?.customTextStyles ?? Theme.of(context).customTextStyles;
 
-    return Center(
-      child: Container(
-        width: 150,
-        padding: const EdgeInsets.symmetric(vertical: 2),
-        decoration: BoxDecoration(
-          color: colors.listHeaderColor,
-          borderRadius: BorderRadius.only(
-            bottomRight: Radius.circular(14),
-            bottomLeft: Radius.circular(14),
-          ),
-        ),
-        child: Center(
-          child: Text(title.capitalize(),
-              style: textStyles.smallBold.copyWith(fontSize: 12)),
-        ),
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(flow.category.capitalize(),
+              style: textStyles.smallBold.copyWith(fontSize: 18)),
+          const SizedBox(height: 16),
+          _buildScrollableList(flow.flowsList),
+          if (!isLast) ...[
+            const SizedBox(height: 24),
+            Divider(color: colors.darkShade2),
+            const SizedBox(height: 24),
+          ]
+        ],
       ),
     );
   }
@@ -152,9 +145,8 @@ class _FlowsList extends State<FlowsList> {
         double totalItemsWidth = flowsList.length * 100;
         bool isScrollable = totalItemsWidth > constraints.maxWidth;
 
-        return Container(
-          padding: const EdgeInsets.all(8),
-          height: 140,
+        return SizedBox(
+          height: 100,
           child: isScrollable
               ? RawScrollbar(
                   controller: scrollController,
@@ -175,129 +167,54 @@ class _FlowsList extends State<FlowsList> {
     final colors =
         TFS().themeData?.customColors ?? Theme.of(context).customColors;
 
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 16),
-      child: ListView.separated(
-        controller: controller,
-        scrollDirection: Axis.horizontal,
-        itemCount: flowsList.length,
-        itemBuilder: (context, index) {
-          return SizedBox(
-            width: 100,
-            height: 100,
-            child: MaterialButton(
-              padding: const EdgeInsets.all(0),
-              onPressed: () {
-                widget.onFlowSelected(flowsList[index].flowId);
-              },
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: Container(
-                width: 100,
-                height: 100,
-                padding: const EdgeInsets.fromLTRB(4, 8, 4, 8),
-                decoration: BoxDecoration(
-                  color: colors.darkShade3,
-                  border: Border.all(color: colors.darkShade3, width: 1),
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    if (flowsList[index].logo.type == 'image/png')
-                      SizedBox(
-                        width: 48,
-                        height: 48,
-                        child: Image.network(flowsList[index].logo.url),
-                      ),
-                    Spacer(),
-                    Text(
-                      flowsList[index].name ?? "",
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 10,
-                        height: 1.25,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+    return ListView.separated(
+      controller: controller,
+      scrollDirection: Axis.horizontal,
+      itemCount: flowsList.length,
+      itemBuilder: (context, index) {
+        return SizedBox(
+          width: 100,
+          child: MaterialButton(
+            padding: const EdgeInsets.all(0),
+            onPressed: () {
+              widget.onFlowSelected(flowsList[index].flowId);
+            },
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
             ),
-          );
-          // return InkWell(
-          //   onTap: () {
-          //     widget.onFlowSelected(flowsList[index].flowId);
-          //   },
-          //   child: Container(
-          //     width: 100,
-          //     margin: EdgeInsets.only(right: 10),
-          //     decoration: BoxDecoration(
-          //       color: colors.darkShade3,
-          //       border: Border.all(color: colors.darkShade3, width: 1),
-          //       borderRadius: BorderRadius.circular(12),
-          //     ),
-          //     child: Container(
-          //         margin: const EdgeInsets.all(4),
-          //         decoration: BoxDecoration(
-          //           color: colors.gradientEndColor.withAlpha(21),
-          //           borderRadius: BorderRadius.circular(12),
-          //           border: Border.all(color: colors.secondary, width: 1),
-          //         ),
-          //         child: ClipRRect(
-          //           borderRadius: BorderRadius.circular(12),
-          //           child: Container(
-          //             margin: const EdgeInsets.all(4),
-          //             decoration: BoxDecoration(
-          //               borderRadius: BorderRadius.circular(12),
-          //               color: colors.darkShade3,
-          //               boxShadow: [
-          //                 BoxShadow(
-          //                     color: colors.gradientEndColor.withAlpha(65),
-          //                     blurRadius: 4,
-          //                     spreadRadius: 4,
-          //                     offset: Offset.zero,
-          //                     blurStyle: BlurStyle.normal),
-          //               ],
-          //             ),
-          //             child: Stack(
-          //               children: [
-          //                 if (flowsList[index].logo.type == 'image/png')
-          //                   Positioned.fill(
-          //                     child: Image.network(flowsList[index].logo.url),
-          //                   ),
-          //                 Align(
-          //                   alignment: Alignment.bottomLeft,
-          //                   child: Container(
-          //                     margin:
-          //                         const EdgeInsets.only(left: 6, bottom: 10),
-          //                     height: 14,
-          //                     width: 14,
-          //                     child: CircularProgressIndicator(
-          //                       color: colors.progressIndColor1,
-          //                       backgroundColor: colors.progressIndColor2,
-          //                       strokeWidth: 2,
-          //                       value: flowsList[index].isCompleted ? 1 : 0,
-          //                     ),
-          //                   ),
-          //                 ),
-          //               ],
-          //             ),
-          //           ),
-          //         )),
-          //   ),
-          // );
-        },
-        separatorBuilder: (BuildContext context, int index) {
-          return SizedBox(
-            width: 10,
-          );
-        },
-      ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                if (flowsList[index].logo.type == 'image/png')
+                  Container(
+                    decoration: BoxDecoration(
+                        border: Border.all(color: colors.cardColorSecondary),
+                        borderRadius: BorderRadius.circular(10)),
+                    padding: const EdgeInsets.all(6),
+                    child: Image.network(flowsList[index].logo.url),
+                  ),
+                const SizedBox(height: 10),
+                Expanded(
+                  child: AutoSizeText(
+                    flowsList[index].name ?? "",
+                    maxLines: 2,
+                    textAlign: TextAlign.center,
+                    maxFontSize: 14,
+                    minFontSize: 8,
+                    style: TextStyle(fontWeight: FontWeight.w500),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+      separatorBuilder: (BuildContext context, int index) {
+        return SizedBox(
+          width: 10,
+        );
+      },
     );
   }
 }

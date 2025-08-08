@@ -35,15 +35,15 @@ class API {
   }
 
   Future<FlowModel> fetchFlowById(
-    int topicId,
+    int? topicId,
     int flowId,
     int topicTagId,
   ) async {
     Response response = await Dio().get(
-      "$baseUrl/v0/sdk/topics/$topicId/flows/$flowId",
-      queryParameters: {
-        "topic_tag_id": topicTagId,
-      },
+      "$baseUrl/v0/sdk/flows/$flowId",
+      // queryParameters: {
+      //   "topic_tag_id": topicTagId,
+      // },
       options: Options(headers: kagrtoken),
     );
 
@@ -85,5 +85,17 @@ class API {
       options: Options(headers: token),
     );
     return Level.fromJson(response.data);
+  }
+
+  Future<List<Topic>> fetchRelatedTopics(int tagId, int topicId) async {
+    Response response = await Dio().get(
+      "https://dev.api.tradeable.app/v0/sdk/topics/$topicId/related",
+      queryParameters: {"topicTagId": tagId},
+      options: Options(headers: kagrtoken),
+    );
+
+    return (response.data["data"] as List)
+        .map((e) => Topic.fromJson(e))
+        .toList();
   }
 }

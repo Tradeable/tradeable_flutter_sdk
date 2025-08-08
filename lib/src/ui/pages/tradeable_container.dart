@@ -96,7 +96,7 @@ class _TradeableContainerState extends State<TradeableContainer>
                   });
                   TradeableRightSideDrawer.open(
                       context: context,
-                      drawerBorderRadius: 12,
+                      drawerBorderRadius: 24,
                       body: ModuleListPage(
                         pageId: widget.pageId,
                         onClose: () {
