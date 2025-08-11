@@ -5,6 +5,7 @@ import 'package:tradeable_learn_widget/tlw.dart';
 typedef TokenExpirationCallback = void Function();
 
 class TFS {
+  String baseUrl = "https://dev.api.tradeable.app/demo";
   String? _token;
   String? _appId;
   String? _clientId;
@@ -24,6 +25,7 @@ class TFS {
   bool get isInitialized => _token != null;
 
   void initialize({
+    required String baseUrl,
     ThemeData? theme,
     TokenExpirationCallback? onTokenExpiration,
   }) {

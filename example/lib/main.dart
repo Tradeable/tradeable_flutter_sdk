@@ -13,6 +13,7 @@ void main() {
   switch (app) {
     case "dark":
       TFS().initialize(
+          baseUrl: "https://dev.api.tradeable.app/demo",
           theme: AppTheme.darkTheme(),
           onTokenExpiration: () {
             //TFS().setAxisParams(token: token, appId: appId, clientId: clientId)
@@ -20,6 +21,7 @@ void main() {
       break;
     case "light":
       TFS().initialize(
+        baseUrl: "https://dev.api.tradeable.app/demo",
         theme: AppTheme.lightTheme(),
         onTokenExpiration: () {
           //TFS().setAxisParams(token: "", appId: "", clientId: "");

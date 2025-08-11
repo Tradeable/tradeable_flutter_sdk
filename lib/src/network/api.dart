@@ -4,10 +4,10 @@ import 'package:tradeable_flutter_sdk/src/models/flow_model.dart';
 import 'package:tradeable_flutter_sdk/src/models/courses_model.dart';
 import 'package:tradeable_flutter_sdk/src/models/topic_model.dart';
 import 'package:tradeable_flutter_sdk/src/network/auth_interceptor.dart';
-import 'package:tradeable_flutter_sdk/src/utils/constants.dart';
+import 'package:tradeable_flutter_sdk/tradeable_flutter_sdk.dart';
 
 class API {
-  Dio dio = Dio(BaseOptions(baseUrl: baseUrl))
+  Dio dio = Dio(BaseOptions(baseUrl: TFS().baseUrl))
     ..interceptors.add(AuthInterceptor());
 
   Future<List<Topic>> fetchTopicByTagId(int tagId) async {
