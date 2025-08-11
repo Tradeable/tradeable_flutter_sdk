@@ -286,7 +286,7 @@ class AppTheme {
         surface: customColors.cardBasicBackground,
         error: customColors.bearishColor,
       ),
-      cardTheme: CardTheme(
+      cardTheme: CardThemeData(
         color: customColors.cardBasicBackground,
         elevation: 2,
         shape: RoundedRectangleBorder(
@@ -405,7 +405,7 @@ class AppTheme {
           return Colors.grey.withAlpha(128);
         }),
       ),
-      tabBarTheme: TabBarTheme(
+      tabBarTheme: TabBarThemeData(
         labelColor: customColors.primary,
         unselectedLabelColor: customColors.secondary,
         indicator: UnderlineTabIndicator(
@@ -417,7 +417,7 @@ class AppTheme {
         thickness: 1,
         space: 1,
       ),
-      dialogTheme: DialogTheme(
+      dialogTheme: DialogThemeData(
         backgroundColor: Colors.white,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         titleTextStyle: const TextStyle(
@@ -468,7 +468,7 @@ class AppTheme {
         surface: customColors.cardColorPrimary,
         error: customColors.bearishColor,
       ),
-      cardTheme: CardTheme(
+      cardTheme: CardThemeData(
         color: customColors.cardColorPrimary,
         elevation: 2,
         shape: RoundedRectangleBorder(
@@ -589,7 +589,7 @@ class AppTheme {
           return Colors.grey.withAlpha(128);
         }),
       ),
-      tabBarTheme: TabBarTheme(
+      tabBarTheme: TabBarThemeData(
         labelColor: customColors.primary,
         unselectedLabelColor: Colors.grey,
         indicator: UnderlineTabIndicator(
@@ -601,7 +601,7 @@ class AppTheme {
         thickness: 1,
         space: 1,
       ),
-      dialogTheme: DialogTheme(
+      dialogTheme: DialogThemeData(
         backgroundColor: const Color(0xff222838),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         titleTextStyle: const TextStyle(

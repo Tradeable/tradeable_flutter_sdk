@@ -12,10 +12,19 @@ void main() {
   String app = "light";
   switch (app) {
     case "dark":
-      TFS().initialize(token: "token", theme: AppTheme.darkTheme());
+      TFS().initialize(
+          theme: AppTheme.darkTheme(),
+          onTokenExpiration: () {
+            //TFS().setAxisParams(token: token, appId: appId, clientId: clientId)
+          });
       break;
     case "light":
-      TFS().initialize(token: "token", theme: AppTheme.lightTheme());
+      TFS().initialize(
+        theme: AppTheme.lightTheme(),
+        onTokenExpiration: () {
+          //TFS().setAxisParams(token: "", appId: "", clientId: "");
+        },
+      );
       break;
   }
   runApp(const MyApp());
