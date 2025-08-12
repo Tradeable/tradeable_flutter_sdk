@@ -9,6 +9,14 @@ tradeable_learn:
     ref: main
 ```
 
+## Update
+In case there is an issue run following commands one by one
+```
+flutter pub upgrade fin_chart
+flutter pub upgrade tradeable_learn_widget
+flutter pub upgrade tradeable_flutter_sdk
+```
+
 ## Initialization
 Add this to your main.dart file:
 ```dart
