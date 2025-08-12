@@ -24,7 +24,7 @@ void main() {
         baseUrl: "https://dev.api.tradeable.app/demo",
         theme: AppTheme.lightTheme(),
         onTokenExpiration: () async {
-          //TFS().registerApp(token: "", appId: "", clientId: "");
+          // TFS().registerApp(token: "", appId: "", clientId: "");
         },
       );
       break;

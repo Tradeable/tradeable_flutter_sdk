@@ -33,9 +33,6 @@ class AuthInterceptor extends Interceptor {
 
   Future<void> _retryWithNewToken(
       RequestOptions requestOptions, ErrorInterceptorHandler handler) async {
-    // Wait a bit for the new token to be set
-    //await Future.delayed(Duration(milliseconds: 100));
-    // Check if new token is available
     final newToken = TFS().token;
     if (newToken != null) {
       // Update the request with new token
