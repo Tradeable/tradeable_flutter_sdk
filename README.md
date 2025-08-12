@@ -23,7 +23,7 @@ Add this to your main.dart file:
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   TFS().initialize(
-    baseUrl: "https://dev.api.tradeable.app/demo", //insert url provided by axis
+    baseUrl: "https://dev.api.tradeable.app/demo", //insert backend url
     theme: AppTheme.darkTheme(),
     onTokenExpiration: () async {
       //TFS().registerApp(token: token, appId: appId, clientId: clientId)
