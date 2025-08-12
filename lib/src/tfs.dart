@@ -29,6 +29,7 @@ class TFS {
     ThemeData? theme,
     TokenExpirationCallback? onTokenExpiration,
   }) {
+    this.baseUrl = baseUrl;
     themeData = theme ?? AppTheme.lightTheme();
     TLW().initialize(themeData: themeData);
     StorageManager().initialize();
