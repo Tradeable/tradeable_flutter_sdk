@@ -14,7 +14,12 @@ Add this to your main.dart file:
 ```dart
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  TFS().initialize(token: "axis_acess_token");
+  TFS().initialize(
+    baseUrl: "https://dev.api.tradeable.app/demo", //insert url provided by axis
+    theme: AppTheme.darkTheme(),
+    onTokenExpiration: () {
+      //TFS().registerApp(token: token, appId: appId, clientId: clientId)
+    });
   runApp(const MyApp());
 }
 ```
