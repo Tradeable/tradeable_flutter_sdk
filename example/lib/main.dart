@@ -12,10 +12,21 @@ void main() {
   String app = "light";
   switch (app) {
     case "dark":
-      TFS().initialize(token: "token", theme: AppTheme.darkTheme());
+      TFS().initialize(
+          baseUrl: "https://dev.api.tradeable.app/demo",
+          theme: AppTheme.darkTheme(),
+          onTokenExpiration: () async {
+            //TFS().registerApp(token: token, appId: appId, clientId: clientId)
+          });
       break;
     case "light":
-      TFS().initialize(token: "token", theme: AppTheme.lightTheme());
+      TFS().initialize(
+        baseUrl: "https://dev.api.tradeable.app/demo",
+        theme: AppTheme.lightTheme(),
+        onTokenExpiration: () async {
+          // TFS().registerApp(token: "", appId: "", clientId: "");
+        },
+      );
       break;
   }
   runApp(const MyApp());

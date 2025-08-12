@@ -3,8 +3,9 @@ import 'package:tradeable_flutter_sdk/src/models/topic_user_model.dart';
 import 'package:tradeable_flutter_sdk/src/models/user_widgets_model.dart';
 import 'package:tradeable_flutter_sdk/src/network/api.dart';
 import 'package:tradeable_flutter_sdk/src/tfs.dart';
-import 'package:tradeable_flutter_sdk/src/ui/pages/topic_header_page.dart';
+import 'package:tradeable_flutter_sdk/src/ui/pages/flow_controller.dart';
 import 'package:tradeable_flutter_sdk/src/ui/pages/widget_page.dart';
+import 'package:tradeable_flutter_sdk/src/ui/widgets/flows_bottom_sheet.dart';
 import 'package:tradeable_flutter_sdk/src/utils/app_theme.dart';
 
 class TopicDetailPage extends StatefulWidget {
@@ -62,6 +63,11 @@ class _TopicDetailPageState extends State<TopicDetailPage> {
         flowId ??= val.flows!.first.id;
       });
     });
+    FlowController().registerCallback((highlightNextFlow) {
+      setState(() {
+        isExpanded = true;
+      });
+    });
   }
 
   @override
@@ -77,39 +83,92 @@ class _TopicDetailPageState extends State<TopicDetailPage> {
     }
 
     return Scaffold(
-      backgroundColor: colors.background,
-      body: SafeArea(
-        child: Stack(
-          children: [
-            Positioned.fill(
-              child: Container(
-                margin: const EdgeInsets.only(top: 80),
-                padding: const EdgeInsets.all(10),
-                child: WidgetPage(
-                    topicId: _topicUserModel!.topicId, flowId: flowId ?? -1),
-              ),
-            ),
-            Positioned(
-              top: 0,
-              left: 0,
-              right: 0,
-              child: TopicHeaderWidget(
-                topic: _topicUserModel!,
-                onBack: () => Navigator.of(context).pop(),
-                onExpandChanged: (expanded) {
-                  isExpanded = expanded.isExpanded;
-                  if (!isExpanded) {
-                    setState(() {
-                      flowId = expanded.flowId;
-                      _topicUserModel!.startFlow = flowId;
-                    });
-                  }
-                },
-              ),
-            ),
+        appBar: AppBar(
+          backgroundColor: colors.background,
+          titleSpacing: 0,
+          title: Text(_topicUserModel?.name ?? "",
+              style: TextStyle(fontWeight: FontWeight.bold)),
+          actions: [
+            _topicUserModel != null
+                ? Container(
+                    margin: EdgeInsets.only(right: 20),
+                    height: 28,
+                    width: 28,
+                    child: Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        CircularProgressIndicator(
+                          color: colors.progressIndColor1,
+                          backgroundColor: colors.progressIndColor2,
+                          strokeWidth: 4,
+                          value: _topicUserModel!.progress.completed! /
+                              _topicUserModel!.progress.total!,
+                        ),
+                        Text(
+                          '${_topicUserModel?.progress.completed}/${_topicUserModel?.progress.total}',
+                          style: TextStyle(fontSize: 10, color: Colors.black),
+                        ),
+                      ],
+                    ),
+                  )
+                : Container()
           ],
         ),
-      ),
-    );
+        body: SafeArea(
+          child: WidgetPage(
+              topicId: _topicUserModel!.topicId,
+              flowId: flowId ?? -1,
+              onMenuClick: () {
+                showModalBottomSheet(
+                    isScrollControlled: true,
+                    backgroundColor: Colors.transparent,
+                    context: context,
+                    builder: (context) {
+                      return FractionallySizedBox(
+                          heightFactor: 0.7,
+                          child: FlowsBottomSheet(
+                            topic: _topicUserModel!,
+                            onFlowItemClicked: (id) => setState(() {
+                              flowId = id;
+                            }),
+                          ));
+                    });
+              }),
+        ));
+    // return Scaffold(
+    //   backgroundColor: colors.background,
+    //   body: SafeArea(
+    //     child: Stack(
+    //       children: [
+    //         Positioned.fill(
+    //           child: Container(
+    //             margin: const EdgeInsets.only(top: 80),
+    //             padding: const EdgeInsets.all(10),
+    //             child: WidgetPage(
+    //                 topicId: _topicUserModel!.topicId, flowId: flowId ?? -1),
+    //           ),
+    //         ),
+    //         Positioned(
+    //           top: 0,
+    //           left: 0,
+    //           right: 0,
+    //           child: TopicHeaderWidget(
+    //             topic: _topicUserModel!,
+    //             onBack: () => Navigator.of(context).pop(),
+    //             onExpandChanged: (expanded) {
+    //               isExpanded = expanded.isExpanded;
+    //               if (!isExpanded) {
+    //                 setState(() {
+    //                   flowId = expanded.flowId;
+    //                   _topicUserModel!.startFlow = flowId;
+    //                 });
+    //               }
+    //             },
+    //           ),
+    //         ),
+    //       ],
+    //     ),
+    //   ),
+    // );
   }
 }

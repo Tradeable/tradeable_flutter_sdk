@@ -36,17 +36,27 @@ class ModuleCard extends StatelessWidget {
                           fontSize: 12,
                           fontWeight: FontWeight.w700,
                         )),
-                    Text(moduleModel.description,
+                    SizedBox(
+                      height: 2,
+                    ),
+                    Text(
+                        moduleModel.description.trim().isEmpty
+                            ? "dolor sit amet, consectetur"
+                            : moduleModel.description,
                         maxLines: 2,
                         style: const TextStyle(
                           fontSize: 12,
                           fontWeight: FontWeight.w400,
                         )),
-                    // Text(moduleModel.note ?? "",
-                    //     style: const TextStyle(
-                    //       fontSize: 10,
-                    //       fontWeight: FontWeight.w400,
-                    //     )),
+                    SizedBox(
+                      height: 2,
+                    ),
+                    Text("Not completed yet",
+                        style: const TextStyle(
+                          fontSize: 10,
+                          color: Colors.grey,
+                          fontWeight: FontWeight.w400,
+                        )),
                   ],
                 )),
             Flexible(

@@ -26,7 +26,6 @@ class TopicUserModel {
       this.startFlow,
       required this.topicTagId});
 
-  // Add this factory constructor
   factory TopicUserModel.fromTopic(Topic topic) {
     return TopicUserModel(
       topicId: topic.id,

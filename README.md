@@ -9,12 +9,25 @@ tradeable_learn:
     ref: main
 ```
 
+## Update
+In case there is an issue run following commands one by one
+```
+flutter pub upgrade fin_chart
+flutter pub upgrade tradeable_learn_widget
+flutter pub upgrade tradeable_flutter_sdk
+```
+
 ## Initialization
 Add this to your main.dart file:
 ```dart
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  TFS().initialize(token: "axis_acess_token");
+  TFS().initialize(
+    baseUrl: "https://dev.api.tradeable.app/demo", //insert backend url
+    theme: AppTheme.darkTheme(),
+    onTokenExpiration: () async {
+      //TFS().registerApp(token: token, appId: appId, clientId: clientId)
+    });
   runApp(const MyApp());
 }
 ```
@@ -50,46 +63,3 @@ Widget build(BuildContext context) {
 }
 ```
 
-### Available PageIds:
-- `axisOverview`
-- `axisOption`
-- `axisTechnical`
-- `axisScanners`
-- `axisWatchlist`
-
-## Option Strategy Container
-To implement an Option Strategy, use the following code:
-```dart
-Navigator.of(context).push(
-  MaterialPageRoute(
-    builder: (context) => OptionStrategyContainer(
-      spotPrice: 24662,
-      spotPriceDayDelta: 17.70,
-      spotPriceDayDeltaPer: 0.07,
-      onExecute: () {
-        // callback for execute
-      },
-      legs: [
-        OptionLeg(
-          symbol: "NIFTY",
-          strike: 24750,
-          type: PositionType.buy,
-          optionType: OptionType.call,
-          expiry: DateTime.parse("2024-12-19 15:30:00"),
-          quantity: 25,
-          premium: 121.8,
-        ),
-        OptionLeg(
-          symbol: "NIFTY",
-          strike: 24900,
-          type: PositionType.sell,
-          optionType: OptionType.call,
-          expiry: DateTime.parse("2024-12-19 15:30:00"),
-          quantity: 25,
-          premium: 73.35,
-        )
-      ],
-    )
-  )
-);
-```
