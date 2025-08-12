@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tradeable_flutter_sdk/tradeable_flutter_sdk.dart';
 import 'package:tradeable_learn_widget/tlw.dart';
 
-typedef TokenExpirationCallback = void Function();
+typedef TokenExpirationCallback = Future<void> Function();
 
 class TFS {
   String baseUrl = "https://dev.api.tradeable.app/demo";
@@ -47,7 +47,7 @@ class TFS {
     _clientId = clientId;
   }
 
-  void onTokenExpired() {
-    _tokenExpirationCallback?.call();
+  Future<void> onTokenExpired() async {
+    return _tokenExpirationCallback?.call();
   }
 }

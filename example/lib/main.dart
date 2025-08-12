@@ -15,16 +15,16 @@ void main() {
       TFS().initialize(
           baseUrl: "https://dev.api.tradeable.app/demo",
           theme: AppTheme.darkTheme(),
-          onTokenExpiration: () {
-            //TFS().setAxisParams(token: token, appId: appId, clientId: clientId)
+          onTokenExpiration: () async {
+            //TFS().registerApp(token: token, appId: appId, clientId: clientId)
           });
       break;
     case "light":
       TFS().initialize(
         baseUrl: "https://dev.api.tradeable.app/demo",
         theme: AppTheme.lightTheme(),
-        onTokenExpiration: () {
-          //TFS().setAxisParams(token: "", appId: "", clientId: "");
+        onTokenExpiration: () async {
+          //TFS().registerApp(token: "", appId: "", clientId: "");
         },
       );
       break;
