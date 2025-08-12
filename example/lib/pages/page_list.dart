@@ -56,6 +56,14 @@ class _PageListState extends State<PageList> {
                       icon: const Icon(Icons.cancel_rounded))
                 ],
               ),
+              Spacer(),
+              MaterialButton(
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => LearnDashboard()),
+                    );
+                  },
+                  child: const Text("Go to Module List Page"))
             ],
           ),
         ),

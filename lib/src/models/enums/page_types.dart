@@ -1,15 +1,4 @@
 enum PageId {
-  // allModule, //default
-  // overview,
-  // optionChain,
-  // technicals,
-  // events,
-  // other,
-  // sahiTechnicals,
-  // sahiOptionChain,
-  // sahiCandlestick,
-  // sahiMarketDepth,
-  // trends,
   axisOverview,
   axisOption,
   axisTechnical,
@@ -18,22 +7,12 @@ enum PageId {
   axisFundamentals,
   axisOrderType,
   axisMiscellaneous,
-  demo
+  demo,
+  axisFuture,
 }
 
 extension PageIdValue on PageId {
   static const Map<PageId, List<int>> _values = {
-    // PageId.allModule: [1, 1],
-    // PageId.overview: [8, 102],
-    // PageId.optionChain: [9, 103],
-    // PageId.technicals: [10, 104],
-    // PageId.events: [11, 105],
-    // PageId.other: [12, 106],
-    // PageId.sahiTechnicals: [18, 107],
-    // PageId.sahiOptionChain: [17, 108],
-    // PageId.sahiCandlestick: [16, 109],
-    // PageId.sahiMarketDepth: [15, 110],
-    // PageId.trends: [19, 111],
     PageId.axisOverview: [20, 5],
     PageId.axisOption: [21, 6],
     PageId.axisTechnical: [22, 7],
@@ -42,7 +21,8 @@ extension PageIdValue on PageId {
     PageId.axisFundamentals: [25, 10],
     PageId.axisOrderType: [26, 13],
     PageId.axisMiscellaneous: [27, 14],
-    PageId.demo: [28, 15]
+    PageId.demo: [28, 15],
+    PageId.axisFuture: [29, 17],
   };
 
   int get pageId => _values[this]![0];
