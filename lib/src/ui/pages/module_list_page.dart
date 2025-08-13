@@ -140,8 +140,9 @@ class _ModuleListPageState extends State<ModuleListPage> {
                             moduleModel: item,
                             onClick: () {
                               Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) =>
-                                      TopicDetailPage(topic: item)));
+                                  builder: (context) => TopicDetailPage(
+                                      topic: item.copyWith(
+                                          cardColor: cardColor))));
                             },
                             cardColor: cardColor,
                           ),
