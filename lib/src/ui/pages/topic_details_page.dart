@@ -83,6 +83,7 @@ class _TopicDetailPageState extends State<TopicDetailPage> {
     }
 
     return Scaffold(
+        backgroundColor: widget.topic?.cardColor ?? Colors.white,
         appBar: AppBar(
           backgroundColor: colors.background,
           titleSpacing: 0,
@@ -120,19 +121,24 @@ class _TopicDetailPageState extends State<TopicDetailPage> {
               flowId: flowId ?? -1,
               onMenuClick: () {
                 showModalBottomSheet(
-                    isScrollControlled: true,
-                    backgroundColor: Colors.transparent,
-                    context: context,
-                    builder: (context) {
-                      return FractionallySizedBox(
-                          heightFactor: 0.7,
-                          child: FlowsBottomSheet(
-                            topic: _topicUserModel!,
-                            onFlowItemClicked: (id) => setState(() {
-                              flowId = id;
-                            }),
-                          ));
-                    });
+                  isScrollControlled: true,
+                  backgroundColor: Colors.transparent,
+                  context: context,
+                  builder: (context) {
+                    return ConstrainedBox(
+                      constraints: BoxConstraints(
+                        minHeight: 300,
+                        maxHeight: MediaQuery.of(context).size.height * 0.8,
+                      ),
+                      child: FlowsBottomSheet(
+                        topic: _topicUserModel!,
+                        onFlowItemClicked: (id) => setState(() {
+                          flowId = id;
+                        }),
+                      ),
+                    );
+                  },
+                );
               }),
         ));
     // return Scaffold(

@@ -55,7 +55,6 @@ class _FlowsBottomSheet extends State<FlowsBottomSheet> {
         Padding(
           padding: const EdgeInsets.only(top: 50),
           child: Container(
-            height: MediaQuery.of(context).size.height * 0.7,
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
