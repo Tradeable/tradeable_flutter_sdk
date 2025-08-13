@@ -96,18 +96,22 @@ class _TopicDetailPageState extends State<TopicDetailPage> {
                 showModalBottomSheet(
                   isScrollControlled: true,
                   backgroundColor: Colors.transparent,
+                  barrierColor: Colors.black.withAlpha((0.3 * 255).round()),
                   context: context,
                   builder: (context) {
-                    return ConstrainedBox(
-                      constraints: BoxConstraints(
-                        minHeight: 100,
-                        maxHeight: MediaQuery.of(context).size.height * 0.8,
-                      ),
-                      child: FlowsBottomSheet(
-                        topic: _topicUserModel!,
-                        onFlowItemClicked: (id) => setState(() {
-                          flowId = id;
-                        }),
+                    return BackdropFilter(
+                      filter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
+                      child: ConstrainedBox(
+                        constraints: BoxConstraints(
+                          minHeight: 100,
+                          maxHeight: MediaQuery.of(context).size.height * 0.8,
+                        ),
+                        child: FlowsBottomSheet(
+                          topic: _topicUserModel!,
+                          onFlowItemClicked: (id) => setState(() {
+                            flowId = id;
+                          }),
+                        ),
                       ),
                     );
                   },
@@ -211,7 +215,6 @@ class _TopicDetailPageState extends State<TopicDetailPage> {
                 builder: (context) {
                   return BackdropFilter(
                     filter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
-                    // blur intensity
                     child: ConstrainedBox(
                       constraints: BoxConstraints(
                         minHeight: 100,
