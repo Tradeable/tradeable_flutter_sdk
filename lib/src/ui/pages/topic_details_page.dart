@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tradeable_flutter_sdk/src/models/topic_user_model.dart';
@@ -98,7 +100,7 @@ class _TopicDetailPageState extends State<TopicDetailPage> {
                   builder: (context) {
                     return ConstrainedBox(
                       constraints: BoxConstraints(
-                        minHeight: 300,
+                        minHeight: 100,
                         maxHeight: MediaQuery.of(context).size.height * 0.8,
                       ),
                       child: FlowsBottomSheet(
@@ -205,17 +207,22 @@ class _TopicDetailPageState extends State<TopicDetailPage> {
                 isScrollControlled: true,
                 backgroundColor: Colors.transparent,
                 context: context,
+                barrierColor: Colors.black.withAlpha((0.3 * 255).round()),
                 builder: (context) {
-                  return ConstrainedBox(
-                    constraints: BoxConstraints(
-                      minHeight: 100,
-                      maxHeight: MediaQuery.of(context).size.height * 0.8,
-                    ),
-                    child: FlowsBottomSheet(
-                      topic: _topicUserModel!,
-                      onFlowItemClicked: (id) => setState(() {
-                        flowId = id;
-                      }),
+                  return BackdropFilter(
+                    filter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
+                    // blur intensity
+                    child: ConstrainedBox(
+                      constraints: BoxConstraints(
+                        minHeight: 100,
+                        maxHeight: MediaQuery.of(context).size.height * 0.8,
+                      ),
+                      child: FlowsBottomSheet(
+                        topic: _topicUserModel!,
+                        onFlowItemClicked: (id) => setState(() {
+                          flowId = id;
+                        }),
+                      ),
                     ),
                   );
                 },
