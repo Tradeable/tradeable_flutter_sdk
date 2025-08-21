@@ -1,10 +1,12 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tradeable_flutter_sdk/src/models/topic_flow_model.dart';
 import 'package:tradeable_flutter_sdk/src/network/api.dart';
 import 'package:tradeable_flutter_sdk/src/tfs.dart';
 import 'package:tradeable_flutter_sdk/src/utils/app_theme.dart';
 import 'package:tradeable_flutter_sdk/src/utils/extensions.dart';
+import 'package:tradeable_learn_widget/utils/button_widget.dart';
 
 class FlowsList extends StatefulWidget {
   final TopicFlowModel flowModel;
@@ -91,17 +93,11 @@ class _FlowsList extends State<FlowsList> {
                       children: [
                         const SizedBox(height: 24),
                         ...segregratedFlows.asMap().entries.map((entry) {
-                          final index = entry.key;
                           final flow = entry.value;
-                          final isLast = index == segregratedFlows.length - 1;
-                          return _buildHorizontalList(flow, isLast);
+                          return _buildHorizontalList(flow);
                         }),
-                        Padding(
-                          padding: const EdgeInsets.all(18),
-                          child: Image.asset(
-                            "packages/tradeable_flutter_sdk/lib/assets/images/flow_banner.png",
-                          ),
-                        )
+                        renderBanner(),
+                        const SizedBox(height: 20)
                       ],
                     ),
         ],
@@ -109,9 +105,7 @@ class _FlowsList extends State<FlowsList> {
     );
   }
 
-  Widget _buildHorizontalList(CategorisedFlow flow, bool isLast) {
-    final colors =
-        TFS().themeData?.customColors ?? Theme.of(context).customColors;
+  Widget _buildHorizontalList(CategorisedFlow flow) {
     final textStyles =
         TFS().themeData?.customTextStyles ?? Theme.of(context).customTextStyles;
 
@@ -120,101 +114,163 @@ class _FlowsList extends State<FlowsList> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(flow.category.capitalize(),
-              style: textStyles.smallBold.copyWith(fontSize: 18)),
-          const SizedBox(height: 16),
-          _buildScrollableList(flow.flowsList),
-          if (!isLast) ...[
-            const SizedBox(height: 24),
-            Divider(color: colors.darkShade2),
-            const SizedBox(height: 24),
-          ]
+          Text(flow.category.capitalize(), style: textStyles.smallBold),
+          const SizedBox(height: 12),
+          _buildListView(flow.category, flow.flowsList),
+          const SizedBox(height: 24)
         ],
       ),
     );
   }
 
-  Widget _buildScrollableList(List<TopicFlowsListModel> flowsList) {
-    final colors =
-        TFS().themeData?.customColors ?? Theme.of(context).customColors;
-
-    final ScrollController scrollController = ScrollController();
-
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        double totalItemsWidth = flowsList.length * 100;
-        bool isScrollable = totalItemsWidth > constraints.maxWidth;
-
-        return SizedBox(
-          height: 100,
-          child: isScrollable
-              ? RawScrollbar(
-                  controller: scrollController,
-                  thumbVisibility: true,
-                  thickness: 3,
-                  radius: Radius.circular(5),
-                  thumbColor: colors.darkShade3,
-                  child: _buildListView(scrollController, flowsList),
-                )
-              : _buildListView(null, flowsList),
-        );
-      },
-    );
-  }
-
   Widget _buildListView(
-      ScrollController? controller, List<TopicFlowsListModel> flowsList) {
+      String categoryTitle, List<TopicFlowsListModel> flowsList) {
     final colors =
         TFS().themeData?.customColors ?? Theme.of(context).customColors;
+    final nameGroup = AutoSizeGroup();
 
-    return ListView.separated(
-      controller: controller,
-      scrollDirection: Axis.horizontal,
+    return GridView.builder(
+      physics: NeverScrollableScrollPhysics(),
+      shrinkWrap: true,
       itemCount: flowsList.length,
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 4,
+      ),
       itemBuilder: (context, index) {
-        return SizedBox(
-          width: 100,
-          child: MaterialButton(
-            padding: const EdgeInsets.all(0),
-            onPressed: () {
-              widget.onFlowSelected(flowsList[index].flowId);
-            },
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                if (flowsList[index].logo.type == 'image/png')
-                  Container(
-                    decoration: BoxDecoration(
+        final item = flowsList[index];
+        return MaterialButton(
+          padding: EdgeInsets.zero,
+          onPressed: () => widget.onFlowSelected(item.flowId),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              if (item.logo.type == 'image/png')
+                Stack(
+                  children: [
+                    Container(
+                      height: 48,
+                      width: 48,
+                      decoration: BoxDecoration(
+                        color: colors.buttonColor,
                         border: Border.all(color: colors.cardColorSecondary),
-                        borderRadius: BorderRadius.circular(10)),
-                    padding: const EdgeInsets.all(6),
-                    child: Image.network(flowsList[index].logo.url),
-                  ),
-                const SizedBox(height: 10),
-                Expanded(
-                  child: AutoSizeText(
-                    flowsList[index].name ?? "",
-                    maxLines: 2,
-                    textAlign: TextAlign.center,
-                    maxFontSize: 14,
-                    minFontSize: 8,
-                    style: TextStyle(fontWeight: FontWeight.w500),
-                  ),
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Image.network(item.logo.url),
+                      ),
+                    ),
+                    Positioned(
+                      right: 0,
+                      top: 0,
+                      child: ClipPath(
+                        clipper: TriangleClipper(),
+                        child: Container(
+                          width: 24,
+                          height: 24,
+                          decoration: BoxDecoration(
+                            borderRadius: const BorderRadius.only(
+                                topRight: Radius.circular(4)),
+                            color: colors.primary,
+                          ),
+                          child: Align(
+                            alignment: Alignment.center,
+                            child: Transform.translate(
+                              offset: const Offset(5, -3),
+                              child: SvgPicture.asset(
+                                categoryTitle
+                                        .toLowerCase()
+                                        .contains("education")
+                                    ? "packages/tradeable_flutter_sdk/lib/assets/images/search_icon.svg"
+                                    : "packages/tradeable_flutter_sdk/lib/assets/images/video_icon.svg",
+                                height: 10,
+                                width: 10,
+                                fit: BoxFit.contain,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    )
+                  ],
                 ),
-              ],
-            ),
+              const SizedBox(height: 10),
+              Expanded(
+                child: AutoSizeText(
+                  item.name ?? "",
+                  maxLines: 2,
+                  textAlign: TextAlign.center,
+                  group: nameGroup,
+                  maxFontSize: 14,
+                  minFontSize: 10,
+                  style: const TextStyle(fontWeight: FontWeight.w500),
+                ),
+              ),
+            ],
           ),
         );
       },
-      separatorBuilder: (BuildContext context, int index) {
-        return SizedBox(
-          width: 10,
-        );
-      },
     );
   }
+
+  Widget renderBanner() {
+    final textStyles =
+        TFS().themeData?.customTextStyles ?? Theme.of(context).customTextStyles;
+    final colors =
+        TFS().themeData?.customColors ?? Theme.of(context).customColors;
+
+    return Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(16),
+          color: Color(0xffF4EBF9),
+        ),
+        height: 130,
+        margin: const EdgeInsets.symmetric(horizontal: 16),
+        child: Row(
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text("Enjoyed the lesson?", style: textStyles.mediumBold),
+                  Text("Put your learning into action."),
+                  const SizedBox(height: 8),
+                  SizedBox(
+                    width: 100,
+                    child: ButtonWidget(
+                        color: colors.primary,
+                        btnContent: "Let's go!",
+                        borderRadius: BorderRadius.circular(12),
+                        textStyle: textStyles.smallBold
+                            .copyWith(fontSize: 12, color: Colors.white),
+                        onTap: () {}),
+                  )
+                ],
+              ),
+            ),
+            Image.asset(
+                "packages/tradeable_flutter_sdk/lib/assets/images/banner_image.png",
+                height: 126)
+          ],
+        ));
+  }
+}
+
+class TriangleClipper extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    final path = Path();
+    path.lineTo(size.width, 0);
+    path.lineTo(size.width, size.height);
+    path.close();
+    return path;
+  }
+
+  @override
+  bool shouldReclip(CustomClipper<Path> oldClipper) => false;
 }
