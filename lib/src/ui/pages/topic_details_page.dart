@@ -1,4 +1,7 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tradeable_flutter_sdk/src/models/topic_user_model.dart';
 import 'package:tradeable_flutter_sdk/src/models/user_widgets_model.dart';
 import 'package:tradeable_flutter_sdk/src/network/api.dart';
@@ -83,56 +86,36 @@ class _TopicDetailPageState extends State<TopicDetailPage> {
     }
 
     return Scaffold(
-        appBar: AppBar(
-          backgroundColor: colors.background,
-          titleSpacing: 0,
-          title: Text(_topicUserModel?.name ?? "",
-              style: TextStyle(fontWeight: FontWeight.bold)),
-          actions: [
-            _topicUserModel != null
-                ? Container(
-                    margin: EdgeInsets.only(right: 20),
-                    height: 28,
-                    width: 28,
-                    child: Stack(
-                      alignment: Alignment.center,
-                      children: [
-                        CircularProgressIndicator(
-                          color: colors.progressIndColor1,
-                          backgroundColor: colors.progressIndColor2,
-                          strokeWidth: 4,
-                          value: _topicUserModel!.progress.completed! /
-                              _topicUserModel!.progress.total!,
-                        ),
-                        Text(
-                          '${_topicUserModel?.progress.completed}/${_topicUserModel?.progress.total}',
-                          style: TextStyle(fontSize: 10, color: Colors.black),
-                        ),
-                      ],
-                    ),
-                  )
-                : Container()
-          ],
-        ),
+        backgroundColor: widget.topic?.cardColor ?? Colors.white,
+        appBar: renderAppBar(),
         body: SafeArea(
           child: WidgetPage(
               topicId: _topicUserModel!.topicId,
               flowId: flowId ?? -1,
               onMenuClick: () {
                 showModalBottomSheet(
-                    isScrollControlled: true,
-                    backgroundColor: Colors.transparent,
-                    context: context,
-                    builder: (context) {
-                      return FractionallySizedBox(
-                          heightFactor: 0.7,
-                          child: FlowsBottomSheet(
-                            topic: _topicUserModel!,
-                            onFlowItemClicked: (id) => setState(() {
-                              flowId = id;
-                            }),
-                          ));
-                    });
+                  isScrollControlled: true,
+                  backgroundColor: Colors.transparent,
+                  barrierColor: Colors.black.withAlpha((0.3 * 255).round()),
+                  context: context,
+                  builder: (context) {
+                    return BackdropFilter(
+                      filter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
+                      child: ConstrainedBox(
+                        constraints: BoxConstraints(
+                          minHeight: 100,
+                          maxHeight: MediaQuery.of(context).size.height * 0.8,
+                        ),
+                        child: FlowsBottomSheet(
+                          topic: _topicUserModel!,
+                          onFlowItemClicked: (id) => setState(() {
+                            flowId = id;
+                          }),
+                        ),
+                      ),
+                    );
+                  },
+                );
               }),
         ));
     // return Scaffold(
@@ -170,5 +153,89 @@ class _TopicDetailPageState extends State<TopicDetailPage> {
     //     ),
     //   ),
     // );
+  }
+
+  PreferredSizeWidget renderAppBar() {
+    final colors =
+        TFS().themeData?.customColors ?? Theme.of(context).customColors;
+
+    return AppBar(
+      backgroundColor: colors.background,
+      titleSpacing: 0,
+      leading: Align(
+        alignment: Alignment.topLeft,
+        child: IconButton(
+          icon: Icon(Icons.arrow_back, size: 24),
+          onPressed: () => Navigator.pop(context),
+        ),
+      ),
+      title: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(_topicUserModel?.name ?? "",
+              style: TextStyle(fontWeight: FontWeight.bold)),
+          _topicUserModel != null
+              ? Row(
+                  children: [
+                    SizedBox(
+                      width: 100,
+                      child: LinearProgressIndicator(
+                        borderRadius: BorderRadius.circular(12),
+                        minHeight: 6,
+                        color: colors.progressIndColor1,
+                        backgroundColor: colors.progressIndColor2,
+                        value: _topicUserModel!.progress.completed! /
+                            _topicUserModel!.progress.total!,
+                      ),
+                    ),
+                    const SizedBox(width: 6),
+                    Text(
+                      '${_topicUserModel?.progress.completed}/${_topicUserModel?.progress.total} Ongoing...',
+                      style: TextStyle(fontSize: 10, color: Colors.black),
+                    ),
+                  ],
+                )
+              : Container()
+        ],
+      ),
+      actions: [
+        Container(
+          margin: const EdgeInsets.all(8),
+          padding: const EdgeInsets.all(8),
+          decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              border: Border.all(color: colors.borderColorSecondary)),
+          child: InkWell(
+            onTap: () {
+              showModalBottomSheet(
+                isScrollControlled: true,
+                backgroundColor: Colors.transparent,
+                context: context,
+                barrierColor: Colors.black.withAlpha((0.3 * 255).round()),
+                builder: (context) {
+                  return BackdropFilter(
+                    filter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
+                    child: ConstrainedBox(
+                      constraints: BoxConstraints(
+                        minHeight: 100,
+                        maxHeight: MediaQuery.of(context).size.height * 0.8,
+                      ),
+                      child: FlowsBottomSheet(
+                        topic: _topicUserModel!,
+                        onFlowItemClicked: (id) => setState(() {
+                          flowId = id;
+                        }),
+                      ),
+                    ),
+                  );
+                },
+              );
+            },
+            child: SvgPicture.asset(
+                "packages/tradeable_flutter_sdk/lib/assets/images/dashboard_menu.svg"),
+          ),
+        )
+      ],
+    );
   }
 }
