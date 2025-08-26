@@ -77,7 +77,6 @@ class _ModuleListPageState extends State<ModuleListPage> {
         }
       });
     }
-    print(relatedTopics.length);
   }
 
   @override
