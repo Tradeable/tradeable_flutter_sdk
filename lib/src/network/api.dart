@@ -83,4 +83,14 @@ class API {
         .map((e) => Topic.fromJson(e))
         .toList();
   }
+
+  Future<Map<String, String>> markFlowAsCompleted(
+      int flowId, int topicId, int topicTagId) async {
+    final response = await dio.post(
+      "/v0/sdk/flows/$flowId/completed",
+      data: {"topicId": topicId, "topicTagId": topicTagId},
+    );
+
+    return Map<String, String>.from(response.data);
+  }
 }
