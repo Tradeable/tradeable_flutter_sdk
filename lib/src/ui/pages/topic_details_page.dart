@@ -1,5 +1,4 @@
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tradeable_flutter_sdk/src/models/topic_user_model.dart';
@@ -28,6 +27,9 @@ class _TopicDetailPageState extends State<TopicDetailPage> {
   TopicUserModel? _topicUserModel;
   bool _loading = false;
 
+  int completedFlows = 0;
+  int totalFlows = 0;
+
   @override
   void initState() {
     super.initState();
@@ -37,6 +39,8 @@ class _TopicDetailPageState extends State<TopicDetailPage> {
       if (flowId == null) {
         getFlows();
       }
+      completedFlows = _topicUserModel!.progress.completed ?? 0.toInt();
+      totalFlows = _topicUserModel!.progress.total ?? 0.toInt();
     } else if (widget.topicId != null) {
       _fetchTopicUserModel();
     }
@@ -59,12 +63,14 @@ class _TopicDetailPageState extends State<TopicDetailPage> {
 
   Future<void> getFlows() async {
     if (_topicUserModel == null) return;
-    await API()
-        .fetchTopicById(_topicUserModel!.topicId, _topicUserModel!.topicTagId)
-        .then((val) {
-      setState(() {
-        flowId ??= val.flows!.first.id;
-      });
+    final val = await API()
+        .fetchTopicById(_topicUserModel!.topicId, _topicUserModel!.topicTagId);
+    setState(() {
+      flowId ??= val.flows!.first.id;
+      completedFlows = (val.flows ?? []).where((f) => f.isCompleted).length;
+      totalFlows = (val.flows ?? []).length;
+      print(completedFlows);
+      print(totalFlows);
     });
     FlowController().registerCallback((highlightNextFlow) {
       setState(() {
@@ -93,6 +99,7 @@ class _TopicDetailPageState extends State<TopicDetailPage> {
               topicId: _topicUserModel!.topicId,
               flowId: flowId ?? -1,
               onMenuClick: () {
+                updateFlowComplete();
                 showModalBottomSheet(
                   isScrollControlled: true,
                   backgroundColor: Colors.transparent,
@@ -184,13 +191,12 @@ class _TopicDetailPageState extends State<TopicDetailPage> {
                         minHeight: 6,
                         color: colors.progressIndColor1,
                         backgroundColor: colors.progressIndColor2,
-                        value: _topicUserModel!.progress.completed! /
-                            _topicUserModel!.progress.total!,
+                        value: completedFlows / totalFlows,
                       ),
                     ),
                     const SizedBox(width: 6),
                     Text(
-                      '${_topicUserModel?.progress.completed}/${_topicUserModel?.progress.total} Ongoing...',
+                      '$completedFlows/$totalFlows Ongoing...',
                       style: TextStyle(fontSize: 10, color: Colors.black),
                     ),
                   ],
@@ -237,5 +243,17 @@ class _TopicDetailPageState extends State<TopicDetailPage> {
         )
       ],
     );
+  }
+
+  void updateFlowComplete() async {
+    await API()
+        .markFlowAsCompleted(
+      flowId ?? 0,
+      _topicUserModel!.topicId,
+      _topicUserModel!.topicTagId,
+    )
+        .then((val) {
+      getFlows();
+    });
   }
 }

@@ -15,7 +15,7 @@ class TopicUserModel {
   final String name;
   final String description;
   final Logo logo;
-  final Progress progress;
+  Progress progress;
   int? startFlow;
   final int topicTagId;
   Color? cardColor;
