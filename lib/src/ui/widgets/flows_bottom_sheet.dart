@@ -42,8 +42,7 @@ class _FlowsBottomSheet extends State<FlowsBottomSheet> {
                 [])
             .toList();
 
-        final completedCount = flows.where((f) => f.isCompleted).length;
-        print("Completed: $completedCount / ${flows.length}");
+        //final completedCount = flows.where((f) => f.isCompleted).length;
         currentFlowId ??= flows.first.flowId;
       });
     });

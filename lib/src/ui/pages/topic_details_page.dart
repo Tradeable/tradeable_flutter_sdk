@@ -69,8 +69,6 @@ class _TopicDetailPageState extends State<TopicDetailPage> {
       flowId ??= val.flows!.first.id;
       completedFlows = (val.flows ?? []).where((f) => f.isCompleted).length;
       totalFlows = (val.flows ?? []).length;
-      print(completedFlows);
-      print(totalFlows);
     });
     FlowController().registerCallback((highlightNextFlow) {
       setState(() {

@@ -43,8 +43,6 @@ class _ModuleListPageState extends State<ModuleListPage> {
 
   Future<void> fetchTopics() async {
     await API().fetchTopicByTagId(widget.pageId?.topicTagId ?? 3).then((data) {
-      print(data[0].progress.completed);
-      print(data[0].progress.total);
       setState(() {
         topicUserModel = data
             .map((e) => TopicUserModel(
