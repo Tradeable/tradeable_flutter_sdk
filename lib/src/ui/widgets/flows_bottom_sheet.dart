@@ -41,8 +41,6 @@ class _FlowsBottomSheet extends State<FlowsBottomSheet> {
                     category: e.category ?? "")) ??
                 [])
             .toList();
-
-        //final completedCount = flows.where((f) => f.isCompleted).length;
         currentFlowId ??= flows.first.flowId;
       });
     });
