@@ -16,7 +16,7 @@ dependencies:
   tradeable_learn_widget:
     git:
       url: https://github.com/Tradeable/tradeable_learn_widget.git
-      ref: main
+      ref: axis_main
   shared_preferences: ^2.4.0
   lottie: ^3.3.1
   smooth_page_indicator: ^1.2.1
