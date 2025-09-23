@@ -866,7 +866,7 @@ packages:
     description:
       path: "."
       ref: tlw
-      resolved-ref: "74836024ec9387a10ba75d9bab1ee6f74dd403bc"
+      resolved-ref: c9cfaed6f6d0c19cff8ba390767a0c29b6dcdf66
       url: "https://github.com/Tradeable/tradeable_learn_widget.git"
     source: git
     version: "0.0.1"
