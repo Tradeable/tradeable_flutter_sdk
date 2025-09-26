@@ -285,8 +285,8 @@ packages:
     dependency: transitive
     description:
       path: "."
-      ref: dev
-      resolved-ref: "7db0ac2a81a5f91017fd9bec6d547a13fb5f7ad9"
+      ref: main
+      resolved-ref: f2b726634349e1844c470934a4e392094167501a
       url: "https://github.com/adityagohad/fin_chart.git"
     source: git
     version: "0.0.1"
@@ -865,8 +865,8 @@ packages:
     dependency: transitive
     description:
       path: "."
-      ref: tlw
-      resolved-ref: c9cfaed6f6d0c19cff8ba390767a0c29b6dcdf66
+      ref: main
+      resolved-ref: b850180c29222ccb2ab661bc28bf75effa942b5b
       url: "https://github.com/Tradeable/tradeable_learn_widget.git"
     source: git
     version: "0.0.1"
