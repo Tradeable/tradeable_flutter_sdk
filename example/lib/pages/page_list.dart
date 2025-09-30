@@ -65,14 +65,6 @@ class _PageListState extends State<PageList> {
                       icon: const Icon(Icons.cancel_rounded))
                 ],
               ),
-              MaterialButton(
-                  onPressed: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                          builder: (context) => RecipePage(flowId: 481)),
-                    );
-                  },
-                  child: const Text("Go to Flow")),
               Spacer(),
               MaterialButton(
                   onPressed: () {

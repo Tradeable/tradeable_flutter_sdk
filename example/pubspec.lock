@@ -865,8 +865,8 @@ packages:
     dependency: transitive
     description:
       path: "."
-      ref: main
-      resolved-ref: b850180c29222ccb2ab661bc28bf75effa942b5b
+      ref: adding_chat
+      resolved-ref: "3144af5358bdd1c2e09f1d681ad8a962526612b5"
       url: "https://github.com/Tradeable/tradeable_learn_widget.git"
     source: git
     version: "0.0.1"
