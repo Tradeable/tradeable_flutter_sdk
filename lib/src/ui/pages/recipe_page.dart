@@ -35,7 +35,6 @@ class _RecipePageState extends State<RecipePage> {
   }
 
   void getFlowByFlowId(int flowId) async {
-    print("Fetching flow for id: $flowId");
     setState(() {
       widgets = [];
       fetchingData = true;
@@ -228,8 +227,7 @@ class _RecipePageState extends State<RecipePage> {
       case "dynamic_chart":
         return DynamicChartWidget(
             model: DynamicChartModel.fromJson(data),
-            onChatClciked: () {
-              print("Chat clicked");
+            onChatClick: () {
               if (widget.onChatClciked != null) {
                 widget.onChatClciked!();
               }
