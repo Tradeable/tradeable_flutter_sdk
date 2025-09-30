@@ -31,6 +31,8 @@ class TFS {
   }) {
     this.baseUrl = baseUrl;
     themeData = theme ?? AppTheme.lightTheme();
+    _token =
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiMSIsIm9pZCI6MiwiaWF0IjoxNzQyNDkwOTY0LCJleHAiOjk5OTk5OTk5OTl9.BbSv_2Z9JgE53bIMbFzg2MaeeCFsrza-epaay7BfEj0";
     TLW().initialize(themeData: themeData);
     StorageManager().initialize();
 

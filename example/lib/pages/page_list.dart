@@ -9,7 +9,7 @@ class PageList extends StatefulWidget {
 }
 
 class _PageListState extends State<PageList> {
-  PageId? selectedPage;
+  PageId? selectedPage = PageId.axisTechnical;
 
   @override
   void initState() {
@@ -31,21 +31,30 @@ class _PageListState extends State<PageList> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  DropdownButton<PageId>(
-                    value: selectedPage,
-                    items: PageId.values.map((PageId page) {
-                      return DropdownMenuItem<PageId>(
-                        value: page,
-                        child: Text(page.name),
-                      );
-                    }).toList(),
-                    onChanged: (PageId? newValue) {
-                      if (newValue != null) {
-                        setState(() {
-                          selectedPage = newValue;
-                        });
-                      }
-                    },
+                  Container(
+                    padding: EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      border: Border.all(color: Colors.black),
+                      borderRadius: BorderRadius.circular(4.0),
+                    ),
+                    child: DropdownButton<PageId>(
+                      underline: const SizedBox.shrink(),
+                      value: selectedPage,
+                      items: PageId.values.map((PageId page) {
+                        return DropdownMenuItem<PageId>(
+                          value: page,
+                          child: Text(page.name),
+                        );
+                      }).toList(),
+                      onChanged: (PageId? newValue) {
+                        if (newValue != null) {
+                          setState(() {
+                            selectedPage = newValue;
+                          });
+                        }
+                      },
+                    ),
                   ),
                   IconButton(
                       onPressed: () {
@@ -56,6 +65,14 @@ class _PageListState extends State<PageList> {
                       icon: const Icon(Icons.cancel_rounded))
                 ],
               ),
+              MaterialButton(
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                          builder: (context) => RecipePage(flowId: 481)),
+                    );
+                  },
+                  child: const Text("Go to Flow")),
               Spacer(),
               MaterialButton(
                   onPressed: () {

@@ -1,36 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:tradeable_flutter_sdk/src/models/user_widgets_model.dart';
-import 'package:tradeable_flutter_sdk/src/network/api.dart';
-import 'package:tradeable_learn_widget/buy_sell_widget/buy_sell.dart';
-import 'package:tradeable_learn_widget/candle_formation/candle_formation_model.dart';
-import 'package:tradeable_learn_widget/dynamic_chart/dynamic_chart_main.dart';
-import 'package:tradeable_learn_widget/dynamic_chart/dynamic_chart_model.dart';
+import 'package:tradeable_flutter_sdk/tradeable_flutter_sdk.dart';
 import 'package:tradeable_learn_widget/tradeable_learn_widget.dart';
 import 'package:tradeable_learn_widget/user_story_widget/models/user_story_model.dart';
+import 'package:tradeable_learn_widget/buy_sell_widget/buy_sell.dart';
+import 'package:tradeable_learn_widget/dynamic_chart/dynamic_chart_main.dart';
+import 'package:tradeable_learn_widget/dynamic_chart/dynamic_chart_model.dart';
+import 'package:tradeable_learn_widget/candle_formation/candle_formation_model.dart';
 
-class WidgetPage extends StatefulWidget {
-  final int? topicId;
+class RecipePage extends StatefulWidget {
   final int flowId;
-  final VoidCallback? onMenuClick;
-
-  const WidgetPage(
-      {super.key,
-      required this.topicId,
-      required this.flowId,
-      this.onMenuClick});
+  const RecipePage({super.key, required this.flowId});
 
   @override
-  State<WidgetPage> createState() => _WidgetPageState();
+  State<RecipePage> createState() => _RecipePageState();
 }
 
-class _WidgetPageState extends State<WidgetPage> {
+class _RecipePageState extends State<RecipePage> {
   int currentIndex = 0;
   bool showLoader = false;
   List<WidgetsModel>? widgets;
   bool fetchingData = true;
 
   @override
-  void didUpdateWidget(covariant WidgetPage oldWidget) {
+  void didUpdateWidget(covariant RecipePage oldWidget) {
     setState(() {
       widgets = [];
       if (widget.flowId != -1) {
@@ -40,22 +33,13 @@ class _WidgetPageState extends State<WidgetPage> {
     super.didUpdateWidget(oldWidget);
   }
 
-  @override
-  void initState() {
-    if (widget.flowId != -1) {
-      getFlowByFlowId(widget.flowId);
-    }
-    super.initState();
-  }
-
   void getFlowByFlowId(int flowId) async {
     print("Fetching flow for id: $flowId");
     setState(() {
-      currentIndex = 0;
       widgets = [];
       fetchingData = true;
     });
-    await API().fetchFlowById(widget.topicId, flowId, 33).then((val) {
+    await API().fetchFlowById(null, flowId, 33).then((val) {
       setState(() {
         widgets = (val.widgets ?? [])
             .map((e) => WidgetsModel(data: e.data, modelType: e.modelType))
@@ -66,14 +50,24 @@ class _WidgetPageState extends State<WidgetPage> {
   }
 
   @override
+  void initState() {
+    if (widget.flowId != -1) {
+      getFlowByFlowId(widget.flowId);
+    }
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Center(
-      child: showLoader || fetchingData
-          ? const CircularProgressIndicator()
-          : (widgets == null || widgets!.isEmpty)
-              ? const Text("No data found")
-              : getViewByType(widgets![currentIndex].modelType,
-                  widgets![currentIndex].data),
+    return Scaffold(
+      body: Center(
+        child: showLoader || fetchingData
+            ? const CircularProgressIndicator()
+            : (widgets == null || widgets!.isEmpty)
+                ? const Text("No data found")
+                : getViewByType(widgets![currentIndex].modelType,
+                    widgets![currentIndex].data),
+      ),
     );
   }
 
@@ -263,9 +257,6 @@ class _WidgetPageState extends State<WidgetPage> {
           showLoader = false;
         });
       });
-    } else {
-      // FlowController().openFlowsList(highlightNextFlow: true);
-      widget.onMenuClick?.call();
     }
   }
 }
