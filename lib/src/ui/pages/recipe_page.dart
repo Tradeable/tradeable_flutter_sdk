@@ -10,8 +10,8 @@ import 'package:tradeable_learn_widget/candle_formation/candle_formation_model.d
 
 class RecipePage extends StatefulWidget {
   final int flowId;
-  final VoidCallback? onChatClciked;
-  const RecipePage({super.key, required this.flowId, this.onChatClciked});
+  final VoidCallback? onChatClick;
+  const RecipePage({super.key, required this.flowId, this.onChatClick});
 
   @override
   State<RecipePage> createState() => _RecipePageState();
@@ -228,8 +228,8 @@ class _RecipePageState extends State<RecipePage> {
         return DynamicChartWidget(
             model: DynamicChartModel.fromJson(data),
             onChatClick: () {
-              if (widget.onChatClciked != null) {
-                widget.onChatClciked!();
+              if (widget.onChatClick != null) {
+                widget.onChatClick!();
               }
             },
             onNextClick: () {
