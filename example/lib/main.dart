@@ -16,7 +16,7 @@ void main() {
           baseUrl: "https://dev.api.tradeable.app/demo",
           theme: AppTheme.darkTheme(),
           onTokenExpiration: () async {
-            //TFS().registerApp(token: token, appId: appId, clientId: clientId)
+            //TFS().registerApp(token: "", appId: "", clientId: "", encryptionKey: "");
           });
       break;
     case "light":
@@ -24,7 +24,7 @@ void main() {
         baseUrl: "https://dev.api.tradeable.app/demo",
         theme: AppTheme.lightTheme(),
         onTokenExpiration: () async {
-          // TFS().registerApp(token: "", appId: "", clientId: "");
+          //TFS().registerApp(token: "", appId: "", clientId: "", encryptionKey: "");
         },
       );
       break;
