@@ -32,13 +32,6 @@ class _TradeableContainerState extends State<TradeableContainer>
     learnBtnTopPos = widget.learnBtnTopPos;
   }
 
-  waitForStorageService() async {
-    await Future.delayed(const Duration(milliseconds: 100));
-    setState(() {
-      animationValue = StorageManager().isSideDrawerOpened() ? 0 : 5;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -87,13 +80,6 @@ class _TradeableContainerState extends State<TradeableContainer>
                   ),
                 ),
                 onPressed: () {
-                  StorageManager().setSideDrawerOpened(true).then((value) {
-                    {
-                      setState(() {
-                        animationValue = 0;
-                      });
-                    }
-                  });
                   TradeableRightSideDrawer.open(
                       context: context,
                       drawerBorderRadius: 24,
