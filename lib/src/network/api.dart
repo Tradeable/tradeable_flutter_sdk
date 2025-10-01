@@ -75,7 +75,7 @@ class API {
 
   Future<List<Topic>> fetchRelatedTopics(int tagId, int topicId) async {
     Response response = await dio.get(
-      "https://dev.api.tradeable.app/v0/sdk/topics/$topicId/related",
+      "/v0/sdk/topics/$topicId/related",
       queryParameters: {"topicTagId": tagId},
     );
 
