@@ -15,21 +15,21 @@ class AuthInterceptor extends Interceptor {
       options.headers['x-api-encryption-key'] = TFS().encryptionKey ?? '';
     }
 
-    // if (TFS().encryptionKey != null &&
-    //     (options.method == 'POST' ||
-    //         options.method == 'PUT' ||
-    //         options.method == 'PATCH')) {
-    //   if (options.data != null) {
-    //     try {
-    //       final encryptedData = encryptData(options.data, TFS().encryptionKey!);
-    //       options.data = {'encryptedData': encryptedData};
-    //     } catch (e) {
-    //       if (kDebugMode) {
-    //         print('Failed to encrypt request body: $e');
-    //       }
-    //     }
-    //   }
-    // }
+    if (TFS().encryptionKey != null &&
+        (options.method == 'POST' ||
+            options.method == 'PUT' ||
+            options.method == 'PATCH')) {
+      if (options.data != null) {
+        try {
+          final encryptedData = encryptData(options.data, TFS().encryptionKey!);
+          options.data = {'encryptedData': encryptedData};
+        } catch (e) {
+          if (kDebugMode) {
+            print('Failed to encrypt request body: $e');
+          }
+        }
+      }
+    }
 
     super.onRequest(options, handler);
   }
@@ -59,8 +59,8 @@ class AuthInterceptor extends Interceptor {
       requestOptions.headers['x-axis-token'] = newToken;
       requestOptions.headers['x-axis-app-id'] = TFS().appId ?? '';
       requestOptions.headers['x-axis-client-id'] = TFS().clientId ?? '';
-      // requestOptions.headers['x-api-encryption-key'] =
-      //     TFS().encryptionKey ?? '';
+      requestOptions.headers['x-api-encryption-key'] =
+          TFS().encryptionKey ?? '';
 
       // Retry the request
       try {

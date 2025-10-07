@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:tradeable_flutter_sdk/src/network/axis_api.dart';
 import 'package:tradeable_flutter_sdk/tradeable_flutter_sdk.dart';
 import 'package:tradeable_learn_widget/tlw.dart';
 
 typedef TokenExpirationCallback = Future<void> Function();
+typedef EventCallback = Function(String, Map<String, dynamic>?);
 
 class TFS {
   late String baseUrl;
@@ -12,6 +12,7 @@ class TFS {
   String? _clientId;
   String? _encryptionKey;
   ThemeData? themeData;
+  EventCallback? _onEventCallback;
   TokenExpirationCallback? _tokenExpirationCallback;
 
   static final TFS _instance = TFS._internal();
@@ -30,16 +31,19 @@ class TFS {
   void initialize({
     required String baseUrl,
     ThemeData? theme,
+    EventCallback? onEvent,
     TokenExpirationCallback? onTokenExpiration,
   }) {
     this.baseUrl = baseUrl;
     themeData = theme ?? AppTheme.lightTheme();
     TLW().initialize(themeData: themeData);
-    StorageManager().initialize();
-    getEncyptionKey();
 
     if (onTokenExpiration != null) {
       _tokenExpirationCallback = onTokenExpiration;
+    }
+
+    if (onEvent != null) {
+      _onEventCallback = onEvent;
     }
   }
 
@@ -58,7 +62,7 @@ class TFS {
     return _tokenExpirationCallback?.call();
   }
 
-  Future<void> getEncyptionKey() async {
-    _encryptionKey = await axisHandshake();
+  onEvent({required String eventName, required Map<String, dynamic> data}) {
+    return _onEventCallback?.call(eventName, data);
   }
 }
