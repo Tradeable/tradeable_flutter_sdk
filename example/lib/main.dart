@@ -11,7 +11,7 @@ void main() {
   WidgetsFlutterBinding.ensureInitialized();
   TFS().initialize(
     baseUrl: "",
-    theme: AppTheme.darkTheme(),
+    theme: AppTheme.lightTheme(),
     onEvent: (String eventName, Map<String, dynamic>? data) {
       //print("Event triggered : $eventName with data: $data");
     },

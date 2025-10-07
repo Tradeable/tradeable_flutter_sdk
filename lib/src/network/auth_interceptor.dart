@@ -22,7 +22,7 @@ class AuthInterceptor extends Interceptor {
       if (options.data != null) {
         try {
           final encryptedData = encryptData(options.data, TFS().encryptionKey!);
-          options.data = {'encryptedData': encryptedData};
+          options.data = {'payload': encryptedData};
         } catch (e) {
           if (kDebugMode) {
             print('Failed to encrypt request body: $e');
