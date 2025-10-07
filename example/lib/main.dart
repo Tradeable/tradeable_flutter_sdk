@@ -17,6 +17,12 @@ void main() {
     },
     onTokenExpiration: () async {
       //TFS().registerApp(token: "", appId: "", clientId: "", encryptionKey: "");
+      TFS().registerApp(
+          token: "87b357f6fd62a5ab7fcb4287172c2c09",
+          appId: "ASLTRADER1",
+          clientId: "100079",
+          encryptionKey:
+              "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEApXbKe29KFkHuakMurUY/olwsjNbXDVcmYZx78oQrRU9jASeVQrW48Q+ZuU6KLEPNwGM26hBzMEs8oIgTQkaniuyChIKiSO6REQNXfxLBbjhlrpk4zuZWLcGz/bbK0rzq4MWDXSaIPd4I8dQwNMiKBqxYinuRdE37ou0HWKaLYAILMEhpQSzbjnlm0J0Nh4cJtWy+7d6ZARLRQif5kNA8sePq36aW4tF4uzgFj1qxWln9oS1IQ/4aZ4arW4sAjcppqGl15J5JwMSA6iTgCwSXHb6uplAvPacPd7w3ahSG+bDdcgLSuEWceXRpcftevMQ0UHSdzsQS9PVHaRC1peoMcQIDAQAB");
     },
   );
   runApp(const MyApp());

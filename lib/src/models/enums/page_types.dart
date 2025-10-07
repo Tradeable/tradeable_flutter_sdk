@@ -12,20 +12,18 @@ enum PageId {
 }
 
 extension PageIdValue on PageId {
-  static const Map<PageId, List<int>> _values = {
-    PageId.axisOverview: [20, 5],
-    PageId.axisOption: [21, 6],
-    PageId.axisTechnical: [22, 7],
-    PageId.axisScanners: [23, 8],
-    PageId.axisWatchlist: [24, 9],
-    PageId.axisFundamentals: [25, 10],
-    PageId.axisOrderType: [26, 13],
-    PageId.axisMiscellaneous: [27, 14],
-    PageId.demo: [28, 15],
-    PageId.axisFuture: [29, 17],
+  static const Map<PageId, int> _values = {
+    PageId.axisOverview: 5,
+    PageId.axisOption: 6,
+    PageId.axisTechnical: 7,
+    PageId.axisScanners: 8,
+    PageId.axisWatchlist: 9,
+    PageId.axisFundamentals: 10,
+    PageId.axisOrderType: 13,
+    PageId.axisMiscellaneous: 14,
+    PageId.demo: 15,
+    PageId.axisFuture: 17,
   };
 
-  int get pageId => _values[this]![0];
-
-  int get topicTagId => _values[this]![1];
+  int get topicTagId => _values[this] ?? 0;
 }
