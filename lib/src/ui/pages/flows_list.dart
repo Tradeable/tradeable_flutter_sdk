@@ -253,9 +253,15 @@ class _FlowsList extends State<FlowsList> {
                 ],
               ),
             ),
-            Image.asset(
+            Spacer(),
+            SizedBox(
+              height: 130,
+              width: 110,
+              child: Image.asset(
                 "packages/tradeable_flutter_sdk/lib/assets/images/banner_image.png",
-                height: 126)
+                fit: BoxFit.fill,
+              ),
+            ),
           ],
         ));
   }
