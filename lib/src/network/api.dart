@@ -73,9 +73,7 @@ class API {
   }
 
   Future<FlowModel> fetchFlowById(
-    int? topicId,
     int flowId,
-    int topicTagId,
   ) async {
     Response response = await dio.get(
       "/v0/sdk/flows/$flowId",

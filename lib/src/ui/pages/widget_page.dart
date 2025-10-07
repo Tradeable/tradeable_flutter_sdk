@@ -54,7 +54,7 @@ class _WidgetPageState extends State<WidgetPage> {
       widgets = [];
       fetchingData = true;
     });
-    await API().fetchFlowById(widget.topicId, flowId, 33).then((val) {
+    await API().fetchFlowById(flowId).then((val) {
       setState(() {
         widgets = (val.widgets ?? [])
             .map((e) => WidgetsModel(data: e.data, modelType: e.modelType))
