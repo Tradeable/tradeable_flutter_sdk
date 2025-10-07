@@ -247,8 +247,8 @@ class _TopicDetailPageState extends State<TopicDetailPage> {
     await API()
         .markFlowAsCompleted(
       flowId ?? 0,
-      _topicUserModel!.topicId,
-      _topicUserModel!.topicTagId,
+      _topicUserModel?.topicId,
+      _topicUserModel?.topicTagId,
     )
         .then((val) {
       getFlows();

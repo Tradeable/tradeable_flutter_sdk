@@ -9,26 +9,16 @@ final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  String app = "light";
-  switch (app) {
-    case "dark":
-      TFS().initialize(
-          baseUrl: "https://dev.api.tradeable.app/demo",
-          theme: AppTheme.darkTheme(),
-          onTokenExpiration: () async {
-            //TFS().registerApp(token: token, appId: appId, clientId: clientId)
-          });
-      break;
-    case "light":
-      TFS().initialize(
-        baseUrl: "https://dev.api.tradeable.app/demo",
-        theme: AppTheme.lightTheme(),
-        onTokenExpiration: () async {
-          // TFS().registerApp(token: "", appId: "", clientId: "");
-        },
-      );
-      break;
-  }
+  TFS().initialize(
+    baseUrl: "https://atom-apigee.uat.asldt.com",
+    theme: AppTheme.lightTheme(),
+    onEvent: (String eventName, Map<String, dynamic>? data) {
+      //print("Event triggered : $eventName with data: $data");
+    },
+    onTokenExpiration: () async {
+      //TFS().registerApp(token: "", appId: "", clientId: "", encryptionKey: "");
+    },
+  );
   runApp(const MyApp());
 }
 

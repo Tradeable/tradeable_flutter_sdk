@@ -35,16 +35,15 @@ class API {
     return Topic.fromJson(response.data["data"]);
   }
 
-  Future<FlowModel> fetchFlowById(
-    int? topicId,
-    int flowId,
-    int topicTagId,
-  ) async {
+  Future<List<Topic>> fetchRelatedTopics(int tagId, int topicId) async {
     Response response = await dio.get(
-      "/v0/sdk/flows/$flowId",
+      "/v0/sdk/topics/$topicId/related",
+      queryParameters: {"topicTagId": tagId},
     );
 
-    return FlowModel.fromJson(response.data["data"]);
+    return (response.data["data"] as List)
+        .map((e) => Topic.fromJson(e))
+        .toList();
   }
 
   Future<List<CoursesModel>> getModules() async {
@@ -73,19 +72,18 @@ class API {
     return CoursesModel.fromJson(response.data["data"]);
   }
 
-  Future<List<Topic>> fetchRelatedTopics(int tagId, int topicId) async {
+  Future<FlowModel> fetchFlowById(
+    int flowId,
+  ) async {
     Response response = await dio.get(
-      "https://dev.api.tradeable.app/v0/sdk/topics/$topicId/related",
-      queryParameters: {"topicTagId": tagId},
+      "/v0/sdk/flows/$flowId",
     );
 
-    return (response.data["data"] as List)
-        .map((e) => Topic.fromJson(e))
-        .toList();
+    return FlowModel.fromJson(response.data["data"]);
   }
 
   Future<Map<String, String>> markFlowAsCompleted(
-      int flowId, int topicId, int topicTagId) async {
+      int flowId, int? topicId, int? topicTagId) async {
     final response = await dio.post(
       "/v0/sdk/flows/$flowId/completed",
       data: {"topicId": topicId, "topicTagId": topicTagId},
