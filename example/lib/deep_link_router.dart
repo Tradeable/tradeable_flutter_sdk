@@ -26,8 +26,7 @@ class DeepLinkRouter {
         break;
       case "/courses":
         navigatorKey.currentState?.push(
-          MaterialPageRoute(
-              builder: (_) => const CoursesListScreen(courses: [])),
+          MaterialPageRoute(builder: (_) => const CoursesListPage(courses: [])),
         );
         break;
       case "/courseById":
@@ -36,7 +35,7 @@ class DeepLinkRouter {
         if (courseId != null) {
           navigatorKey.currentState?.push(
             MaterialPageRoute(
-                builder: (_) => CourseDetailsScreen(courseId: courseId)),
+                builder: (_) => CourseDetailsPage(courseId: courseId)),
           );
         }
         break;

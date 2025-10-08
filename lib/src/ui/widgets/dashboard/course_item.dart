@@ -1,7 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:tradeable_flutter_sdk/src/models/courses_model.dart';
-import 'package:tradeable_flutter_sdk/src/network/api.dart';
 import 'package:tradeable_flutter_sdk/src/ui/widgets/dashboard/course_topic_btm_sheet.dart';
 import 'package:tradeable_flutter_sdk/src/utils/app_theme.dart';
 import 'package:tradeable_flutter_sdk/src/tfs.dart';
@@ -59,11 +58,6 @@ class CourseListItem extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  Future<CoursesModel> getCourseTopicsById(int courseId) async {
-    final val = await API().getTopicsInCourse(courseId);
-    return val;
   }
 
   void showBottomsheet(BuildContext context, int courseId) {

@@ -4,7 +4,6 @@ import 'package:tradeable_flutter_sdk/src/tfs.dart';
 import 'package:tradeable_flutter_sdk/src/ui/widgets/dashboard/appbar_widget.dart';
 import 'package:tradeable_flutter_sdk/src/ui/widgets/dashboard/courses_horizontal_list.dart';
 import 'package:tradeable_flutter_sdk/src/ui/widgets/dashboard/custom_linear_progress_indicator.dart';
-import 'package:tradeable_flutter_sdk/src/ui/widgets/dashboard/webinars_list.dart';
 import 'package:tradeable_flutter_sdk/src/utils/app_theme.dart';
 
 class LearnDashboard extends StatefulWidget {
@@ -71,17 +70,17 @@ class _LearnDashboard extends State<LearnDashboard> {
                 ),
               ),
               const SizedBox(height: 40),
-              Text("Welcome! Deepak,",
+              Text("Welcome!",
                   style: textStyles.mediumBold
                       .copyWith(fontStyle: FontStyle.italic)),
-              Text("Welcome back, Deepak. Pick up right where you left off!",
+              Text("Welcome back. Pick up right where you left off!",
                   style: textStyles.smallNormal),
               const SizedBox(height: 20),
               CustomLinearProgressIndicator(title: 'Overall Progress'),
               const SizedBox(height: 20),
               CoursesHorizontalList(),
               const SizedBox(height: 20),
-              WebinarsList()
+              //WebinarsList()
             ],
           ),
         ),

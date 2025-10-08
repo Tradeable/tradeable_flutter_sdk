@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tradeable_flutter_sdk/src/ui/pages/module_list_page.dart';
+import 'package:tradeable_flutter_sdk/src/ui/pages/topic_list_page.dart';
 import 'package:tradeable_flutter_sdk/src/ui/widgets/tradeable_right_side_drawer.dart';
 import 'package:tradeable_flutter_sdk/tradeable_flutter_sdk.dart';
 
@@ -83,12 +83,16 @@ class _TradeableContainerState extends State<TradeableContainer>
                   TradeableRightSideDrawer.open(
                       context: context,
                       drawerBorderRadius: 24,
-                      body: ModuleListPage(
-                        pageId: widget.pageId,
-                        onClose: () {
-                          Navigator.of(context).pop();
-                        },
-                      ));
+                      body: widget.pageId != null
+                          ? TopicListPage(
+                              tagId: widget.pageId?.topicTagId,
+                              onClose: () {
+                                Navigator.of(context).pop();
+                              },
+                            )
+                          : Center(
+                              child: Text("Please provide Id"),
+                            ));
                 },
                 child: Center(
                   child: //Icon(Icons.chevron_left, color: Colors.white),

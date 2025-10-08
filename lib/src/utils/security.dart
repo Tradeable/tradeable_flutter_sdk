@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
 import 'package:encrypt/encrypt.dart';
+import 'package:crypto/crypto.dart';
 
 String encryptData(dynamic data, String secretKey) {
   try {
@@ -11,8 +12,8 @@ String encryptData(dynamic data, String secretKey) {
     // Convert data to JSON string if it's not already a string
     final payload = data is String ? data : jsonEncode(data);
 
-    // Convert secret key to bytes
-    final keyBytes = utf8.encode(secretKey);
+    // Derive a proper 256-bit key from the secret key using SHA-256
+    final keyBytes = sha256.convert(utf8.encode(secretKey)).bytes;
     final key = Key(Uint8List.fromList(keyBytes));
 
     // Create encrypter with GCM mode
@@ -58,8 +59,8 @@ dynamic decryptData(String encryptedData, String secretKey) {
     // Combine ciphertext and tag (GCM expects them together)
     final combinedBytes = Uint8List.fromList([...ciphertext, ...tag]);
 
-    // Convert secret key to bytes
-    final keyBytes = utf8.encode(secretKey);
+    // Derive a proper 256-bit key from the secret key using SHA-256
+    final keyBytes = sha256.convert(utf8.encode(secretKey)).bytes;
     final key = Key(Uint8List.fromList(keyBytes));
 
     // Create encrypter with GCM mode

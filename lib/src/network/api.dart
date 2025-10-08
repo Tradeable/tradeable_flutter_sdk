@@ -72,12 +72,14 @@ class API {
     return CoursesModel.fromJson(response.data["data"]);
   }
 
-  Future<FlowModel> fetchFlowById(
-    int flowId,
-  ) async {
-    Response response = await dio.get(
-      "/v0/sdk/flows/$flowId",
-    );
+  Future<FlowModel> fetchFlowById(int flowId,
+      {int? moduleId, int? topicId, int? topicTagId}) async {
+    Response response =
+        await dio.get("/v0/sdk/flows/$flowId", queryParameters: {
+      "module_id": moduleId,
+      "topic_id": topicId,
+      "topic_tag_id": topicTagId,
+    });
 
     return FlowModel.fromJson(response.data["data"]);
   }

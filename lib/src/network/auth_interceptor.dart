@@ -1,5 +1,6 @@
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
 import 'package:tradeable_flutter_sdk/src/utils/security.dart';
 import 'package:tradeable_flutter_sdk/tradeable_flutter_sdk.dart';
 
@@ -12,6 +13,9 @@ class AuthInterceptor extends Interceptor {
       options.headers['x-axis-token'] = token;
       options.headers['x-axis-app-id'] = TFS().appId ?? '';
       options.headers['x-axis-client-id'] = TFS().clientId ?? '';
+      options.headers['x-api-client-id'] = TFS().clientId ?? '';
+      options.headers['Content-Type'] = 'application/json';
+      options.headers['Accept'] = 'application/json';
       options.headers['x-api-encryption-key'] = TFS().encryptionKey ?? '';
     }
 
@@ -21,12 +25,13 @@ class AuthInterceptor extends Interceptor {
             options.method == 'PATCH')) {
       if (options.data != null) {
         try {
-          final encryptedData = encryptData(options.data, TFS().encryptionKey!);
-          options.data = {'encryptedData': encryptedData};
+          log(options.data.toString());
+          String encryptedData =
+              encryptData(options.data, TFS().encryptionKey!);
+          options.data = {'payload': encryptedData};
+          log('Encrypted request body: $encryptedData');
         } catch (e) {
-          if (kDebugMode) {
-            print('Failed to encrypt request body: $e');
-          }
+          log('Failed to encrypt request body: $e');
         }
       }
     }

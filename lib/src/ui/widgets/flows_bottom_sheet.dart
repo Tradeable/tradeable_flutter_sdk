@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tradeable_flutter_sdk/src/models/topic_flow_model.dart';
 import 'package:tradeable_flutter_sdk/src/models/topic_user_model.dart';
 import 'package:tradeable_flutter_sdk/src/network/api.dart';
-import 'package:tradeable_flutter_sdk/src/ui/pages/flows_list.dart';
+import 'package:tradeable_flutter_sdk/src/ui/widgets/flows_list.dart';
 
 class FlowsBottomSheet extends StatefulWidget {
   final TopicUserModel topic;

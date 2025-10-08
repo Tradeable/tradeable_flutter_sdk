@@ -3,13 +3,6 @@ import 'dart:ui';
 import 'package:tradeable_flutter_sdk/src/models/flow_model.dart';
 import 'package:tradeable_flutter_sdk/src/models/topic_model.dart';
 
-class ModuleUserModel {
-  final int moduleId;
-  final List<TopicUserModel> topics;
-
-  ModuleUserModel({required this.moduleId, required this.topics});
-}
-
 class TopicUserModel {
   final int topicId;
   final String name;
@@ -62,5 +55,4 @@ class TopicUserModel {
       topicTagId: topicTagId ?? this.topicTagId,
       cardColor: cardColor
     );
-  }
 }

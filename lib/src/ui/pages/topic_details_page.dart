@@ -5,7 +5,7 @@ import 'package:tradeable_flutter_sdk/src/models/topic_user_model.dart';
 import 'package:tradeable_flutter_sdk/src/models/user_widgets_model.dart';
 import 'package:tradeable_flutter_sdk/src/network/api.dart';
 import 'package:tradeable_flutter_sdk/src/tfs.dart';
-import 'package:tradeable_flutter_sdk/src/ui/pages/flow_controller.dart';
+import 'package:tradeable_flutter_sdk/src/utils/flow_controller.dart';
 import 'package:tradeable_flutter_sdk/src/ui/pages/widget_page.dart';
 import 'package:tradeable_flutter_sdk/src/ui/widgets/flows_bottom_sheet.dart';
 import 'package:tradeable_flutter_sdk/src/utils/app_theme.dart';
