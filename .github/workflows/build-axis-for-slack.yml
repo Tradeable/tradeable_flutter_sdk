@@ -1,0 +1,71 @@
+name: Build Flutter APK and Upload to GitHub Releases
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - 'example/**'
+      - '.github/workflows/**'
+  repository_dispatch:
+    types: [trigger-axis-build]
+
+
+jobs:
+  build:
+    name: Build APK
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: example
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.x'
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Build APK
+        run: flutter build apk --release
+
+      - name: Get current date
+        id: date
+        run: echo "DATE=$(date +'%Y-%m-%d-%H%M%S')" >> $GITHUB_ENV
+
+      - name: Upload APK as Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: flutter-apk
+          path: example/build/app/outputs/flutter-apk/app-release.apk
+
+      - name: Create GitHub Release and Upload APK
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: release-${{ env.DATE }}
+          name: Flutter APK Release ${{ env.DATE }}
+          body: |
+            🚀 New Flutter APK release!  
+            - **Build Date:** ${{ env.DATE }}
+            - **Branch:** ${{ github.ref }}
+          draft: false
+          prerelease: false
+          files: example/build/app/outputs/flutter-apk/app-release.apk
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Send Release Link to Slack
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        run: |
+          RELEASE_URL="https://github.com/${{ github.repository }}/releases/latest"
+          curl -X POST -H 'Content-type: application/json' --data "{
+            \"text\": \"🚀 A new Flutter APK has been released! Download it here: $RELEASE_URL\"
+          }" $SLACK_WEBHOOK_URL
+
