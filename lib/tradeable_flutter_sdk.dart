@@ -16,3 +16,5 @@ export 'src/ui/pages/widget_page.dart';
 export 'src/ui/pages/courses_list_page.dart';
 export 'src/ui/pages/course_details_page.dart';
 export 'src/ui/pages/topic_details_page.dart';
+
+export 'src/ui/pages/recipe_page.dart';
