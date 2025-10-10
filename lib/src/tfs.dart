@@ -7,6 +7,7 @@ typedef EventCallback = Function(String, Map<String, dynamic>?);
 
 class TFS {
   late String baseUrl;
+  String? _authorization;
   String? _token;
   String? _appId;
   String? _clientId;
@@ -19,6 +20,7 @@ class TFS {
 
   factory TFS() => _instance;
 
+  String? get authorization => _authorization;
   String? get token => _token;
   String? get appId => _appId;
   String? get clientId => _clientId;
@@ -48,10 +50,12 @@ class TFS {
   }
 
   void registerApp(
-      {required String token,
+      {required String authorization,
+      required String token,
       required String appId,
       required String clientId,
       required String encryptionKey}) {
+    _authorization = authorization;
     _token = token;
     _appId = appId;
     _clientId = clientId;

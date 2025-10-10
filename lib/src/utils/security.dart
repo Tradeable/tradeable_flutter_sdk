@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:typed_data';
 import 'package:encrypt/encrypt.dart';
 import 'package:crypto/crypto.dart';
+import 'package:pointycastle/asymmetric/api.dart' as pc;
 
 String encryptData(dynamic data, String secretKey) {
   try {
@@ -90,4 +91,23 @@ dynamic decryptData(String encryptedData, String secretKey) {
   } catch (e) {
     throw Exception('Decryption failed: $e');
   }
+}
+
+String encryptRsa(String secretKey, String publicKey) {
+  // Convert public key to PEM format
+  String pemString =
+      "-----BEGIN PUBLIC KEY-----\n$publicKey\n-----END PUBLIC KEY-----";
+
+  // Parse the public key
+  final parser = RSAKeyParser();
+  final rsaPublicKey = parser.parse(pemString) as pc.RSAPublicKey;
+
+  // Create encrypter with OAEP padding
+  final encrypter = Encrypter(RSA(
+    publicKey: rsaPublicKey,
+    encoding: RSAEncoding.OAEP,
+  ));
+
+  // Encrypt and return base64
+  return encrypter.encrypt(secretKey).base64;
 }

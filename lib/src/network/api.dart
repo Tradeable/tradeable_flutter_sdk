@@ -1,9 +1,12 @@
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
 import 'package:tradeable_flutter_sdk/src/models/course_progress_model.dart';
 import 'package:tradeable_flutter_sdk/src/models/flow_model.dart';
 import 'package:tradeable_flutter_sdk/src/models/courses_model.dart';
 import 'package:tradeable_flutter_sdk/src/models/topic_model.dart';
 import 'package:tradeable_flutter_sdk/src/network/auth_interceptor.dart';
+import 'package:tradeable_flutter_sdk/src/utils/security.dart';
 import 'package:tradeable_flutter_sdk/tradeable_flutter_sdk.dart';
 
 class API {
@@ -50,6 +53,7 @@ class API {
     Response response = await dio.get(
       "/v0/sdk/modules",
     );
+    log(response.toString());
     return (response.data["data"] as List)
         .map((e) => CoursesModel.fromJson(e))
         .toList();
@@ -91,6 +95,13 @@ class API {
       data: {"topicId": topicId, "topicTagId": topicTagId},
     );
 
+    log(response.data.toString());
+    try {
+      String message = decryptData(response.data, TFS().encryptionKey!);
+      log(message);
+    } catch (e) {
+      log(e.toString());
+    }
     return Map<String, String>.from(response.data);
   }
 }
