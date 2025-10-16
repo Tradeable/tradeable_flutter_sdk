@@ -54,7 +54,8 @@ class _TopicListPageState extends State<TopicListPage> {
                 logo: e.logo,
                 progress: e.progress,
                 startFlow: e.startFlow,
-                topicTagId: widget.tagId!))
+                topicContextType: TopicContextType.tag,
+                topicContextId: widget.tagId!))
             .toList();
         _showShimmer = false;
       });
@@ -74,7 +75,8 @@ class _TopicListPageState extends State<TopicListPage> {
               logo: e[i].logo,
               progress: e[i].progress,
               startFlow: e[i].startFlow,
-              topicTagId: tagId));
+              topicContextType: TopicContextType.tag,
+              topicContextId: tagId));
         }
       });
     }

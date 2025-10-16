@@ -15,24 +15,22 @@ class API {
       "/v0/sdk/topics",
       queryParameters: {"topic_tag_id": tagId},
     );
-
-    return (response.data["data"] as List)
+    return (response.data['data'] as List)
         .map((e) => Topic.fromJson(e))
         .toList();
   }
 
-  Future<Topic> fetchTopicById(
-    int topicId,
-    int topicTagId,
-  ) async {
+  Future<Topic> fetchTopicById(int topicId,
+      {int? topicTagId, int? moduleId}) async {
+    Map<String, int> queryParma = {};
+    if (topicTagId != null) queryParma['topic_tag_id'] = topicTagId;
+    if (moduleId != null) queryParma['module_id'] = moduleId;
     Response response = await dio.get(
       "/v0/sdk/topics/$topicId",
-      queryParameters: {
-        "topic_tag_id": topicTagId,
-      },
+      queryParameters: queryParma,
     );
 
-    return Topic.fromJson(response.data["data"]);
+    return Topic.fromJson(response.data['data']);
   }
 
   Future<List<Topic>> fetchRelatedTopics(int tagId, int topicId) async {
@@ -50,7 +48,7 @@ class API {
     Response response = await dio.get(
       "/v0/sdk/modules",
     );
-    return (response.data["data"] as List)
+    return (response.data['data'] as List)
         .map((e) => CoursesModel.fromJson(e))
         .toList();
   }
@@ -59,7 +57,7 @@ class API {
     Response response = await dio.get(
       "/v0/sdk/modules/recent_progress",
     );
-    return (response.data["data"] as List)
+    return (response.data['data'] as List)
         .map((e) => CourseProgressModel.fromJson(e))
         .toList();
   }
@@ -69,28 +67,30 @@ class API {
       "/v0/sdk/modules/$moduleId",
     );
 
-    return CoursesModel.fromJson(response.data["data"]);
+    return CoursesModel.fromJson(response.data['data']);
   }
 
   Future<FlowModel> fetchFlowById(int flowId,
       {int? moduleId, int? topicId, int? topicTagId}) async {
+    Map<String, int> queryParam = {};
+    if (topicId != null) queryParam['topic_id'] = topicId;
+    if (topicTagId != null) queryParam['topic_tag_id'] = topicTagId;
+    if (moduleId != null) queryParam['module_id'] = moduleId;
     Response response =
-        await dio.get("/v0/sdk/flows/$flowId", queryParameters: {
-      "module_id": moduleId,
-      "topic_id": topicId,
-      "topic_tag_id": topicTagId,
-    });
-
-    return FlowModel.fromJson(response.data["data"]);
+        await dio.get("/v0/sdk/flows/$flowId", queryParameters: queryParam);
+    return FlowModel.fromJson(response.data['data']);
   }
 
   Future<Map<String, String>> markFlowAsCompleted(
-      int flowId, int? topicId, int? topicTagId) async {
+      int flowId, int? topicId, int? topicTagId, int? moduleId) async {
+    Map<String, int> queryParam = {};
+    if (topicId != null) queryParam['topicId'] = topicId;
+    if (topicTagId != null) queryParam['topicTagId'] = topicTagId;
+    if (moduleId != null) queryParam['moduleId'] = moduleId;
     final response = await dio.post(
       "/v0/sdk/flows/$flowId/completed",
-      data: {"topicId": topicId, "topicTagId": topicTagId},
+      data: queryParam,
     );
-
     return Map<String, String>.from(response.data);
   }
 }

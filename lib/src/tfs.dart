@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tradeable_flutter_sdk/src/utils/security.dart';
 import 'package:tradeable_flutter_sdk/tradeable_flutter_sdk.dart';
 import 'package:tradeable_learn_widget/tlw.dart';
 
@@ -7,10 +8,13 @@ typedef EventCallback = Function(String, Map<String, dynamic>?);
 
 class TFS {
   late String baseUrl;
+  String? _authorization;
+  String? _authToken;
   String? _token;
   String? _appId;
   String? _clientId;
-  String? _encryptionKey;
+  String? _secretKey;
+  String? _publicKey;
   ThemeData? themeData;
   EventCallback? _onEventCallback;
   TokenExpirationCallback? _tokenExpirationCallback;
@@ -19,14 +23,17 @@ class TFS {
 
   factory TFS() => _instance;
 
+  String? get authorization => _authorization;
+  String? get authToken => _authToken;
   String? get token => _token;
   String? get appId => _appId;
   String? get clientId => _clientId;
-  String? get encryptionKey => _encryptionKey;
+  String? get publicKey => _publicKey;
+  String? get secretKey => _secretKey;
 
   TFS._internal();
 
-  bool get isInitialized => _token != null;
+  bool get isInitialized => _authToken != null;
 
   void initialize({
     required String baseUrl,
@@ -35,6 +42,7 @@ class TFS {
     TokenExpirationCallback? onTokenExpiration,
   }) {
     this.baseUrl = baseUrl;
+    _secretKey = generateSecretKey();
     themeData = theme ?? AppTheme.lightTheme();
     TLW().initialize(themeData: themeData);
 
@@ -48,14 +56,18 @@ class TFS {
   }
 
   void registerApp(
-      {required String token,
+      {required String authorization,
+      required String authToken,
+      required String token,
       required String appId,
       required String clientId,
-      required String encryptionKey}) {
+      required String publicKey}) {
+    _authorization = authorization;
+    _authToken = authToken;
     _token = token;
     _appId = appId;
     _clientId = clientId;
-    _encryptionKey = encryptionKey;
+    _publicKey = publicKey;
   }
 
   Future<void> onTokenExpired() async {

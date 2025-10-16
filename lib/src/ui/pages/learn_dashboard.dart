@@ -76,7 +76,7 @@ class _LearnDashboard extends State<LearnDashboard> {
               Text("Welcome back. Pick up right where you left off!",
                   style: textStyles.smallNormal),
               const SizedBox(height: 20),
-              CustomLinearProgressIndicator(title: 'Overall Progress'),
+              CustomLinearProgressIndicator(title: 'Recent Progress'),
               const SizedBox(height: 20),
               CoursesHorizontalList(),
               const SizedBox(height: 20),

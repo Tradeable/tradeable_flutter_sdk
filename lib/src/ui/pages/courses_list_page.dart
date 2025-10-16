@@ -64,7 +64,7 @@ class _CoursesListScreen extends State<CoursesListPage> {
                   child: Image.asset(
                       "packages/tradeable_flutter_sdk/lib/assets/images/all_courses.png")),
               const SizedBox(height: 20),
-              Text("Welcome Deepak!", style: textStyles.mediumBold),
+              Text("Welcome!", style: textStyles.mediumBold),
               const SizedBox(height: 10),
               isLoading
                   ? Center(child: CircularProgressIndicator())

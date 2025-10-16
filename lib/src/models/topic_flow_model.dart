@@ -2,7 +2,7 @@ import 'package:tradeable_flutter_sdk/src/models/flow_model.dart';
 
 class TopicFlowModel {
   final int topicId;
-  final int topicTagId;
+  final int? topicTagId;
   List<TopicFlowsListModel> userFlowsList;
 
   TopicFlowModel(

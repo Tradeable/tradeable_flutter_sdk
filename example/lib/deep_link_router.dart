@@ -47,7 +47,8 @@ class DeepLinkRouter {
             MaterialPageRoute(
                 builder: (_) => Scaffold(
                     body: SafeArea(
-                        child: WidgetPage(topicId: null, flowId: flowId)))),
+                        child:
+                            WidgetPage(topicUserModel: null, flowId: flowId)))),
           );
         }
         break;
