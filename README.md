@@ -24,6 +24,7 @@ flutter pub upgrade tradeable_flutter_sdk
 ## Initialization
 
 Add this to your main.dart file:
+Where you have to pass authorization, authToken, token, appId, clientId & publicKey
 
 ```dart
 void main() {
@@ -35,7 +36,13 @@ void main() {
       //print("Event triggered : $eventName with data: $data");
     },
     onTokenExpiration: () async {
-      //TFS().registerApp(token: "", appId: "", clientId: "", encryptionKey: "");
+      // TFS().registerApp(
+      //     authorization: "",
+      //     authToken: "",
+      //     token: "",
+      //     appId: "",
+      //     clientId: "",
+      //     publicKey: "");
     });
   runApp(const MyApp());
 }
