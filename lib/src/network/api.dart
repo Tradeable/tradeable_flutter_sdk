@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
@@ -19,9 +20,11 @@ class API {
       queryParameters: {"topic_tag_id": tagId},
     );
 
-    return (response.data["data"] as List)
-        .map((e) => Topic.fromJson(e))
-        .toList();
+    String data =
+        await decryptData(TFS().secretKey!, response.data['data']['payload']);
+    var dataJson = jsonDecode(data);
+
+    return (dataJson["data"] as List).map((e) => Topic.fromJson(e)).toList();
   }
 
   Future<Topic> fetchTopicById(
@@ -34,8 +37,10 @@ class API {
         "topic_tag_id": topicTagId,
       },
     );
-
-    return Topic.fromJson(response.data["data"]);
+    String data =
+        await decryptData(TFS().secretKey!, response.data['data']['payload']);
+    var dataJson = jsonDecode(data);
+    return Topic.fromJson(dataJson["data"]);
   }
 
   Future<List<Topic>> fetchRelatedTopics(int tagId, int topicId) async {
@@ -44,17 +49,20 @@ class API {
       queryParameters: {"topicTagId": tagId},
     );
 
-    return (response.data["data"] as List)
-        .map((e) => Topic.fromJson(e))
-        .toList();
+    String data =
+        await decryptData(TFS().secretKey!, response.data['data']['payload']);
+    var dataJson = jsonDecode(data);
+    return (dataJson["data"] as List).map((e) => Topic.fromJson(e)).toList();
   }
 
   Future<List<CoursesModel>> getModules() async {
     Response response = await dio.get(
       "/v0/sdk/modules",
     );
-    log(response.toString());
-    return (response.data["data"] as List)
+    String data =
+        await decryptData(TFS().secretKey!, response.data['data']['payload']);
+    var dataJson = jsonDecode(data);
+    return (dataJson['data'] as List)
         .map((e) => CoursesModel.fromJson(e))
         .toList();
   }
@@ -63,7 +71,10 @@ class API {
     Response response = await dio.get(
       "/v0/sdk/modules/recent_progress",
     );
-    return (response.data["data"] as List)
+    String data =
+        await decryptData(TFS().secretKey!, response.data['data']['payload']);
+    var dataJson = jsonDecode(data);
+    return (dataJson["data"] as List)
         .map((e) => CourseProgressModel.fromJson(e))
         .toList();
   }
@@ -73,7 +84,10 @@ class API {
       "/v0/sdk/modules/$moduleId",
     );
 
-    return CoursesModel.fromJson(response.data["data"]);
+    String data =
+        await decryptData(TFS().secretKey!, response.data['data']['payload']);
+    var dataJson = jsonDecode(data);
+    return CoursesModel.fromJson(dataJson["data"]);
   }
 
   Future<FlowModel> fetchFlowById(int flowId,
@@ -85,7 +99,10 @@ class API {
       "topic_tag_id": topicTagId,
     });
 
-    return FlowModel.fromJson(response.data["data"]);
+    String data =
+        await decryptData(TFS().secretKey!, response.data['data']['payload']);
+    var dataJson = jsonDecode(data);
+    return FlowModel.fromJson(dataJson["data"]);
   }
 
   Future<Map<String, String>> markFlowAsCompleted(
@@ -95,13 +112,10 @@ class API {
       data: {"topicId": topicId, "topicTagId": topicTagId},
     );
 
-    log(response.data.toString());
-    try {
-      String message = decryptData(response.data, TFS().encryptionKey!);
-      log(message);
-    } catch (e) {
-      log(e.toString());
-    }
-    return Map<String, String>.from(response.data);
+    String data =
+        await decryptData(TFS().secretKey!, response.data['data']['payload']);
+    var dataJson = jsonDecode(data);
+    log(dataJson.toString());
+    return Map<String, String>.from(dataJson);
   }
 }

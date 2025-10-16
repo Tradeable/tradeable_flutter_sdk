@@ -75,12 +75,12 @@ class TopicTile extends StatelessWidget {
                       fit: BoxFit.cover,
                       width: 64,
                       height: 64,
-                      errorBuilder: (context, error, stackTrace) => Image.asset(
-                        "assets/images/default_module_icon.png",
-                        package: 'tradeable_flutter_sdk/lib',
-                        height: 64,
-                        width: 64,
-                      ),
+                      // errorBuilder: (context, error, stackTrace) => Image.asset(
+                      //   "assets/images/default_module_icon.png",
+                      //   package: 'tradeable_flutter_sdk/lib',
+                      //   height: 64,
+                      //   width: 64,
+                      // ),
                     )
                   : Image.asset(
                       "assets/images/default_module_icon.png",

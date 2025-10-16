@@ -24,6 +24,9 @@ dependencies:
   encrypt: ^5.0.3
   crypto: ^3.0.6
   pointycastle: ^3.9.1
+  cryptography: ^2.7.0
+  basic_utils: ^5.7.0
+  asn1lib: ^1.6.5
 
 dev_dependencies:
   flutter_test:

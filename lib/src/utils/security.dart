@@ -1,113 +1,140 @@
 import 'dart:convert';
+import 'dart:math';
 import 'dart:typed_data';
-import 'package:encrypt/encrypt.dart';
-import 'package:crypto/crypto.dart';
-import 'package:pointycastle/asymmetric/api.dart' as pc;
+import 'package:pointycastle/export.dart' hide Mac;
+import 'package:asn1lib/asn1lib.dart';
+import 'package:cryptography/cryptography.dart';
 
-String encryptData(dynamic data, String secretKey) {
-  try {
-    if (data == null) {
-      return encryptData('null', secretKey);
-    }
+Future<String> encryptAes(String secretKey, String payload) async {
+  // Convert secret key and payload to bytes
+  List<int> secretKeyBytes = utf8.encode(secretKey);
+  List<int> payloadBytes = utf8.encode(payload);
 
-    // Convert data to JSON string if it's not already a string
-    final payload = data is String ? data : jsonEncode(data);
+  // Create AES-GCM cipher
+  final algorithm = AesGcm.with256bits();
 
-    // Derive a proper 256-bit key from the secret key using SHA-256
-    final keyBytes = sha256.convert(utf8.encode(secretKey)).bytes;
-    final key = Key(Uint8List.fromList(keyBytes));
+  // Create SecretKey
+  final secretKeyObj = SecretKey(secretKeyBytes);
 
-    // Create encrypter with GCM mode
-    final encrypter = Encrypter(AES(key, mode: AESMode.gcm));
+  final nonce = List<int>.generate(16, (i) => Random.secure().nextInt(256));
 
-    // Generate random nonce (IV)
-    final iv = IV.fromSecureRandom(16);
+  // Encrypt and generate authentication tag
+  final secretBox = await algorithm.encrypt(
+    payloadBytes,
+    secretKey: secretKeyObj,
+    nonce: nonce,
+  );
 
-    // Encrypt the payload
-    final encrypted = encrypter.encrypt(payload, iv: iv);
+  // Extract nonce, tag (MAC), and ciphertext
+  List<int> nonceUsed = secretBox.nonce;
+  // List<int> nonce = secretBox.nonce;
+  // print(nonce.length);
+  List<int> tag = secretBox.mac.bytes;
+  List<int> ciphertext = secretBox.cipherText;
 
-    // Get the authentication tag (last 16 bytes of encrypted.bytes in GCM)
-    final ciphertext = encrypted.bytes.sublist(0, encrypted.bytes.length - 16);
-    final tag = encrypted.bytes.sublist(encrypted.bytes.length - 16);
+  // Encode to base64
+  String encodedNonce = base64.encode(nonceUsed);
+  String encodedTag = base64.encode(tag);
+  String encodedCiphertext = base64.encode(ciphertext);
 
-    // Encode nonce, tag, and ciphertext as base64
-    final encodedNonce = base64Encode(iv.bytes);
-    final encodedTag = base64Encode(tag);
-    final encodedCiphertext = base64Encode(ciphertext);
-
-    // Return in format: nonce.tag.ciphertext
-    return '$encodedNonce.$encodedTag.$encodedCiphertext';
-  } catch (e) {
-    throw Exception('Encryption failed: $e');
-  }
+  // Return formatted string
+  return '$encodedNonce.$encodedTag.$encodedCiphertext';
 }
 
 /// Decrypts data from format "nonce.tag.ciphertext" and returns dynamic data
-dynamic decryptData(String encryptedData, String secretKey) {
-  try {
-    // Split the encrypted data by '.'
-    final parts = encryptedData.split('.');
-    if (parts.length != 3) {
-      throw Exception(
-          'Invalid encrypted data format. Expected: nonce.tag.ciphertext');
-    }
+Future<String> decryptData(String secretKey, String encodedPayload) async {
+  // Convert secret key to bytes
+  List<int> secretKeyBytes = utf8.encode(secretKey);
 
-    // Decode base64 parts
-    final nonce = base64Decode(parts[0]);
-    final tag = base64Decode(parts[1]);
-    final ciphertext = base64Decode(parts[2]);
+  // Split the encoded payload
+  List<String> parts = encodedPayload.split('.');
+  String encodedNonce = parts[0];
+  String encodedTag = parts[1];
+  String encodedCiphertext = parts[2];
 
-    // Combine ciphertext and tag (GCM expects them together)
-    final combinedBytes = Uint8List.fromList([...ciphertext, ...tag]);
+  // Decode from base64
+  List<int> nonce = base64.decode(encodedNonce);
+  List<int> tag = base64.decode(encodedTag);
+  List<int> ciphertext = base64.decode(encodedCiphertext);
 
-    // Derive a proper 256-bit key from the secret key using SHA-256
-    final keyBytes = sha256.convert(utf8.encode(secretKey)).bytes;
-    final key = Key(Uint8List.fromList(keyBytes));
+  // Create AES-GCM cipher
+  final algorithm = AesGcm.with256bits();
 
-    // Create encrypter with GCM mode
-    final encrypter = Encrypter(AES(key, mode: AESMode.gcm));
+  // Create SecretKey
+  final secretKeyObj = SecretKey(secretKeyBytes);
 
-    // Create IV from nonce
-    final iv = IV(Uint8List.fromList(nonce));
+  // Create SecretBox (ciphertext + MAC/tag combined)
+  final secretBox = SecretBox(
+    ciphertext,
+    nonce: nonce,
+    mac: Mac(tag),
+  );
 
-    // Decrypt
-    final decrypted = encrypter.decrypt(
-      Encrypted(combinedBytes),
-      iv: iv,
-    );
+  // Decrypt and verify
+  final decryptedBytes = await algorithm.decrypt(
+    secretBox,
+    secretKey: secretKeyObj,
+  );
 
-    // Handle null case
-    if (decrypted == 'null') {
-      return null;
-    }
+  // Convert to string
+  String decryptedPayload = utf8.decode(decryptedBytes);
 
-    // Try to parse as JSON and return as dynamic
-    try {
-      return jsonDecode(decrypted);
-    } catch (_) {
-      // If not JSON, return as string
-      return decrypted;
-    }
-  } catch (e) {
-    throw Exception('Decryption failed: $e');
-  }
+  return decryptedPayload;
+}
+
+String generateSecretKey() {
+  String secretKey = List.generate(16, (_) => Random.secure().nextInt(256))
+      .map((byte) => byte.toRadixString(16).padLeft(2, '0'))
+      .join();
+  return secretKey;
+}
+
+RSAPublicKey parsePublicKey(String pemString) {
+  // Remove PEM header/footer and decode base64
+  final pem = pemString
+      .replaceAll('-----BEGIN PUBLIC KEY-----', '')
+      .replaceAll('-----END PUBLIC KEY-----', '')
+      .replaceAll('\n', '')
+      .replaceAll('\r', '')
+      .trim();
+
+  final bytes = base64.decode(pem);
+
+  // Parse ASN1 structure
+  final asn1Parser = ASN1Parser(bytes);
+  final topLevelSeq = asn1Parser.nextObject() as ASN1Sequence;
+  final publicKeyBitString = topLevelSeq.elements[1] as ASN1BitString;
+
+  final publicKeyAsn = ASN1Parser(publicKeyBitString.contentBytes());
+  final publicKeySeq = publicKeyAsn.nextObject() as ASN1Sequence;
+
+  final modulus = (publicKeySeq.elements[0] as ASN1Integer).valueAsBigInteger;
+  final exponent = (publicKeySeq.elements[1] as ASN1Integer).valueAsBigInteger;
+
+  return RSAPublicKey(modulus, exponent);
 }
 
 String encryptRsa(String secretKey, String publicKey) {
-  // Convert public key to PEM format
-  String pemString =
-      "-----BEGIN PUBLIC KEY-----\n$publicKey\n-----END PUBLIC KEY-----";
+  // Format the PEM string
+  final pemString =
+      '-----BEGIN PUBLIC KEY-----\n$publicKey\n-----END PUBLIC KEY-----';
 
   // Parse the public key
-  final parser = RSAKeyParser();
-  final rsaPublicKey = parser.parse(pemString) as pc.RSAPublicKey;
+  final rsaPublicKey = parsePublicKey(pemString);
 
-  // Create encrypter with OAEP padding
-  final encrypter = Encrypter(RSA(
-    publicKey: rsaPublicKey,
-    encoding: RSAEncoding.OAEP,
-  ));
+  // Create cipher with OAEP padding and SHA-256
+  final cipher = OAEPEncoding.withSHA256(RSAEngine())
+    ..init(
+      true, // true for encryption
+      PublicKeyParameter<RSAPublicKey>(rsaPublicKey),
+    );
 
-  // Encrypt and return base64
-  return encrypter.encrypt(secretKey).base64;
+  // Encrypt the secret key
+  final plainBytes = Uint8List.fromList(utf8.encode(secretKey));
+  final encryptedBytes = cipher.process(plainBytes);
+
+  // Encode to base64
+  final encodedPayload = base64.encode(encryptedBytes);
+
+  return encodedPayload;
 }
