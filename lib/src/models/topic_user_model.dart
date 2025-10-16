@@ -3,6 +3,8 @@ import 'dart:ui';
 import 'package:tradeable_flutter_sdk/src/models/flow_model.dart';
 import 'package:tradeable_flutter_sdk/src/models/topic_model.dart';
 
+enum TopicContextType { tag, course }
+
 class TopicUserModel {
   final int topicId;
   final String name;
@@ -10,7 +12,8 @@ class TopicUserModel {
   final Logo logo;
   Progress progress;
   int? startFlow;
-  final int topicTagId;
+  TopicContextType? topicContextType;
+  int? topicContextId;
   Color? cardColor;
 
   TopicUserModel(
@@ -20,7 +23,8 @@ class TopicUserModel {
       required this.logo,
       required this.progress,
       this.startFlow,
-      required this.topicTagId,
+      this.topicContextType,
+      this.topicContextId,
       this.cardColor});
 
   factory TopicUserModel.fromTopic(Topic topic) {
@@ -31,7 +35,6 @@ class TopicUserModel {
       logo: topic.logo,
       progress: topic.progress,
       startFlow: topic.startFlow,
-      topicTagId: 33,
     );
   }
 
@@ -42,7 +45,8 @@ class TopicUserModel {
     Logo? logo,
     Progress? progress,
     int? startFlow,
-    int? topicTagId,
+    TopicContextType? topicContextType,
+    int? topicContextId,
     Color? cardColor,
   }) {
     return TopicUserModel(
@@ -52,7 +56,8 @@ class TopicUserModel {
         logo: logo ?? this.logo,
         progress: progress ?? this.progress,
         startFlow: startFlow ?? this.startFlow,
-        topicTagId: topicTagId ?? this.topicTagId,
+        topicContextType: topicContextType ?? this.topicContextType,
+        topicContextId: topicContextId ?? this.topicContextId,
         cardColor: cardColor);
   }
 }

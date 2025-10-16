@@ -10,6 +10,8 @@ class AuthInterceptor extends Interceptor {
   void onRequest(
       RequestOptions options, RequestInterceptorHandler handler) async {
     final authToken = TFS().authToken;
+    // log('Token: ${TFS().token}',
+    //     name: "Auth Interceptor from Request ${TFS().token}");
     if (authToken != null) {
       options.headers['Authorization'] = TFS().authorization ?? '';
       options.headers['x-api-client-id'] = TFS().appId ?? '';
@@ -30,27 +32,20 @@ class AuthInterceptor extends Interceptor {
             options.method == 'PATCH')) {
       if (options.data != null) {
         try {
-          log(TFS().secretKey ?? '');
-          log(options.data.toString());
-          log(jsonEncode(options.data));
           String encryptedData = await encryptAes(
             TFS().secretKey ?? '',
             jsonEncode(options.data),
           );
-          String decryptedData =
-              await decryptData(TFS().secretKey ?? '', encryptedData);
-          log('Decrypted data: $decryptedData');
           options.data = {'payload': encryptedData};
-          log(options.data.toString());
-          log('Encrypted request body: $encryptedData');
+          // log('Encrypted request body: $encryptedData');
         } catch (e) {
-          log('Failed to encrypt request body: $e');
+          // log('Failed to encrypt request body: $e');
         }
       }
     }
-    log('...',
-        name:
-            "Auth Interceptor from Request ${options.baseUrl}${options.path}");
+    // log('...',
+    //     name:
+    //         "Auth Interceptor from Request ${options.baseUrl}${options.path}");
     super.onRequest(options, handler);
   }
 
@@ -93,14 +88,18 @@ class AuthInterceptor extends Interceptor {
       // Retry the request
       try {
         final dio = Dio();
-        log('...',
-            name:
-                "Auth Interceptor from Retry ${requestOptions.baseUrl}${requestOptions.path}");
+        // log('...',
+        //     name:
+        //         "Auth Interceptor from Retry ${requestOptions.baseUrl}${requestOptions.path}");
         final response = await dio.fetch(requestOptions);
+        String data = await decryptData(
+            TFS().secretKey!, response.data['data']['payload']);
+        var dataJson = jsonDecode(data);
+        response.data = dataJson;
         handler.resolve(response);
       } catch (e) {
-        log((e as DioException).response.toString(),
-            name: "Auth Interceptor from Retry");
+        // log((e as DioException).response.toString(),
+        //     name: "Auth Interceptor from Retry");
         handler.next(DioException(requestOptions: requestOptions, error: e));
       }
     } else {
@@ -112,8 +111,11 @@ class AuthInterceptor extends Interceptor {
   }
 
   @override
-  void onResponse(Response response, ResponseInterceptorHandler handler) {
-    // TODO: implement onResponse
+  void onResponse(Response response, ResponseInterceptorHandler handler) async {
+    String data =
+        await decryptData(TFS().secretKey!, response.data['data']['payload']);
+    var dataJson = jsonDecode(data);
+    response.data = dataJson;
     super.onResponse(response, handler);
   }
 }

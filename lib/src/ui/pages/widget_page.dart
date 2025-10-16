@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tradeable_flutter_sdk/src/models/topic_user_model.dart';
 import 'package:tradeable_flutter_sdk/src/models/user_widgets_model.dart';
 import 'package:tradeable_flutter_sdk/src/network/api.dart';
 import 'package:tradeable_learn_widget/buy_sell_widget/buy_sell.dart';
@@ -9,13 +10,13 @@ import 'package:tradeable_learn_widget/tradeable_learn_widget.dart';
 import 'package:tradeable_learn_widget/user_story_widget/models/user_story_model.dart';
 
 class WidgetPage extends StatefulWidget {
-  final int? topicId;
   final int flowId;
+  final TopicUserModel? topicUserModel;
   final VoidCallback? onMenuClick;
 
   const WidgetPage(
       {super.key,
-      required this.topicId,
+      required this.topicUserModel,
       required this.flowId,
       this.onMenuClick});
 
@@ -54,7 +55,20 @@ class _WidgetPageState extends State<WidgetPage> {
       widgets = [];
       fetchingData = true;
     });
-    await API().fetchFlowById(flowId, topicId: widget.topicId).then((val) {
+    await API()
+        .fetchFlowById(
+      flowId,
+      topicId: widget.topicUserModel?.topicId,
+      moduleId: widget.topicUserModel?.topicContextType != null &&
+              widget.topicUserModel?.topicContextType == TopicContextType.course
+          ? widget.topicUserModel?.topicContextId
+          : null,
+      topicTagId: widget.topicUserModel?.topicContextType != null &&
+              widget.topicUserModel?.topicContextType == TopicContextType.tag
+          ? widget.topicUserModel?.topicContextId
+          : null,
+    )
+        .then((val) {
       setState(() {
         widgets = (val.widgets ?? [])
             .map((e) => WidgetsModel(data: e.data, modelType: e.modelType))

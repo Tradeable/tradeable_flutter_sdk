@@ -37,8 +37,7 @@ class _FlowsList extends State<FlowsList> {
   }
 
   void getTopicById() async {
-    final val = await API()
-        .fetchTopicById(widget.flowModel.topicId, widget.flowModel.topicTagId);
+    final val = await API().fetchTopicById(widget.flowModel.topicId);
     final fetchedFlows = (val.flows
             ?.map((e) => TopicFlowsListModel(
                   name: e.name ?? "",

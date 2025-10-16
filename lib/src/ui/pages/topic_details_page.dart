@@ -50,7 +50,7 @@ class _TopicDetailPageState extends State<TopicDetailPage> {
     setState(() {
       _loading = true;
     });
-    final topic = await API().fetchTopicById(widget.topicId!, 33);
+    final topic = await API().fetchTopicById(widget.topicId!);
     _topicUserModel = TopicUserModel.fromTopic(topic);
     flowId = _topicUserModel!.startFlow;
     if (flowId == null) {
@@ -63,8 +63,15 @@ class _TopicDetailPageState extends State<TopicDetailPage> {
 
   Future<void> getFlows() async {
     if (_topicUserModel == null) return;
-    final val = await API()
-        .fetchTopicById(_topicUserModel!.topicId, _topicUserModel!.topicTagId);
+    final val = await API().fetchTopicById(_topicUserModel!.topicId,
+        topicTagId: _topicUserModel!.topicContextType != null &&
+                _topicUserModel!.topicContextType == TopicContextType.tag
+            ? _topicUserModel!.topicContextId
+            : null,
+        moduleId: _topicUserModel!.topicContextType != null &&
+                _topicUserModel!.topicContextType == TopicContextType.course
+            ? _topicUserModel!.topicContextId
+            : null);
     setState(() {
       flowId ??= val.flows!.first.id;
       completedFlows = (val.flows ?? []).where((f) => f.isCompleted).length;
@@ -94,7 +101,7 @@ class _TopicDetailPageState extends State<TopicDetailPage> {
         appBar: renderAppBar(),
         body: SafeArea(
           child: WidgetPage(
-              topicId: _topicUserModel!.topicId,
+              topicUserModel: _topicUserModel,
               flowId: flowId ?? -1,
               onMenuClick: () {
                 updateFlowComplete();
@@ -246,10 +253,14 @@ class _TopicDetailPageState extends State<TopicDetailPage> {
   void updateFlowComplete() async {
     await API()
         .markFlowAsCompleted(
-      flowId ?? 0,
-      _topicUserModel?.topicId,
-      _topicUserModel?.topicTagId,
-    )
+            flowId ?? 0,
+            _topicUserModel?.topicId,
+            _topicUserModel?.topicContextType == TopicContextType.tag
+                ? _topicUserModel?.topicContextId
+                : null,
+            _topicUserModel?.topicContextType == TopicContextType.course
+                ? _topicUserModel?.topicContextId
+                : null)
         .then((val) {
       getFlows();
     });

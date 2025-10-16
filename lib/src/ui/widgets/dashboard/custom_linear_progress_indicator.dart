@@ -67,9 +67,9 @@ class _CustomLinearProgressIndicator
           Row(
             children: [
               Text(widget.title, style: textStyles.mediumBold),
-              Spacer(),
-              Text("${_getOverallProgress().toStringAsFixed(2)}%",
-                  style: textStyles.mediumBold)
+              // Spacer(),
+              // Text("${_getOverallProgress().toStringAsFixed(2)}%",
+              //     style: textStyles.mediumBold)
             ],
           ),
           const SizedBox(height: 20),
@@ -81,11 +81,11 @@ class _CustomLinearProgressIndicator
     );
   }
 
-  double _getOverallProgress() {
-    if (progressItems.isEmpty) return 0;
-    double total = progressItems.fold(0, (sum, item) => sum + item.progress);
-    return total / progressItems.length;
-  }
+  // double _getOverallProgress() {
+  //   if (progressItems.isEmpty) return 0;
+  //   double total = progressItems.fold(0, (sum, item) => sum + item.progress);
+  //   return total / progressItems.length;
+  // }
 
   Widget _buildDefaultLayout(BuildContext context) {
     return Column(
@@ -137,7 +137,7 @@ class _CustomLinearProgressIndicator
             child: ClipRRect(
               borderRadius: BorderRadius.circular(10),
               child: LinearProgressIndicator(
-                value: item.progress / 100,
+                value: item.progress,
                 backgroundColor: colors.cardColorSecondary,
                 valueColor: AlwaysStoppedAnimation<Color>(item.color),
                 minHeight: 20,
@@ -151,7 +151,7 @@ class _CustomLinearProgressIndicator
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Text(
-                  '${item.progress.toStringAsFixed(2)}%',
+                  '${(item.progress * 100).toStringAsFixed(0)}%',
                   style: textStyles.smallBold,
                 ),
                 AutoSizeText(

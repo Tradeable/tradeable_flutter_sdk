@@ -67,7 +67,8 @@ class _CourseDetailsScreen extends State<CourseDetailsPage> {
                                     description: item.description,
                                     logo: item.logo,
                                     progress: item.progress,
-                                    topicTagId: coursesModel!.id))));
+                                    topicContextType: TopicContextType.course,
+                                    topicContextId: coursesModel!.id))));
                       },
                       child: Container(
                         padding: const EdgeInsets.all(10),

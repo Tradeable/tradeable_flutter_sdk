@@ -61,7 +61,8 @@ class TopicProgressList extends StatelessWidget {
                             description: topic.description,
                             logo: topic.logo,
                             progress: topic.progress,
-                            topicTagId: courseId))));
+                            topicContextType: TopicContextType.course,
+                            topicContextId: courseId))));
               },
               child: Row(
                 children: [

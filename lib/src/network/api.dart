@@ -1,13 +1,9 @@
-import 'dart:convert';
-import 'dart:developer';
-
 import 'package:dio/dio.dart';
 import 'package:tradeable_flutter_sdk/src/models/course_progress_model.dart';
 import 'package:tradeable_flutter_sdk/src/models/flow_model.dart';
 import 'package:tradeable_flutter_sdk/src/models/courses_model.dart';
 import 'package:tradeable_flutter_sdk/src/models/topic_model.dart';
 import 'package:tradeable_flutter_sdk/src/network/auth_interceptor.dart';
-import 'package:tradeable_flutter_sdk/src/utils/security.dart';
 import 'package:tradeable_flutter_sdk/tradeable_flutter_sdk.dart';
 
 class API {
@@ -19,28 +15,22 @@ class API {
       "/v0/sdk/topics",
       queryParameters: {"topic_tag_id": tagId},
     );
-
-    String data =
-        await decryptData(TFS().secretKey!, response.data['data']['payload']);
-    var dataJson = jsonDecode(data);
-
-    return (dataJson["data"] as List).map((e) => Topic.fromJson(e)).toList();
+    return (response.data['data'] as List)
+        .map((e) => Topic.fromJson(e))
+        .toList();
   }
 
-  Future<Topic> fetchTopicById(
-    int topicId,
-    int topicTagId,
-  ) async {
+  Future<Topic> fetchTopicById(int topicId,
+      {int? topicTagId, int? moduleId}) async {
+    Map<String, int> queryParma = {};
+    if (topicTagId != null) queryParma['topic_tag_id'] = topicTagId;
+    if (moduleId != null) queryParma['module_id'] = moduleId;
     Response response = await dio.get(
       "/v0/sdk/topics/$topicId",
-      queryParameters: {
-        "topic_tag_id": topicTagId,
-      },
+      queryParameters: queryParma,
     );
-    String data =
-        await decryptData(TFS().secretKey!, response.data['data']['payload']);
-    var dataJson = jsonDecode(data);
-    return Topic.fromJson(dataJson["data"]);
+
+    return Topic.fromJson(response.data['data']);
   }
 
   Future<List<Topic>> fetchRelatedTopics(int tagId, int topicId) async {
@@ -49,20 +39,16 @@ class API {
       queryParameters: {"topicTagId": tagId},
     );
 
-    String data =
-        await decryptData(TFS().secretKey!, response.data['data']['payload']);
-    var dataJson = jsonDecode(data);
-    return (dataJson["data"] as List).map((e) => Topic.fromJson(e)).toList();
+    return (response.data["data"] as List)
+        .map((e) => Topic.fromJson(e))
+        .toList();
   }
 
   Future<List<CoursesModel>> getModules() async {
     Response response = await dio.get(
       "/v0/sdk/modules",
     );
-    String data =
-        await decryptData(TFS().secretKey!, response.data['data']['payload']);
-    var dataJson = jsonDecode(data);
-    return (dataJson['data'] as List)
+    return (response.data['data'] as List)
         .map((e) => CoursesModel.fromJson(e))
         .toList();
   }
@@ -71,10 +57,7 @@ class API {
     Response response = await dio.get(
       "/v0/sdk/modules/recent_progress",
     );
-    String data =
-        await decryptData(TFS().secretKey!, response.data['data']['payload']);
-    var dataJson = jsonDecode(data);
-    return (dataJson["data"] as List)
+    return (response.data['data'] as List)
         .map((e) => CourseProgressModel.fromJson(e))
         .toList();
   }
@@ -84,38 +67,30 @@ class API {
       "/v0/sdk/modules/$moduleId",
     );
 
-    String data =
-        await decryptData(TFS().secretKey!, response.data['data']['payload']);
-    var dataJson = jsonDecode(data);
-    return CoursesModel.fromJson(dataJson["data"]);
+    return CoursesModel.fromJson(response.data['data']);
   }
 
   Future<FlowModel> fetchFlowById(int flowId,
       {int? moduleId, int? topicId, int? topicTagId}) async {
+    Map<String, int> queryParam = {};
+    if (topicId != null) queryParam['topic_id'] = topicId;
+    if (topicTagId != null) queryParam['topic_tag_id'] = topicTagId;
+    if (moduleId != null) queryParam['module_id'] = moduleId;
     Response response =
-        await dio.get("/v0/sdk/flows/$flowId", queryParameters: {
-      "module_id": moduleId,
-      "topic_id": topicId,
-      "topic_tag_id": topicTagId,
-    });
-
-    String data =
-        await decryptData(TFS().secretKey!, response.data['data']['payload']);
-    var dataJson = jsonDecode(data);
-    return FlowModel.fromJson(dataJson["data"]);
+        await dio.get("/v0/sdk/flows/$flowId", queryParameters: queryParam);
+    return FlowModel.fromJson(response.data['data']);
   }
 
   Future<Map<String, String>> markFlowAsCompleted(
-      int flowId, int? topicId, int? topicTagId) async {
+      int flowId, int? topicId, int? topicTagId, int? moduleId) async {
+    Map<String, int> queryParam = {};
+    if (topicId != null) queryParam['topicId'] = topicId;
+    if (topicTagId != null) queryParam['topicTagId'] = topicTagId;
+    if (moduleId != null) queryParam['moduleId'] = moduleId;
     final response = await dio.post(
       "/v0/sdk/flows/$flowId/completed",
-      data: {"topicId": topicId, "topicTagId": topicTagId},
+      data: queryParam,
     );
-
-    String data =
-        await decryptData(TFS().secretKey!, response.data['data']['payload']);
-    var dataJson = jsonDecode(data);
-    log(dataJson.toString());
-    return Map<String, String>.from(dataJson);
+    return Map<String, String>.from(response.data);
   }
 }
