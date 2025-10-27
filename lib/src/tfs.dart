@@ -9,8 +9,7 @@ typedef EventCallback = Function(String, Map<String, dynamic>?);
 class TFS {
   late String baseUrl;
   String? _authorization;
-  String? _authToken;
-  String? _token;
+  String? _portalToken;
   String? _appId;
   String? _clientId;
   String? _secretKey;
@@ -24,8 +23,7 @@ class TFS {
   factory TFS() => _instance;
 
   String? get authorization => _authorization;
-  String? get authToken => _authToken;
-  String? get token => _token;
+  String? get portalToken => _portalToken;
   String? get appId => _appId;
   String? get clientId => _clientId;
   String? get publicKey => _publicKey;
@@ -33,7 +31,7 @@ class TFS {
 
   TFS._internal();
 
-  bool get isInitialized => _authToken != null;
+  bool get isInitialized => _portalToken != null;
 
   void initialize({
     required String baseUrl,
@@ -57,14 +55,12 @@ class TFS {
 
   void registerApp(
       {required String authorization,
-      required String authToken,
-      required String token,
+      required String portalToken,
       required String appId,
       required String clientId,
       required String publicKey}) {
     _authorization = authorization;
-    _authToken = authToken;
-    _token = token;
+    _portalToken = portalToken;
     _appId = appId;
     _clientId = clientId;
     _publicKey = publicKey;

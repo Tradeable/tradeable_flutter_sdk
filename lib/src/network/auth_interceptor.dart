@@ -9,17 +9,15 @@ class AuthInterceptor extends Interceptor {
   @override
   void onRequest(
       RequestOptions options, RequestInterceptorHandler handler) async {
-    final authToken = TFS().authToken;
-    // log('Token: ${TFS().token}',
-    //     name: "Auth Interceptor from Request ${TFS().token}");
-    if (authToken != null) {
+    final portalToken = TFS().portalToken;
+    if (portalToken != null) {
       options.headers['Authorization'] = TFS().authorization ?? '';
       options.headers['x-api-client-id'] = TFS().appId ?? '';
       options.headers['x-subAccountID'] = TFS().clientId ?? '';
-      options.headers['x-authtoken'] = TFS().authToken ?? '';
+      options.headers['x-aslToken'] = TFS().portalToken ?? '';
       options.headers['x-api-encryption-key'] =
           encryptRsa(TFS().secretKey ?? "", TFS().publicKey ?? "");
-      options.headers['x-axis-token'] = TFS().token ?? '';
+      options.headers['x-axis-token'] = TFS().portalToken ?? '';
       options.headers['x-axis-app-id'] = TFS().appId ?? '';
       options.headers['x-axis-client-id'] = TFS().clientId ?? '';
       options.headers['Content-Type'] = 'application/json';
@@ -72,14 +70,14 @@ class AuthInterceptor extends Interceptor {
 
   Future<void> _retryWithNewToken(
       RequestOptions requestOptions, ErrorInterceptorHandler handler) async {
-    if (TFS().authToken != null) {
+    if (TFS().portalToken != null) {
       requestOptions.headers['Authorization'] = TFS().authorization ?? '';
       requestOptions.headers['x-api-client-id'] = TFS().appId ?? '';
       requestOptions.headers['x-subAccountID'] = TFS().clientId ?? '';
-      requestOptions.headers['x-authtoken'] = TFS().authToken ?? '';
+      requestOptions.headers['x-aslToken'] = TFS().portalToken ?? '';
       requestOptions.headers['x-api-encryption-key'] =
           encryptRsa(TFS().secretKey ?? "", TFS().publicKey ?? "");
-      requestOptions.headers['x-axis-token'] = TFS().token ?? '';
+      requestOptions.headers['x-axis-token'] = TFS().portalToken ?? '';
       requestOptions.headers['x-axis-app-id'] = TFS().appId ?? '';
       requestOptions.headers['x-axis-client-id'] = TFS().clientId ?? '';
       requestOptions.headers['Content-Type'] = 'application/json';

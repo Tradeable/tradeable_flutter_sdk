@@ -18,8 +18,7 @@ void main() {
     onTokenExpiration: () async {
       // TFS().registerApp(
       //     authorization: "",
-      //     authToken: "",
-      //     token: "",
+      //     portalToken: "",
       //     appId: "",
       //     clientId: "",
       //     publicKey: "");
