@@ -16,7 +16,12 @@ void main() {
       //print("Event triggered : $eventName with data: $data");
     },
     onTokenExpiration: () async {
-      //TFS().registerApp(token: "", appId: "", clientId: "", encryptionKey: "");
+      // TFS().registerApp(
+      //     authorization: "",
+      //     portalToken: "",
+      //     appId: "",
+      //     clientId: "",
+      //     publicKey: "");
     },
   );
   runApp(const MyApp());
