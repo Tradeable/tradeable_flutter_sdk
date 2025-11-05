@@ -92,6 +92,12 @@ class ThemeColors {
   final Color dropdownIconColor;
   final Color editProfileTextColor;
   final Color iconColor;
+  final Color neutralColor;
+  final Color alertSuccess;
+  final Color alertVariable;
+  final Color neutral_2;
+  final Color dataVis1;
+  final Color dataVis2;
 
   ThemeColors(
       {required this.primary,
@@ -139,7 +145,13 @@ class ThemeColors {
       required this.gradientEndColor,
       required this.dropdownIconColor,
       required this.editProfileTextColor,
-      required this.iconColor});
+      required this.iconColor,
+      required this.neutralColor,
+      required this.alertSuccess,
+      required this.alertVariable,
+      required this.neutral_2,
+      required this.dataVis1,
+      required this.dataVis2});
 
   // Light theme colors factory
   static ThemeColors light() {
@@ -189,7 +201,13 @@ class ThemeColors {
         gradientEndColor: const Color(0xff000000),
         dropdownIconColor: const Color(0xffeef3d4),
         editProfileTextColor: const Color(0xffED1164),
-        iconColor: const Color(0xff282828));
+        iconColor: const Color(0xff282828),
+        neutralColor: const Color(0xffF4EBF9),
+        alertSuccess: const Color(0xff278829),
+        alertVariable: const Color(0xff145599),
+        neutral_2: const Color(0xffEBF9F8),
+        dataVis1: const Color(0xffC578D3),
+        dataVis2: const Color(0xffD87D23));
   }
 
   // Dark theme colors factory
@@ -240,7 +258,13 @@ class ThemeColors {
         gradientEndColor: const Color(0xffffffff),
         dropdownIconColor: const Color(0xffeef3d4),
         editProfileTextColor: const Color(0xffED1164),
-        iconColor: const Color(0xff282828));
+        iconColor: const Color(0xff282828),
+        neutralColor: const Color(0xffF4EBF9),
+        alertSuccess: const Color(0xff278829),
+        alertVariable: const Color(0xff145599),
+        neutral_2: const Color(0xffEBF9F8),
+        dataVis1: const Color(0xffC578D3),
+        dataVis2: const Color(0xffD87D23));
   }
 }
 

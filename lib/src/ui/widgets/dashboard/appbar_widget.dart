@@ -4,18 +4,17 @@ import 'package:tradeable_flutter_sdk/src/utils/app_theme.dart';
 
 class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
   final String title;
+  final Color color;
 
-  const AppBarWidget({super.key, required this.title});
+  const AppBarWidget({super.key, required this.title, required this.color});
 
   @override
   Widget build(BuildContext context) {
     final textStyles =
         TFS().themeData?.customTextStyles ?? Theme.of(context).customTextStyles;
-    final colors =
-        TFS().themeData?.customColors ?? Theme.of(context).customColors;
 
     return AppBar(
-      backgroundColor: colors.background,
+      backgroundColor: color,
       title: Text(title, style: textStyles.mediumBold),
       titleSpacing: 0,
       actionsPadding: EdgeInsets.only(right: 10),

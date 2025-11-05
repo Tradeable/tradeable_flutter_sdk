@@ -3,7 +3,7 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:tradeable_flutter_sdk/src/tfs.dart';
 import 'package:tradeable_flutter_sdk/src/ui/widgets/dashboard/appbar_widget.dart';
 import 'package:tradeable_flutter_sdk/src/ui/widgets/dashboard/courses_horizontal_list.dart';
-import 'package:tradeable_flutter_sdk/src/ui/widgets/dashboard/custom_linear_progress_indicator.dart';
+import 'package:tradeable_flutter_sdk/src/ui/widgets/dashboard/overall_progress_widget.dart';
 import 'package:tradeable_flutter_sdk/src/utils/app_theme.dart';
 
 class LearnDashboard extends StatefulWidget {
@@ -25,65 +25,85 @@ class _LearnDashboard extends State<LearnDashboard> {
 
     return Scaffold(
       backgroundColor: colors.background,
-      appBar: AppBarWidget(title: "Learn Dashboard"),
+      appBar:
+          AppBarWidget(title: "Learn Dashboard", color: colors.neutralColor),
       body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(14),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(height: 20),
-              Container(
-                height: 120,
-                margin: EdgeInsets.symmetric(horizontal: 10),
-                decoration:
-                    BoxDecoration(borderRadius: BorderRadius.circular(14)),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(14),
-                  child: PageView(
-                    controller: _controller,
-                    children: [
-                      Image.asset(
-                          "packages/tradeable_flutter_sdk/lib/assets/images/dashboard_b1.png",
-                          fit: BoxFit.fill),
-                      Image.asset(
-                          "packages/tradeable_flutter_sdk/lib/assets/images/dashboard_b1.png",
-                          fit: BoxFit.fill),
-                      Image.asset(
-                          "packages/tradeable_flutter_sdk/lib/assets/images/dashboard_b1.png",
-                          fit: BoxFit.fill),
-                    ],
-                  ),
-                ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            renderBanners(),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text("Welcome!",
+                      style: textStyles.mediumBold.copyWith(
+                          fontStyle: FontStyle.italic, color: colors.primary)),
+                  const SizedBox(height: 4),
+                  Text(
+                      "Ready to learn the ropes? Your trading adventure begins now!",
+                      style: textStyles.smallNormal
+                          .copyWith(color: colors.textColorSecondary)),
+                  const SizedBox(height: 24),
+                  OverallProgressWidget(),
+                  const SizedBox(height: 20),
+                  CoursesHorizontalList(),
+                  const SizedBox(height: 20),
+                ],
               ),
-              const SizedBox(height: 12),
-              Center(
-                child: SmoothPageIndicator(
-                  controller: _controller,
-                  count: 3,
-                  effect: ExpandingDotsEffect(
-                      activeDotColor: colors.borderColorPrimary,
-                      dotHeight: 8,
-                      dotWidth: 8,
-                      spacing: 8,
-                      dotColor: colors.borderColorSecondary),
-                ),
-              ),
-              const SizedBox(height: 40),
-              Text("Welcome!",
-                  style: textStyles.mediumBold
-                      .copyWith(fontStyle: FontStyle.italic)),
-              Text("Welcome back. Pick up right where you left off!",
-                  style: textStyles.smallNormal),
-              const SizedBox(height: 20),
-              CustomLinearProgressIndicator(title: 'Recent Progress'),
-              const SizedBox(height: 20),
-              CoursesHorizontalList(),
-              const SizedBox(height: 20),
-              //WebinarsList()
-            ],
-          ),
+            )
+            //WebinarsList()
+          ],
         ),
+      ),
+    );
+  }
+
+  Widget renderBanners() {
+    final colors =
+        TFS().themeData?.customColors ?? Theme.of(context).customColors;
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
+      color: colors.neutralColor,
+      child: Column(
+        children: [
+          Container(
+            height: 120,
+            margin: EdgeInsets.symmetric(horizontal: 10),
+            decoration: BoxDecoration(borderRadius: BorderRadius.circular(14)),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(14),
+              child: PageView(
+                controller: _controller,
+                children: [
+                  Image.asset(
+                      "packages/tradeable_flutter_sdk/lib/assets/images/dashboard_b1.png",
+                      fit: BoxFit.fill),
+                  Image.asset(
+                      "packages/tradeable_flutter_sdk/lib/assets/images/dashboard_b1.png",
+                      fit: BoxFit.fill),
+                  Image.asset(
+                      "packages/tradeable_flutter_sdk/lib/assets/images/dashboard_b1.png",
+                      fit: BoxFit.fill),
+                ],
+              ),
+            ),
+          ),
+          const SizedBox(height: 16),
+          Center(
+            child: SmoothPageIndicator(
+              controller: _controller,
+              count: 3,
+              effect: ExpandingDotsEffect(
+                  activeDotColor: colors.sliderColor,
+                  dotHeight: 6,
+                  dotWidth: 6,
+                  spacing: 4,
+                  dotColor: colors.borderColorSecondary),
+            ),
+          ),
+        ],
       ),
     );
   }

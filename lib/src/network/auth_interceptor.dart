@@ -12,11 +12,11 @@ class AuthInterceptor extends Interceptor {
     final portalToken = TFS().portalToken;
     if (portalToken != null) {
       options.headers['Authorization'] = TFS().authorization ?? '';
-      options.headers['x-api-client-id'] = TFS().appId ?? '';
-      options.headers['x-subAccountID'] = TFS().clientId ?? '';
-      options.headers['x-aslToken'] = TFS().portalToken ?? '';
-      options.headers['x-api-encryption-key'] =
-          encryptRsa(TFS().secretKey ?? "", TFS().publicKey ?? "");
+      // options.headers['x-api-client-id'] = TFS().appId ?? '';
+      // options.headers['x-subAccountID'] = TFS().clientId ?? '';
+      // options.headers['x-aslToken'] = TFS().portalToken ?? '';
+      // options.headers['x-api-encryption-key'] =
+      //     encryptRsa(TFS().secretKey ?? "", TFS().publicKey ?? "");
       options.headers['x-axis-token'] = TFS().portalToken ?? '';
       options.headers['x-axis-app-id'] = TFS().appId ?? '';
       options.headers['x-axis-client-id'] = TFS().clientId ?? '';
@@ -72,11 +72,11 @@ class AuthInterceptor extends Interceptor {
       RequestOptions requestOptions, ErrorInterceptorHandler handler) async {
     if (TFS().portalToken != null) {
       requestOptions.headers['Authorization'] = TFS().authorization ?? '';
-      requestOptions.headers['x-api-client-id'] = TFS().appId ?? '';
-      requestOptions.headers['x-subAccountID'] = TFS().clientId ?? '';
-      requestOptions.headers['x-aslToken'] = TFS().portalToken ?? '';
-      requestOptions.headers['x-api-encryption-key'] =
-          encryptRsa(TFS().secretKey ?? "", TFS().publicKey ?? "");
+      // requestOptions.headers['x-api-client-id'] = TFS().appId ?? '';
+      // requestOptions.headers['x-subAccountID'] = TFS().clientId ?? '';
+      // requestOptions.headers['x-aslToken'] = TFS().portalToken ?? '';
+      // requestOptions.headers['x-api-encryption-key'] =
+      //     encryptRsa(TFS().secretKey ?? "", TFS().publicKey ?? "");
       requestOptions.headers['x-axis-token'] = TFS().portalToken ?? '';
       requestOptions.headers['x-axis-app-id'] = TFS().appId ?? '';
       requestOptions.headers['x-axis-client-id'] = TFS().clientId ?? '';
@@ -108,12 +108,12 @@ class AuthInterceptor extends Interceptor {
     }
   }
 
-  @override
-  void onResponse(Response response, ResponseInterceptorHandler handler) async {
-    String data =
-        await decryptData(TFS().secretKey!, response.data['data']['payload']);
-    var dataJson = jsonDecode(data);
-    response.data = dataJson;
-    super.onResponse(response, handler);
-  }
+  // @override
+  // void onResponse(Response response, ResponseInterceptorHandler handler) async {
+  //   String data =
+  //       await decryptData(TFS().secretKey!, response.data['data']['payload']);
+  //   var dataJson = jsonDecode(data);
+  //   response.data = dataJson;
+  //   super.onResponse(response, handler);
+  // }
 }

@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:tradeable_flutter_sdk/src/models/course_progress_model.dart';
 import 'package:tradeable_flutter_sdk/src/models/flow_model.dart';
 import 'package:tradeable_flutter_sdk/src/models/courses_model.dart';
+import 'package:tradeable_flutter_sdk/src/models/progress_model.dart';
 import 'package:tradeable_flutter_sdk/src/models/topic_model.dart';
 import 'package:tradeable_flutter_sdk/src/network/auth_interceptor.dart';
 import 'package:tradeable_flutter_sdk/tradeable_flutter_sdk.dart';
@@ -92,5 +93,11 @@ class API {
       data: queryParam,
     );
     return Map<String, String>.from(response.data);
+  }
+
+  Future<ProgressModel> getUserProgress() async {
+    final response = await dio.get("/v0/sdk/modules/progress");
+    print(response.data["data"]);
+    return ProgressModel.fromJson(response.data['data']);
   }
 }

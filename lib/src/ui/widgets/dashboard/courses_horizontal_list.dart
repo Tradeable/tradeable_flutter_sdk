@@ -54,10 +54,11 @@ class _CoursesList extends State<CoursesHorizontalList> {
               },
               child: Row(
                 children: [
-                  Text("View all",
+                  Text("VIEW ALL",
                       style: textStyles.smallBold
+                          .copyWith(fontSize: 12)
                           .copyWith(color: colors.borderColorPrimary)),
-                  const SizedBox(width: 6),
+                  const SizedBox(width: 4),
                   Icon(Icons.arrow_forward_ios,
                       size: 10, color: colors.borderColorPrimary)
                 ],

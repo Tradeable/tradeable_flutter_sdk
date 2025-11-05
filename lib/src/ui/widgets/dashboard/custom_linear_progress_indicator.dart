@@ -1,52 +1,18 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:tradeable_flutter_sdk/src/models/course_progress_model.dart';
-import 'package:tradeable_flutter_sdk/src/network/api.dart';
+import 'package:tradeable_flutter_sdk/src/models/progress_model.dart';
 import 'package:tradeable_flutter_sdk/src/tfs.dart';
+import 'package:tradeable_flutter_sdk/src/ui/pages/course_details_page.dart';
 import 'package:tradeable_flutter_sdk/src/utils/app_theme.dart';
 
-class CustomLinearProgressIndicator extends StatefulWidget {
-  final String title;
-  final bool alternateLayout;
+class CustomLinearProgressIndicator extends StatelessWidget {
+  final List<OverallProgressModel> overallProgress;
+  final double progressPercent;
 
-  const CustomLinearProgressIndicator({
-    super.key,
-    this.title = 'Overall Progress',
-    this.alternateLayout = false,
-  });
-
-  @override
-  State<StatefulWidget> createState() => _CustomLinearProgressIndicator();
-}
-
-class _CustomLinearProgressIndicator
-    extends State<CustomLinearProgressIndicator> {
-  List<CourseProgressModel> courseProgress = [];
-  List<ProgressItem> progressItems = [];
-
-  @override
-  void initState() {
-    getProgress();
-    super.initState();
-  }
-
-  void getProgress() async {
-    await API().getCourseProgress().then((val) {
-      setState(() {
-        courseProgress = val;
-        progressItems = courseProgress
-            .map((e) => ProgressItem(
-                  label: e.topicName,
-                  progress: e.progress.total == 0
-                      ? 0
-                      : ((e.progress.completed ?? 0).toDouble() /
-                          (e.progress.total ?? 0).toDouble()),
-                  color: Colors.blueAccent,
-                ))
-            .toList();
-      });
-    });
-  }
+  const CustomLinearProgressIndicator(
+      {super.key,
+      required this.overallProgress,
+      required this.progressPercent});
 
   @override
   Widget build(BuildContext context) {
@@ -55,114 +21,125 @@ class _CustomLinearProgressIndicator
     final textStyles =
         TFS().themeData?.customTextStyles ?? Theme.of(context).customTextStyles;
 
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        border: Border.all(color: colors.borderColorSecondary),
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
+    return overallProgress.isNotEmpty
+        ? Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(widget.title, style: textStyles.mediumBold),
-              // Spacer(),
-              // Text("${_getOverallProgress().toStringAsFixed(2)}%",
-              //     style: textStyles.mediumBold)
+              Text(
+                  progressPercent > 0
+                      ? "Recent Activity"
+                      : "Let’s get you started",
+                  style:
+                      textStyles.smallNormal.copyWith(color: colors.iconColor)),
+              const SizedBox(height: 10),
+              renderList(context)
             ],
-          ),
-          const SizedBox(height: 20),
-          widget.alternateLayout
-              ? _buildAlternateLayout(context)
-              : _buildDefaultLayout(context),
-        ],
-      ),
-    );
+          )
+        : Container();
   }
 
-  // double _getOverallProgress() {
-  //   if (progressItems.isEmpty) return 0;
-  //   double total = progressItems.fold(0, (sum, item) => sum + item.progress);
-  //   return total / progressItems.length;
-  // }
-
-  Widget _buildDefaultLayout(BuildContext context) {
+  Widget renderList(BuildContext context) {
     return Column(
-      children: progressItems
-          .map((item) => _buildProgressItem(item, true, context))
-          .toList(),
-    );
-  }
-
-  Widget _buildAlternateLayout(BuildContext context) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Expanded(
-          child: Column(
-            children: progressItems
-                .where((item) => progressItems.indexOf(item) % 2 == 0)
-                .map((item) => _buildProgressItem(item, false, context))
-                .toList(),
-          ),
-        ),
-        const SizedBox(width: 16),
-        Expanded(
-          child: Column(
-            children: progressItems
-                .where((item) => progressItems.indexOf(item) % 2 != 0)
-                .map((item) => _buildProgressItem(item, false, context))
-                .toList(),
-          ),
-        ),
-      ],
+      children: overallProgress
+          .asMap()
+          .entries
+          .take(progressPercent > 0 ? 2 : 1)
+          .map((entry) {
+        final index = entry.key;
+        final item = entry.value;
+        return _buildProgressItem(item, context, index);
+      }).toList(),
     );
   }
 
   Widget _buildProgressItem(
-      ProgressItem item, bool showPercentageFirst, BuildContext context) {
+      OverallProgressModel item, BuildContext context, int index) {
     final colors =
         TFS().themeData?.customColors ?? Theme.of(context).customColors;
     final textStyles =
         TFS().themeData?.customTextStyles ?? Theme.of(context).customTextStyles;
 
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 10),
+    return Container(
+      width: double.infinity,
+      margin: const EdgeInsets.only(bottom: 8),
+      decoration: BoxDecoration(
+          color: colors.neutral_2, borderRadius: BorderRadius.circular(12)),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Expanded(
-            flex: 3,
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(10),
-              child: LinearProgressIndicator(
-                value: item.progress,
-                backgroundColor: colors.cardColorSecondary,
-                valueColor: AlwaysStoppedAnimation<Color>(item.color),
-                minHeight: 20,
-              ),
+          ClipOval(
+            child: Image.network(
+              item.logo.url,
+              width: 40,
+              height: 40,
+              fit: BoxFit.cover,
             ),
           ),
-          const SizedBox(width: 10),
+          const SizedBox(width: 14),
           Expanded(
-            flex: 1,
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  '${(item.progress * 100).toStringAsFixed(0)}%',
-                  style: textStyles.smallBold,
+                Text(item.name, style: textStyles.smallBold),
+                const SizedBox(height: 4),
+                Row(
+                  children: [
+                    Expanded(
+                      child: AutoSizeText(
+                          maxFontSize: 14,
+                          minFontSize: 8,
+                          maxLines: 1,
+                          "${item.progress.completed} out of ${item.progress.total} completed"),
+                    ),
+                    progressPercent > 0
+                        ? Padding(
+                            padding: const EdgeInsets.only(left: 8.0),
+                            child: Text(
+                                "${((item.progress.completed / item.progress.total) * 100).toStringAsFixed(0)}%",
+                                style: textStyles.smallNormal.copyWith(
+                                    color: index == 0
+                                        ? colors.dataVis1
+                                        : colors.dataVis2)),
+                          )
+                        : InkWell(
+                            onTap: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) =>
+                                      CourseDetailsPage(courseId: item.id)));
+                            },
+                            child: Row(
+                              children: [
+                                Text("BEGIN",
+                                    style: textStyles.smallBold.copyWith(
+                                        fontSize: 12,
+                                        color: colors.borderColorPrimary)),
+                                Icon(Icons.arrow_forward_ios,
+                                    size: 12, color: colors.borderColorPrimary)
+                              ],
+                            ),
+                          )
+                  ],
                 ),
-                AutoSizeText(
-                  item.label,
-                  minFontSize: 8,
-                  maxFontSize: 14,
-                  maxLines: 2,
-                  textAlign: TextAlign.right,
-                  style: textStyles.smallNormal
-                      .copyWith(color: colors.textColorSecondary),
-                ),
+                progressPercent > 0
+                    ? Column(
+                        children: [
+                          const SizedBox(height: 4),
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(10),
+                            child: LinearProgressIndicator(
+                              value:
+                                  item.progress.completed / item.progress.total,
+                              backgroundColor: colors.cardColorSecondary,
+                              valueColor: AlwaysStoppedAnimation<Color>(
+                                  index == 0
+                                      ? colors.dataVis1
+                                      : colors.dataVis2),
+                              minHeight: 4,
+                            ),
+                          ),
+                        ],
+                      )
+                    : Container(),
               ],
             ),
           ),
@@ -170,16 +147,4 @@ class _CustomLinearProgressIndicator
       ),
     );
   }
-}
-
-class ProgressItem {
-  final double progress;
-  final String label;
-  final Color color;
-
-  const ProgressItem({
-    required this.progress,
-    required this.label,
-    required this.color,
-  });
 }

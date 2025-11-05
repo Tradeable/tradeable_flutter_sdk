@@ -45,7 +45,7 @@ class _CourseDetailsScreen extends State<CourseDetailsPage> {
 
     return Scaffold(
       backgroundColor: colors.background,
-      appBar: AppBarWidget(title: (coursesModel?.name ?? "")),
+      appBar: AppBarWidget(title: (coursesModel?.name ?? ""), color: colors.background),
       body: coursesModel != null
           ? Column(
               crossAxisAlignment: CrossAxisAlignment.start,
