@@ -1,40 +1,21 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:tradeable_flutter_sdk/src/models/courses_model.dart';
-import 'package:tradeable_flutter_sdk/src/network/api.dart';
 import 'package:tradeable_flutter_sdk/src/tfs.dart';
 import 'package:tradeable_flutter_sdk/src/ui/pages/courses_list_page.dart';
 import 'package:tradeable_flutter_sdk/src/ui/widgets/courses_shimmer_list.dart';
 import 'package:tradeable_flutter_sdk/src/ui/widgets/dashboard/course_item.dart';
 import 'package:tradeable_flutter_sdk/src/utils/app_theme.dart';
 
-class CoursesHorizontalList extends StatefulWidget {
-  const CoursesHorizontalList({super.key});
+class CoursesHorizontalList extends StatelessWidget {
+  final List<CoursesModel> courses;
 
-  @override
-  State<StatefulWidget> createState() => _CoursesList();
-}
-
-class _CoursesList extends State<CoursesHorizontalList> {
-  List<CoursesModel> courses = [];
-  AutoSizeGroup group = AutoSizeGroup();
-
-  @override
-  void initState() {
-    getModules();
-    super.initState();
-  }
-
-  void getModules() async {
-    await API().getModules().then((val) {
-      setState(() {
-        courses = val;
-      });
-    });
-  }
+  const CoursesHorizontalList({super.key, required this.courses});
 
   @override
   Widget build(BuildContext context) {
+    AutoSizeGroup group = AutoSizeGroup();
+
     final colors =
         TFS().themeData?.customColors ?? Theme.of(context).customColors;
     final textStyles =
@@ -75,9 +56,16 @@ class _CoursesList extends State<CoursesHorizontalList> {
                     shrinkWrap: true,
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (context, index) {
+                      final cardColors = [
+                        Color(0xffF9F1EB),
+                        Color(0xffEBF0F9),
+                        Color(0xffF9EBEF),
+                        Color(0xffEFF9EB)
+                      ];
                       return CourseListItem(
                         model: courses[index],
                         group: group,
+                        courseBgColor: cardColors[index % cardColors.length],
                       );
                     }),
               )

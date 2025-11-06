@@ -78,9 +78,11 @@ class _TopicHeaderWidgetState extends State<TopicHeaderWidget> {
             child: isExpanded
                 ? FlowsList(
                     flowModel: TopicFlowModel(
-                        topicId: widget.topic.topicId,
-                        userFlowsList: flows,
-                        topicTagId: widget.topic.topicContextId),
+                      topicId: widget.topic.topicId,
+                      userFlowsList: flows,
+                      topicContextId: widget.topic.topicContextId,
+                    ),
+                    completedFlowId: -1,
                     onFlowSelected: (flowId) {
                       setState(() {
                         setState(() {

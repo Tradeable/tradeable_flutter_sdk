@@ -279,7 +279,7 @@ extension ThemeDataExtension on ThemeData {
 
   CustomStyles get customTextStyles {
     final textColor =
-        brightness == Brightness.light ? Colors.black : Colors.white;
+        brightness == Brightness.light ? Color(0xff282828) : Colors.white;
 
     return CustomStyles(
       textColor: textColor,

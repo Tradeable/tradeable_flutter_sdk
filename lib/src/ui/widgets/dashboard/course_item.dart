@@ -8,8 +8,13 @@ import 'package:tradeable_flutter_sdk/src/tfs.dart';
 class CourseListItem extends StatelessWidget {
   final CoursesModel model;
   final AutoSizeGroup group;
+  final Color courseBgColor;
 
-  const CourseListItem({super.key, required this.model, required this.group});
+  const CourseListItem(
+      {super.key,
+      required this.model,
+      required this.group,
+      required this.courseBgColor});
 
   @override
   Widget build(BuildContext context) {
@@ -22,13 +27,13 @@ class CourseListItem extends StatelessWidget {
       width: 160,
       margin: const EdgeInsets.only(right: 16),
       decoration: BoxDecoration(
+          color: courseBgColor,
           image: DecorationImage(
               image: AssetImage(
                   "packages/tradeable_flutter_sdk/lib/assets/images/course_container_bg.png"),
               fit: BoxFit.contain,
               alignment: Alignment.bottomCenter),
-          borderRadius: BorderRadius.circular(14),
-          border: Border.all(color: colors.borderColorSecondary)),
+          borderRadius: BorderRadius.circular(14)),
       child: InkWell(
         onTap: () => showBottomsheet(context, model.id),
         child: Container(
@@ -51,8 +56,19 @@ class CourseListItem extends StatelessWidget {
                       size: 14, color: colors.borderColorPrimary)
                 ],
               ),
-              const SizedBox(height: 6),
-              Text("${model.progress.total} Topics | 30m")
+              const SizedBox(height: 4),
+              Text(
+                "${model.progress.total} Topics | 30m",
+                style: textStyles.smallNormal
+                    .copyWith(fontSize: 12, color: colors.textColorSecondary),
+              ),
+              Spacer(),
+              Image.network(
+                model.logo.url,
+                width: double.infinity,
+                height: 60,
+                fit: BoxFit.contain,
+              )
             ],
           ),
         ),

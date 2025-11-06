@@ -141,7 +141,7 @@ class _CoursesListScreen extends State<CoursesListPage> {
                                                     ),
                                                     const SizedBox(width: 4),
                                                     Text(
-                                                      "${(item.progress.completed)}/${item.progress.total!} Ongoing....",
+                                                      "${(item.progress.completed)}/${item.progress.total!} ${totalPercent == 100 ? "Completed" : "Ongoing..."}",
                                                       style: textStyles
                                                           .smallNormal
                                                           .copyWith(

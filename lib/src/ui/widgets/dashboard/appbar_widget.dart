@@ -18,7 +18,6 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
       title: Text(title, style: textStyles.mediumBold),
       titleSpacing: 0,
       actionsPadding: EdgeInsets.only(right: 10),
-      actions: [Icon(Icons.account_circle_outlined)],
       leading: IconButton(
           onPressed: () {
             Navigator.of(context).pop();

@@ -97,7 +97,12 @@ class API {
 
   Future<ProgressModel> getUserProgress() async {
     final response = await dio.get("/v0/sdk/modules/progress");
-    print(response.data["data"]);
     return ProgressModel.fromJson(response.data['data']);
+  }
+
+  Future<List<Map<String, dynamic>>> getBanners() async {
+    final response = await dio.get("/v0/sdk/ui/learn-dashboard/banner");
+    final data = response.data['data'] as List;
+    return data.map((e) => {'url': e}).toList();
   }
 }

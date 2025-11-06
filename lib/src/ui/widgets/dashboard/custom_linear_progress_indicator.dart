@@ -67,7 +67,11 @@ class CustomLinearProgressIndicator extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
       child: Row(
         children: [
-          ClipOval(
+          Container(
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: Colors.white
+            ),
             child: Image.network(
               item.logo.url,
               width: 40,
@@ -89,7 +93,7 @@ class CustomLinearProgressIndicator extends StatelessWidget {
                           maxFontSize: 14,
                           minFontSize: 8,
                           maxLines: 1,
-                          "${item.progress.completed} out of ${item.progress.total} completed"),
+                          "${item.progress.completed} of ${item.progress.total} completed"),
                     ),
                     progressPercent > 0
                         ? Padding(

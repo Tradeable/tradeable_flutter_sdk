@@ -48,10 +48,10 @@ class _OverallProgressIndicator extends State<OverallProgressWidget> {
         TFS().themeData?.customTextStyles ?? Theme.of(context).customTextStyles;
 
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: colors.borderColorSecondary)),
+          border: Border.all(color: colors.darkShade2)),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -64,9 +64,15 @@ class _OverallProgressIndicator extends State<OverallProgressWidget> {
                   children: [
                     Text("Overall Progress",
                         style: textStyles.mediumBold.copyWith(fontSize: 16)),
+                    const SizedBox(height: 6),
                     Text(
-                        "You’re making great progress—keep going to reach your learning goals!",
-                        style: textStyles.smallNormal.copyWith(fontSize: 11))
+                        completedPercent == 0
+                            ? "Your financial learning journey starts here —begin your first module to build smarter money skills."
+                            : completedPercent > 0
+                                ? "You’re making great progress—keep going to reach your learning goals!"
+                                : "You did it! You’ve completed the course.Keep the momentum going by revisioning the modules",
+                        style: textStyles.smallNormal.copyWith(
+                            fontSize: 11, color: colors.textColorSecondary))
                   ],
                 ),
               ),
@@ -77,9 +83,9 @@ class _OverallProgressIndicator extends State<OverallProgressWidget> {
                   : Center(child: CircularProgressIndicator()),
             ],
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 24),
           _legend(),
-          const SizedBox(height: 20),
+          const SizedBox(height: 24),
           model != null
               ? CustomLinearProgressIndicator(
                   overallProgress: model!.overall,
@@ -98,8 +104,8 @@ class _OverallProgressIndicator extends State<OverallProgressWidget> {
         TFS().themeData?.customTextStyles ?? Theme.of(context).customTextStyles;
 
     return SizedBox(
-      width: 60,
-      height: 60,
+      width: 54,
+      height: 54,
       child: CustomPaint(
         painter: _MultiProgressPainter(
           segments: [
@@ -115,8 +121,7 @@ class _OverallProgressIndicator extends State<OverallProgressWidget> {
             children: [
               Text(
                 "${(progressPercent * 100).toInt()}%",
-                style:
-                    textStyles.mediumBold.copyWith(color: colors.sliderColor),
+                style: textStyles.smallBold.copyWith(color: colors.sliderColor),
               ),
             ],
           ),
@@ -133,46 +138,61 @@ class _OverallProgressIndicator extends State<OverallProgressWidget> {
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      mainAxisSize: MainAxisSize.max,
       children: [
-        _legendItem("In-progress", colors.alertVariable, inProgress),
-        SizedBox(
-            height: 40,
-            child: VerticalDivider(
-              color: colors.borderColorSecondary,
-              thickness: 1,
-            )),
-        _legendItem("Completed", colors.alertSuccess, completed),
-        SizedBox(
-            height: 40,
-            child: VerticalDivider(
-              color: colors.borderColorSecondary,
-              thickness: 1,
-            )),
-        InkWell(
-          onTap: () {
-            Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) =>
-                    UserActivityScreen(progressItems: model?.overall ?? [])));
-          },
+        Expanded(
           child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              Text(
-                "VIEW ALL",
-                style: textStyles.smallBold.copyWith(
-                  fontSize: 12,
-                  color: colors.sliderColor,
-                ),
-              ),
-              const SizedBox(width: 4),
-              Icon(
-                Icons.arrow_forward_ios,
-                size: 10,
-                color: colors.sliderColor,
-              ),
+              _legendItem("In-progress", colors.alertVariable, inProgress),
+              SizedBox(
+                  height: 40,
+                  child: VerticalDivider(
+                    color: colors.borderColorSecondary,
+                    thickness: 1,
+                  )),
+              _legendItem("Completed", colors.alertSuccess, completed),
             ],
           ),
         ),
+        (inProgress == 0 && completed == 0)
+            ? Container()
+            : Row(
+                children: [
+                  SizedBox(
+                      height: 40,
+                      child: VerticalDivider(
+                        color: colors.borderColorSecondary,
+                        thickness: 1,
+                      )),
+                  const SizedBox(width: 10),
+                  InkWell(
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => UserActivityScreen(
+                              progressItems: model?.overall ?? [])));
+                    },
+                    child: Row(
+                      children: [
+                        Text(
+                          "VIEW ALL",
+                          style: textStyles.smallBold.copyWith(
+                            fontSize: 12,
+                            color: colors.sliderColor,
+                          ),
+                        ),
+                        const SizedBox(width: 4),
+                        Icon(
+                          Icons.arrow_forward_ios,
+                          size: 10,
+                          color: colors.sliderColor,
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
       ],
     );
   }
@@ -206,7 +226,7 @@ class _MultiProgressPainter extends CustomPainter {
     required this.backgroundColor,
   });
 
-  final double strokeWidth = 8;
+  final double strokeWidth = 6;
   final double gapAngle = 0.08;
 
   @override

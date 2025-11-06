@@ -61,6 +61,7 @@ class _CourseDetailsScreen extends State<CourseDetailsPage> {
                       onTap: () {
                         Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) => TopicDetailPage(
+                              courseId: widget.courseId,
                                 topic: TopicUserModel(
                                     topicId: item.id,
                                     name: item.name,
