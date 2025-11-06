@@ -9,11 +9,13 @@ import 'package:tradeable_flutter_sdk/src/ui/widgets/module_card_shimmer.dart';
 class TopicListPage extends StatefulWidget {
   final VoidCallback onClose;
   final int? tagId;
+  final bool showBottomButton;
 
   const TopicListPage({
     super.key,
     required this.onClose,
     required this.tagId,
+    this.showBottomButton = true
   });
 
   @override
@@ -173,7 +175,7 @@ class _TopicListPageState extends State<TopicListPage> {
               ),
             ),
           ),
-          buildGoToDashboardButton()
+          widget.showBottomButton ? buildGoToDashboardButton() : Container()
         ],
       ),
     );

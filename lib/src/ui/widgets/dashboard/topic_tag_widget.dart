@@ -43,6 +43,7 @@ class TopicTagWidget extends StatelessWidget {
                       body: TopicListPage(
                         tagId: tag.topicTagId,
                         onClose: () => Navigator.of(context).pop(),
+                        showBottomButton: false,
                       ),
                     );
                   },
