@@ -16,3 +16,8 @@ export 'src/ui/pages/widget_page.dart';
 export 'src/ui/pages/courses_list_page.dart';
 export 'src/ui/pages/course_details_page.dart';
 export 'src/ui/pages/topic_details_page.dart';
+
+export 'src/models/progress_model.dart';
+export 'src/models/courses_model.dart';
+export 'src/network/api.dart';
+export 'src/ui/widgets/axis_dashboard/axis_dashboard.dart';

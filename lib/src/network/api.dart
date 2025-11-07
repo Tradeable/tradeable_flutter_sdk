@@ -1,7 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:tradeable_flutter_sdk/src/models/course_progress_model.dart';
 import 'package:tradeable_flutter_sdk/src/models/flow_model.dart';
-import 'package:tradeable_flutter_sdk/src/models/courses_model.dart';
 import 'package:tradeable_flutter_sdk/src/models/topic_model.dart';
 import 'package:tradeable_flutter_sdk/src/network/auth_interceptor.dart';
 import 'package:tradeable_flutter_sdk/tradeable_flutter_sdk.dart';
@@ -83,14 +82,25 @@ class API {
 
   Future<Map<String, String>> markFlowAsCompleted(
       int flowId, int? topicId, int? topicTagId, int? moduleId) async {
-    Map<String, int> queryParam = {};
-    if (topicId != null) queryParam['topicId'] = topicId;
-    if (topicTagId != null) queryParam['topicTagId'] = topicTagId;
-    if (moduleId != null) queryParam['moduleId'] = moduleId;
+    // Map<String, int> queryParam = {};
+    // if (topicId != null) queryParam['topicId'] = topicId;
+    // if (topicTagId != null) queryParam['topicTagId'] = topicTagId;
+    // if (moduleId != null) queryParam['moduleId'] = moduleId;
     final response = await dio.post(
-      "/v0/sdk/flows/$flowId/completed",
-      data: queryParam,
+      "/v0/sdk/flows/$flowId/complete-all",
+      // data: queryParam,
     );
     return Map<String, String>.from(response.data);
+  }
+
+  Future<ProgressModel> getUserProgress() async {
+    final response = await dio.get("/v0/sdk/modules/progress");
+    return ProgressModel.fromJson(response.data['data']);
+  }
+
+  Future<List<Map<String, dynamic>>> getBanners() async {
+    final response = await dio.get("/v0/sdk/ui/learn-dashboard/banner");
+    final data = response.data['data'] as List;
+    return data.map((e) => {'url': e}).toList();
   }
 }

@@ -1,13 +1,17 @@
 import 'package:tradeable_flutter_sdk/src/models/flow_model.dart';
+import 'package:tradeable_flutter_sdk/src/models/topic_user_model.dart';
 
 class TopicFlowModel {
   final int topicId;
   final int? topicTagId;
+  TopicContextType? topicContextType;
+  int? topicContextId;
   List<TopicFlowsListModel> userFlowsList;
 
   TopicFlowModel(
-      {required this.topicId,
-      required this.topicTagId,
+      {required this.topicId, this.topicTagId,
+      this.topicContextType,
+      this.topicContextId,
       required this.userFlowsList});
 }
 

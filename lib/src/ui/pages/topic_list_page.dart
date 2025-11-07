@@ -1,4 +1,3 @@
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:tradeable_flutter_sdk/src/models/topic_user_model.dart';
 import 'package:tradeable_flutter_sdk/src/network/api.dart';
@@ -10,12 +9,13 @@ import 'package:tradeable_flutter_sdk/src/ui/widgets/module_card_shimmer.dart';
 class TopicListPage extends StatefulWidget {
   final VoidCallback onClose;
   final int? tagId;
+  final bool showBottomButton;
 
-  const TopicListPage({
-    super.key,
-    required this.onClose,
-    required this.tagId,
-  });
+  const TopicListPage(
+      {super.key,
+      required this.onClose,
+      required this.tagId,
+      this.showBottomButton = true});
 
   @override
   State<TopicListPage> createState() => _TopicListPageState();
@@ -134,6 +134,7 @@ class _TopicListPageState extends State<TopicListPage> {
                           Color(0xffF9EBEF),
                           Color(0xffEBF0F9),
                           Color(0xffF9F1EB),
+                          Color(0xffEFF9EB)
                         ];
                         final cardColor = cardColors[index % cardColors.length];
                         return Padding(
@@ -173,7 +174,7 @@ class _TopicListPageState extends State<TopicListPage> {
               ),
             ),
           ),
-          buildGoToDashboardButton()
+          widget.showBottomButton ? buildGoToDashboardButton() : Container()
         ],
       ),
     );
@@ -185,28 +186,20 @@ class _TopicListPageState extends State<TopicListPage> {
           relatedTopics.length,
           (index) => Padding(
                 padding: const EdgeInsets.only(bottom: 10),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: Color(0xFFE2E2E2)),
-                  ),
-                  child: ListTile(
-                    title: AutoSizeText(
-                      relatedTopics[index].name,
-                      maxFontSize: 16,
-                      minFontSize: 1,
-                      maxLines: 2,
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    trailing: const Icon(Icons.arrow_forward_ios_rounded,
-                        size: 14, color: Colors.black),
-                    onTap: () {},
-                    contentPadding:
-                        const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
+                child: InkWell(
+                  onTap: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) =>
+                            TopicDetailPage(topic: relatedTopics[index])));
+                  },
+                  child: Row(
+                    children: [
+                      Text(relatedTopics[index].name,
+                          style: TextStyle(fontSize: 14)),
+                      const SizedBox(width: 6),
+                      Icon(Icons.arrow_forward_ios_rounded,
+                          size: 14, color: Colors.black)
+                    ],
                   ),
                 ),
               )),

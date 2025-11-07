@@ -45,7 +45,7 @@ class _CourseDetailsScreen extends State<CourseDetailsPage> {
 
     return Scaffold(
       backgroundColor: colors.background,
-      appBar: AppBarWidget(title: (coursesModel?.name ?? "")),
+      appBar: AppBarWidget(title: (coursesModel?.name ?? ""), color: colors.background),
       body: coursesModel != null
           ? Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -61,6 +61,7 @@ class _CourseDetailsScreen extends State<CourseDetailsPage> {
                       onTap: () {
                         Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) => TopicDetailPage(
+                              courseId: widget.courseId,
                                 topic: TopicUserModel(
                                     topicId: item.id,
                                     name: item.name,
