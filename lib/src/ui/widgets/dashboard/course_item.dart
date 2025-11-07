@@ -110,7 +110,7 @@ class CourseListItem extends StatelessWidget {
                         style: TextStyle(
                           color: colors.buttonColor,
                           fontWeight: FontWeight.bold,
-                          fontSize: 10,
+                          fontSize: 9,
                         ),
                       ),
                     ],

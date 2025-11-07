@@ -5,21 +5,28 @@ import 'package:tradeable_flutter_sdk/tradeable_flutter_sdk.dart';
 
 class AxisDashboard extends StatefulWidget {
   final EdgeInsets padding;
-
-  const AxisDashboard({super.key, this.padding = const EdgeInsets.all(12)});
+  final DateTime? referenceDate;
+  const AxisDashboard(
+      {super.key, this.padding = const EdgeInsets.all(12), this.referenceDate});
 
   @override
   State<AxisDashboard> createState() => _AxisDashboardState();
 }
 
 class _AxisDashboardState extends State<AxisDashboard> {
-  List<CoursesModel> courses = [];
+  List<CoursesModel>? courses;
   ProgressModel? model;
   OverallProgressModel? selectedProgress;
+  late DateTime referenceDate;
 
   @override
   void initState() {
     super.initState();
+    if (widget.referenceDate != null) {
+      referenceDate = widget.referenceDate!;
+    } else {
+      referenceDate = DateTime(2023, 12, 1);
+    }
     fetchData();
   }
 
@@ -44,11 +51,13 @@ class _AxisDashboardState extends State<AxisDashboard> {
     }
 
     setState(() {
-      courses = updatedCourses;
       model = progress;
       selectedProgress = pickedProgress;
-
+      updatedCourses = updatedCourses.where((course) {
+        return course.createdAt.isAfter(referenceDate);
+      }).toList();
       updatedCourses.sort((a, b) => b.createdAt.compareTo(a.createdAt));
+      courses = updatedCourses;
     });
   }
 
@@ -59,37 +68,44 @@ class _AxisDashboardState extends State<AxisDashboard> {
 
     return Column(
       children: [
-        Padding(
-          padding: EdgeInsets.only(left: widget.padding.left),
-          child: Row(
-            children: [
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Text("Learn Dashboard",
-                            style: TextStyle(
-                                fontSize: 14, fontWeight: FontWeight.bold)),
-                        const SizedBox(width: 4),
-                        Icon(Icons.keyboard_arrow_right_sharp, size: 20)
-                      ],
-                    ),
-                    const SizedBox(height: 8),
-                    Text(completedPercent > 0
-                        ? "Your space to track and manage your learning progress."
-                        : "Start your learning journey")
-                  ],
+        InkWell(
+          onTap: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) => LearnDashboard()),
+            );
+          },
+          child: Padding(
+            padding: EdgeInsets.only(left: widget.padding.left),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Text("Learn Dashboard",
+                              style: TextStyle(
+                                  fontSize: 14, fontWeight: FontWeight.bold)),
+                          const SizedBox(width: 4),
+                          Icon(Icons.keyboard_arrow_right_sharp, size: 20)
+                        ],
+                      ),
+                      const SizedBox(height: 8),
+                      Text(completedPercent > 0
+                          ? "Your space to track and manage your learning progress."
+                          : "Start your learning journey")
+                    ],
+                  ),
                 ),
-              ),
-              const SizedBox(width: 24),
-              Image.asset(
-                "packages/tradeable_flutter_sdk/lib/assets/images/learn_dashboard_image.png",
-                height: 72,
-                width: 90,
-              )
-            ],
+                const SizedBox(width: 24),
+                Image.asset(
+                  "packages/tradeable_flutter_sdk/lib/assets/images/learn_dashboard_image.png",
+                  height: 72,
+                  width: 90,
+                )
+              ],
+            ),
           ),
         ),
         const SizedBox(height: 12),

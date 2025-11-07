@@ -1,8 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:tradeable_flutter_sdk/src/models/course_progress_model.dart';
 import 'package:tradeable_flutter_sdk/src/models/flow_model.dart';
-import 'package:tradeable_flutter_sdk/src/models/courses_model.dart';
-import 'package:tradeable_flutter_sdk/src/models/progress_model.dart';
 import 'package:tradeable_flutter_sdk/src/models/topic_model.dart';
 import 'package:tradeable_flutter_sdk/src/network/auth_interceptor.dart';
 import 'package:tradeable_flutter_sdk/tradeable_flutter_sdk.dart';

@@ -29,6 +29,8 @@ class CoursesModel {
         topics: json['topics'] != null
             ? (json['topics'] as List).map((e) => Topic.fromJson(e)).toList()
             : null,
-        createdAt: DateTime.parse(json["created_at"]));
+        createdAt: json["created_at"] != null
+            ? DateTime.parse(json["created_at"])
+            : DateTime.now());
   }
 }

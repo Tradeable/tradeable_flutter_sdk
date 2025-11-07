@@ -195,8 +195,8 @@ class _TopicHeaderWidgetState extends State<TopicHeaderWidget> {
                   color: colors.progressIndColor1,
                   backgroundColor: colors.progressIndColor2,
                   strokeWidth: 4,
-                  value: widget.topic.progress.completed! /
-                      widget.topic.progress.total!,
+                  value: widget.topic.progress.completed /
+                      widget.topic.progress.total,
                 ),
                 Text(
                   '${widget.topic.progress.completed}/${widget.topic.progress.total}',

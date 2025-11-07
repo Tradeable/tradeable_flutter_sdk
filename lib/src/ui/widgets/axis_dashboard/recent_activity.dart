@@ -31,7 +31,7 @@ class RecentActivity extends StatelessWidget {
               Text(
                   progressPercent > 0
                       ? "Recent Activity"
-                      : "Let’s get you started",
+                      : "Let's get you started",
                   style:
                       textStyles.smallNormal.copyWith(color: colors.iconColor)),
               const SizedBox(height: 10),

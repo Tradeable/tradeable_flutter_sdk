@@ -24,7 +24,7 @@ class TopicTagWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text("App Pages", style: textStyles.mediumBold),
+        Text("Quick links", style: textStyles.mediumBold),
         const SizedBox(height: 12),
         Wrap(
           spacing: 8,

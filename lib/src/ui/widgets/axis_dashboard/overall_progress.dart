@@ -75,7 +75,7 @@ class _OverallProgressIndicator extends State<OverallProgress> {
                     Text(
                         completedPercent == 0 ||
                                 (model != null && model!.overall.isEmpty)
-                            ? "Let’s get you started"
+                            ? "Let's get you started"
                             : "Recent Activity",
                         style: textStyles.smallNormal.copyWith(fontSize: 14))
                   ],

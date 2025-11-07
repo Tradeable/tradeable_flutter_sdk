@@ -40,8 +40,8 @@ class _TopicDetailPageState extends State<TopicDetailPage> {
       if (flowId == null) {
         getFlows();
       }
-      completedFlows = _topicUserModel!.progress.completed ?? 0.toInt();
-      totalFlows = _topicUserModel!.progress.total ?? 0.toInt();
+      completedFlows = _topicUserModel!.progress.completed;
+      totalFlows = _topicUserModel!.progress.total;
     } else if (widget.topicId != null) {
       _fetchTopicUserModel();
     }
@@ -99,7 +99,7 @@ class _TopicDetailPageState extends State<TopicDetailPage> {
     }
 
     return Scaffold(
-        backgroundColor: widget.topic?.cardColor ?? Colors.white,
+        backgroundColor: widget.topic?.cardColor ?? Color(0xffF9F1EB),
         appBar: renderAppBar(),
         body: SafeArea(
           child: WidgetPage(
