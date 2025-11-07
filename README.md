@@ -84,3 +84,26 @@ Widget build(BuildContext context) {
   );
 }
 ```
+### Adding Dashboard Widget
+You can access the home screen trade:able Widget by calling `AxisDashboard`:
+```dart
+@override
+Widget build(BuildContext context) {
+  return Scaffold(
+    appBar: AppBar(),
+    body: SafeArea(
+      child: AxisDashboard()
+    )
+  );
+}
+```
+
+**Optional Parameters:**
+- `padding`: Custom padding for the dashboard (default: `EdgeInsets.all(12)`)
+- `dateThreshold`: Number of days to filter courses (default: `100000`)
+```dart
+AxisDashboard(
+  padding: EdgeInsets.all(16),
+  dateThreshold: 30, // Shows courses from last 30 days
+)
+```
