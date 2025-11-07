@@ -11,12 +11,11 @@ class TopicListPage extends StatefulWidget {
   final int? tagId;
   final bool showBottomButton;
 
-  const TopicListPage({
-    super.key,
-    required this.onClose,
-    required this.tagId,
-    this.showBottomButton = true
-  });
+  const TopicListPage(
+      {super.key,
+      required this.onClose,
+      required this.tagId,
+      this.showBottomButton = true});
 
   @override
   State<TopicListPage> createState() => _TopicListPageState();

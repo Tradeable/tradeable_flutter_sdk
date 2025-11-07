@@ -1,14 +1,17 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:tradeable_flutter_sdk/src/models/courses_model.dart';
 import 'package:tradeable_flutter_sdk/src/models/progress_model.dart';
 import 'package:tradeable_flutter_sdk/src/network/api.dart';
-import 'package:tradeable_flutter_sdk/src/ui/widgets/dashboard/custom_linear_progress_indicator.dart';
+import 'package:tradeable_flutter_sdk/src/ui/widgets/axis_dashboard/recent_activity.dart';
 import 'package:tradeable_flutter_sdk/src/ui/widgets/dashboard/user_activity_screen.dart';
 import 'package:tradeable_flutter_sdk/src/utils/app_theme.dart';
 import 'package:tradeable_flutter_sdk/src/tfs.dart';
 
 class OverallProgressWidget extends StatefulWidget {
-  const OverallProgressWidget({super.key});
+  final CoursesModel? coursesModel;
+
+  const OverallProgressWidget({super.key, this.coursesModel});
 
   @override
   State<StatefulWidget> createState() => _OverallProgressIndicator();
@@ -78,8 +81,7 @@ class _OverallProgressIndicator extends State<OverallProgressWidget> {
               ),
               const SizedBox(width: 10),
               model != null
-                  ? _progressCircle(
-                      completedPercent, inProgressPercent, completedPercent)
+                  ? _progressCircle(completedPercent, inProgressPercent)
                   : Center(child: CircularProgressIndicator()),
             ],
           ),
@@ -87,17 +89,17 @@ class _OverallProgressIndicator extends State<OverallProgressWidget> {
           _legend(),
           const SizedBox(height: 24),
           model != null
-              ? CustomLinearProgressIndicator(
+              ? RecentActivity(
                   overallProgress: model!.overall,
-                  progressPercent: completedPercent)
+                  progressPercent: completedPercent,
+                  coursesModel: widget.coursesModel)
               : Container(),
         ],
       ),
     );
   }
 
-  Widget _progressCircle(double completedPercent, double inProgressPercent,
-      double progressPercent) {
+  Widget _progressCircle(double completedPercent, double inProgressPercent) {
     final colors =
         TFS().themeData?.customColors ?? Theme.of(context).customColors;
     final textStyles =
@@ -110,8 +112,7 @@ class _OverallProgressIndicator extends State<OverallProgressWidget> {
         painter: _MultiProgressPainter(
           segments: [
             _SegmentData(color: colors.alertSuccess, percent: completedPercent),
-            _SegmentData(
-                color: colors.alertVariable, percent: inProgressPercent),
+            _SegmentData(color: colors.sliderColor, percent: inProgressPercent),
           ],
           backgroundColor: Colors.grey.shade200,
         ),
@@ -120,7 +121,7 @@ class _OverallProgressIndicator extends State<OverallProgressWidget> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                "${(progressPercent * 100).toInt()}%",
+                "${(completedPercent * 100).toInt()}%",
                 style: textStyles.smallBold.copyWith(color: colors.sliderColor),
               ),
             ],
@@ -145,7 +146,7 @@ class _OverallProgressIndicator extends State<OverallProgressWidget> {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              _legendItem("In-progress", colors.alertVariable, inProgress),
+              _legendItem("In-progress", colors.sliderColor, inProgress),
               SizedBox(
                   height: 40,
                   child: VerticalDivider(
@@ -208,7 +209,8 @@ class _OverallProgressIndicator extends State<OverallProgressWidget> {
           children: [
             Icon(Icons.circle, size: 10, color: color),
             const SizedBox(width: 6),
-            Text(value.toInt().toString(), style: textStyles.largeBold),
+            Text(value.toInt().toString(),
+                style: textStyles.largeBold.copyWith(color: color)),
           ],
         ),
         Text(label, style: textStyles.smallNormal),

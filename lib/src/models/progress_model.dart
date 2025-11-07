@@ -1,3 +1,6 @@
+import 'package:tradeable_flutter_sdk/src/models/flow_model.dart';
+import 'package:tradeable_flutter_sdk/src/models/topic_model.dart';
+
 class ProgressModel {
   final Summary summary;
   final List<OverallProgressModel> overall;
@@ -72,39 +75,5 @@ class OverallProgressModel {
         'logo': logo.toJson(),
         'lastActivityAt': lastActivityAt.toIso8601String(),
         'progress': progress.toJson(),
-      };
-}
-
-class Logo {
-  final String url;
-  final String type;
-
-  Logo({required this.url, required this.type});
-
-  factory Logo.fromJson(Map<String, dynamic> json) => Logo(
-        url: json['url'] ?? '',
-        type: json['type'] ?? '',
-      );
-
-  Map<String, dynamic> toJson() => {
-        'url': url,
-        'type': type,
-      };
-}
-
-class Progress {
-  final int total;
-  final int completed;
-
-  Progress({required this.total, required this.completed});
-
-  factory Progress.fromJson(Map<String, dynamic> json) => Progress(
-        total: json['total'] ?? 0,
-        completed: json['completed'] ?? 0,
-      );
-
-  Map<String, dynamic> toJson() => {
-        'total': total,
-        'completed': completed,
       };
 }

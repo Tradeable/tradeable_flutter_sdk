@@ -70,8 +70,8 @@ class _CoursesListScreen extends State<CoursesListPage> {
                           ),
                           itemBuilder: (context, index) {
                             final item = courses[index];
-                            int totalPercent = ((item.progress.completed! /
-                                        item.progress.total!) *
+                            int totalPercent = ((item.progress.completed /
+                                        item.progress.total) *
                                     100)
                                 .ceil()
                                 .toInt();
@@ -125,23 +125,23 @@ class _CoursesListScreen extends State<CoursesListPage> {
                                                         child:
                                                             LinearProgressIndicator(
                                                           value: ((item.progress
-                                                                  .completed! /
+                                                                  .completed /
                                                               item.progress
-                                                                  .total!)),
+                                                                  .total)),
                                                           backgroundColor: colors
                                                               .cardColorSecondary,
                                                           valueColor:
                                                               AlwaysStoppedAnimation<
                                                                       Color>(
                                                                   colors
-                                                                      .borderColorPrimary),
+                                                                      .sliderColor),
                                                           minHeight: 5,
                                                         ),
                                                       ),
                                                     ),
                                                     const SizedBox(width: 4),
                                                     Text(
-                                                      "${(item.progress.completed)}/${item.progress.total!} ${totalPercent == 100 ? "Completed" : "Ongoing..."}",
+                                                      "${(item.progress.completed)}/${item.progress.total} ${totalPercent == 100 ? "Completed" : "Ongoing..."}",
                                                       style: textStyles
                                                           .smallNormal
                                                           .copyWith(
@@ -158,7 +158,7 @@ class _CoursesListScreen extends State<CoursesListPage> {
                                                       TextOverflow.ellipsis,
                                                   style: totalPercent == 100
                                                       ? textStyles.smallNormal
-                                                      : textStyles.smallBold
+                                                      : textStyles.smallNormal
                                                           .copyWith(
                                                               fontSize: 12,
                                                               color: colors
@@ -176,10 +176,9 @@ class _CoursesListScreen extends State<CoursesListPage> {
                                                 : "CONTINUE",
                                         style: textStyles.smallBold.copyWith(
                                             fontSize: 12,
-                                            color: colors.borderColorPrimary)),
+                                            color: colors.sliderColor)),
                                     Icon(Icons.arrow_forward_ios,
-                                        size: 12,
-                                        color: colors.borderColorPrimary)
+                                        size: 12, color: colors.sliderColor)
                                   ],
                                 ),
                               ),

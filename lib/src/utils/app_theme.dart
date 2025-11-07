@@ -98,6 +98,7 @@ class ThemeColors {
   final Color neutral_2;
   final Color dataVis1;
   final Color dataVis2;
+  final Color supportPositive;
 
   ThemeColors(
       {required this.primary,
@@ -151,7 +152,8 @@ class ThemeColors {
       required this.alertVariable,
       required this.neutral_2,
       required this.dataVis1,
-      required this.dataVis2});
+      required this.dataVis2,
+      required this.supportPositive});
 
   // Light theme colors factory
   static ThemeColors light() {
@@ -207,7 +209,8 @@ class ThemeColors {
         alertVariable: const Color(0xff145599),
         neutral_2: const Color(0xffEBF9F8),
         dataVis1: const Color(0xffC578D3),
-        dataVis2: const Color(0xffD87D23));
+        dataVis2: const Color(0xffD87D23),
+        supportPositive: const Color(0xff278829));
   }
 
   // Dark theme colors factory
@@ -264,7 +267,8 @@ class ThemeColors {
         alertVariable: const Color(0xff145599),
         neutral_2: const Color(0xffEBF9F8),
         dataVis1: const Color(0xffC578D3),
-        dataVis2: const Color(0xffD87D23));
+        dataVis2: const Color(0xffD87D23),
+        supportPositive: const Color(0xff278829));
   }
 }
 

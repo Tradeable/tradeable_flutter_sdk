@@ -84,13 +84,13 @@ class API {
 
   Future<Map<String, String>> markFlowAsCompleted(
       int flowId, int? topicId, int? topicTagId, int? moduleId) async {
-    Map<String, int> queryParam = {};
-    if (topicId != null) queryParam['topicId'] = topicId;
-    if (topicTagId != null) queryParam['topicTagId'] = topicTagId;
-    if (moduleId != null) queryParam['moduleId'] = moduleId;
+    // Map<String, int> queryParam = {};
+    // if (topicId != null) queryParam['topicId'] = topicId;
+    // if (topicTagId != null) queryParam['topicTagId'] = topicTagId;
+    // if (moduleId != null) queryParam['moduleId'] = moduleId;
     final response = await dio.post(
-      "/v0/sdk/flows/$flowId/completed",
-      data: queryParam,
+      "/v0/sdk/flows/$flowId/complete-all",
+      // data: queryParam,
     );
     return Map<String, String>.from(response.data);
   }

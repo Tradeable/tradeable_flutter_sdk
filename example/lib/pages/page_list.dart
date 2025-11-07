@@ -65,6 +65,7 @@ class _PageListState extends State<PageList> {
                       icon: const Icon(Icons.cancel_rounded))
                 ],
               ),
+              AxisDashboard(),
               Spacer(),
               MaterialButton(
                   onPressed: () {

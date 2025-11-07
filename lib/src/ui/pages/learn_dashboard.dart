@@ -63,7 +63,8 @@ class _LearnDashboard extends State<LearnDashboard> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  OverallProgressWidget(),
+                  OverallProgressWidget(
+                      coursesModel: courses.isNotEmpty ? courses[0] : null),
                   const SizedBox(height: 20),
                   CoursesHorizontalList(courses: courses),
                   const SizedBox(height: 20),
