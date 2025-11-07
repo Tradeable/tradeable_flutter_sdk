@@ -41,6 +41,11 @@ class Logo {
       type: json["type"],
     );
   }
+
+  Map<String, dynamic> toJson() => {
+        'url': url,
+        'type': type,
+      };
 }
 
 class FlowWidget {

@@ -13,8 +13,9 @@ import 'package:tradeable_flutter_sdk/src/utils/app_theme.dart';
 class TopicDetailPage extends StatefulWidget {
   final TopicUserModel? topic;
   final int? topicId;
+  final int? courseId;
 
-  const TopicDetailPage({super.key, this.topic, this.topicId});
+  const TopicDetailPage({super.key, this.topic, this.topicId, this.courseId});
 
   @override
   State<TopicDetailPage> createState() => _TopicDetailPageState();
@@ -39,8 +40,8 @@ class _TopicDetailPageState extends State<TopicDetailPage> {
       if (flowId == null) {
         getFlows();
       }
-      completedFlows = _topicUserModel!.progress.completed ?? 0.toInt();
-      totalFlows = _topicUserModel!.progress.total ?? 0.toInt();
+      completedFlows = _topicUserModel!.progress.completed;
+      totalFlows = _topicUserModel!.progress.total;
     } else if (widget.topicId != null) {
       _fetchTopicUserModel();
     }
@@ -50,7 +51,8 @@ class _TopicDetailPageState extends State<TopicDetailPage> {
     setState(() {
       _loading = true;
     });
-    final topic = await API().fetchTopicById(widget.topicId!);
+    final topic =
+        await API().fetchTopicById(widget.topicId!, moduleId: widget.courseId);
     _topicUserModel = TopicUserModel.fromTopic(topic);
     flowId = _topicUserModel!.startFlow;
     if (flowId == null) {
@@ -97,7 +99,7 @@ class _TopicDetailPageState extends State<TopicDetailPage> {
     }
 
     return Scaffold(
-        backgroundColor: widget.topic?.cardColor ?? Colors.white,
+        backgroundColor: widget.topic?.cardColor ?? Color(0xffF9F1EB),
         appBar: renderAppBar(),
         body: SafeArea(
           child: WidgetPage(
@@ -123,6 +125,7 @@ class _TopicDetailPageState extends State<TopicDetailPage> {
                           onFlowItemClicked: (id) => setState(() {
                             flowId = id;
                           }),
+                          completedFlowId: flowId ?? -1,
                         ),
                       ),
                     );
@@ -130,41 +133,6 @@ class _TopicDetailPageState extends State<TopicDetailPage> {
                 );
               }),
         ));
-    // return Scaffold(
-    //   backgroundColor: colors.background,
-    //   body: SafeArea(
-    //     child: Stack(
-    //       children: [
-    //         Positioned.fill(
-    //           child: Container(
-    //             margin: const EdgeInsets.only(top: 80),
-    //             padding: const EdgeInsets.all(10),
-    //             child: WidgetPage(
-    //                 topicId: _topicUserModel!.topicId, flowId: flowId ?? -1),
-    //           ),
-    //         ),
-    //         Positioned(
-    //           top: 0,
-    //           left: 0,
-    //           right: 0,
-    //           child: TopicHeaderWidget(
-    //             topic: _topicUserModel!,
-    //             onBack: () => Navigator.of(context).pop(),
-    //             onExpandChanged: (expanded) {
-    //               isExpanded = expanded.isExpanded;
-    //               if (!isExpanded) {
-    //                 setState(() {
-    //                   flowId = expanded.flowId;
-    //                   _topicUserModel!.startFlow = flowId;
-    //                 });
-    //               }
-    //             },
-    //           ),
-    //         ),
-    //       ],
-    //     ),
-    //   ),
-    // );
   }
 
   PreferredSizeWidget renderAppBar() {
@@ -201,7 +169,7 @@ class _TopicDetailPageState extends State<TopicDetailPage> {
                     ),
                     const SizedBox(width: 6),
                     Text(
-                      '$completedFlows/$totalFlows Ongoing...',
+                      '$completedFlows/$totalFlows ${completedFlows == totalFlows ? "Ongoing..." : "Completed"}',
                       style: TextStyle(fontSize: 10, color: Colors.black),
                     ),
                   ],
@@ -236,6 +204,7 @@ class _TopicDetailPageState extends State<TopicDetailPage> {
                         onFlowItemClicked: (id) => setState(() {
                           flowId = id;
                         }),
+                        completedFlowId: -1,
                       ),
                     ),
                   );

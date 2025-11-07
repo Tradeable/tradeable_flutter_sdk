@@ -27,7 +27,7 @@ class TopicProgressList extends StatelessWidget {
         final isCompleted = topic.progress.completed == topic.progress.total;
         final percent = (topic.progress.total == 0)
             ? 0.0
-            : (topic.progress.completed ?? 0) / (topic.progress.total ?? 1);
+            : (topic.progress.completed) / (topic.progress.total);
 
         return Row(
           crossAxisAlignment: CrossAxisAlignment.start,

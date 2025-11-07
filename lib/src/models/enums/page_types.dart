@@ -26,4 +26,10 @@ extension PageIdValue on PageId {
   };
 
   int get topicTagId => _values[this] ?? 0;
+
+  String get formattedName {
+    final name =
+        this.name.replaceAll('axis', '').replaceAllMapped(RegExp(r'([A-Z])'), (m) => ' ${m[1]}');
+    return name[0].toUpperCase() + name.substring(1);
+  }
 }

@@ -66,13 +66,14 @@ class _PageListState extends State<PageList> {
                 ],
               ),
               Spacer(),
-              MaterialButton(
-                  onPressed: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) => LearnDashboard()),
-                    );
-                  },
-                  child: const Text("Go to Module List Page"))
+              AxisDashboard(),
+              // MaterialButton(
+              //     onPressed: () {
+              //       Navigator.of(context).push(
+              //         MaterialPageRoute(builder: (context) => LearnDashboard()),
+              //       );
+              //     },
+              //     child: const Text("Go to Module List Page"))
             ],
           ),
         ),
