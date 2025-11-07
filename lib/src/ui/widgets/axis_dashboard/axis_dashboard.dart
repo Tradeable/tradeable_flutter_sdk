@@ -5,9 +5,11 @@ import 'package:tradeable_flutter_sdk/tradeable_flutter_sdk.dart';
 
 class AxisDashboard extends StatefulWidget {
   final EdgeInsets padding;
-  final DateTime? referenceDate;
+  final int dateThreshold;
   const AxisDashboard(
-      {super.key, this.padding = const EdgeInsets.all(12), this.referenceDate});
+      {super.key,
+      this.padding = const EdgeInsets.all(12),
+      this.dateThreshold = 100000});
 
   @override
   State<AxisDashboard> createState() => _AxisDashboardState();
@@ -22,11 +24,8 @@ class _AxisDashboardState extends State<AxisDashboard> {
   @override
   void initState() {
     super.initState();
-    if (widget.referenceDate != null) {
-      referenceDate = widget.referenceDate!;
-    } else {
-      referenceDate = DateTime(2023, 12, 1);
-    }
+    referenceDate =
+        DateTime.now().subtract(Duration(days: widget.dateThreshold));
     fetchData();
   }
 

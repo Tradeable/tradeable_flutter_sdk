@@ -22,8 +22,8 @@ class TFS {
 
   factory TFS() => _instance;
 
-  String? get authorization => 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiMSIsIm9pZCI6MiwiaWF0IjoxNzQyNDkwOTY0LCJleHAiOjk5OTk5OTk5OTl9.BbSv_2Z9JgE53bIMbFzg2MaeeCFsrza-epaay7BfEj0';
-  String? get portalToken => 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiMSIsIm9pZCI6MiwiaWF0IjoxNzQyNDkwOTY0LCJleHAiOjk5OTk5OTk5OTl9.BbSv_2Z9JgE53bIMbFzg2MaeeCFsrza-epaay7BfEj0';
+  String? get authorization => _authorization;
+  String? get portalToken => _portalToken;
   String? get appId => _appId;
   String? get clientId => _clientId;
   String? get publicKey => _publicKey;
@@ -39,7 +39,7 @@ class TFS {
     EventCallback? onEvent,
     TokenExpirationCallback? onTokenExpiration,
   }) {
-    this.baseUrl = "https://dev.api.tradeable.app/demo";
+    this.baseUrl = baseUrl;
     _secretKey = generateSecretKey();
     themeData = theme ?? AppTheme.lightTheme();
     TLW().initialize(themeData: themeData);
