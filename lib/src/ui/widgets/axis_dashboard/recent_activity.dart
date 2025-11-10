@@ -80,7 +80,7 @@ class RecentActivity extends StatelessWidget {
         : 0.0;
     final accentColor = index == 0 ? colors.dataVis1 : colors.dataVis2;
 
-    return progressPercent > 0
+    return itemProgressPercent > 0
         ? _buildInProgressCard(
             item, context, textStyles, colors, accentColor, itemProgressPercent)
         : _buildNotStartedCard(item, context);

@@ -107,7 +107,7 @@ class _OverallProgressIndicator extends State<OverallProgress> {
         : 0.0;
     final accentColor = colors.dataVis1;
 
-    return completed / total > 0
+    return itemProgressPercent > 0
         ? _buildInProgressCard(
             item, context, textStyles, colors, accentColor, itemProgressPercent)
         : _buildNotStartedCard(item, context);
