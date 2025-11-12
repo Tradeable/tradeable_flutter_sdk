@@ -4,6 +4,7 @@ import 'package:tradeable_flutter_sdk/src/models/courses_model.dart';
 import 'package:tradeable_flutter_sdk/src/ui/widgets/dashboard/course_topic_btm_sheet.dart';
 import 'package:tradeable_flutter_sdk/src/utils/app_theme.dart';
 import 'package:tradeable_flutter_sdk/src/tfs.dart';
+import 'package:tradeable_flutter_sdk/src/utils/events.dart';
 
 class CourseListItem extends StatelessWidget {
   final CoursesModel model;
@@ -42,7 +43,12 @@ class CourseListItem extends StatelessWidget {
         borderRadius: BorderRadius.circular(14),
       ),
       child: InkWell(
-        onTap: () => showBottomsheet(context, model.id),
+        onTap: () {
+          TFS().onEvent(
+              eventName: AppEvents.courseBottomSheetOpened,
+              data: {"courseTitle": model.name});
+          showBottomsheet(context, model.id);
+        },
         child: Stack(
           clipBehavior: Clip.none,
           children: [

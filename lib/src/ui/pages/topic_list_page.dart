@@ -5,6 +5,8 @@ import 'package:tradeable_flutter_sdk/src/ui/pages/learn_dashboard.dart';
 import 'package:tradeable_flutter_sdk/src/ui/pages/topic_details_page.dart';
 import 'package:tradeable_flutter_sdk/src/ui/widgets/topic_tile.dart';
 import 'package:tradeable_flutter_sdk/src/ui/widgets/module_card_shimmer.dart';
+import 'package:tradeable_flutter_sdk/src/utils/events.dart';
+import 'package:tradeable_flutter_sdk/tradeable_flutter_sdk.dart';
 
 class TopicListPage extends StatefulWidget {
   final VoidCallback onClose;
@@ -141,11 +143,28 @@ class _TopicListPageState extends State<TopicListPage> {
                           padding: const EdgeInsets.only(bottom: 16.0),
                           child: TopicTile(
                             moduleModel: item,
-                            onClick: () {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => TopicDetailPage(
-                                      topic: item.copyWith(
-                                          cardColor: cardColor))));
+                            onClick: () async {
+                              TFS().onEvent(
+                                  eventName: AppEvents.beginTopic,
+                                  data: {
+                                    "comingFrom": "sideDrawer",
+                                    "title": item.name,
+                                    "total":
+                                        "${item.progress.completed}/${item.progress.total}"
+                                  });
+                              await Navigator.of(context)
+                                  .push(MaterialPageRoute(
+                                      builder: (context) => TopicDetailPage(
+                                          topic: item.copyWith(
+                                              cardColor: cardColor))))
+                                  .then((val) {
+                                setState(() {
+                                  _showShimmer = true;
+                                  topicUserModel = null;
+                                  relatedTopics = [];
+                                  fetchTopics(widget.tagId!);
+                                });
+                              });
                             },
                             cardColor: cardColor,
                           ),

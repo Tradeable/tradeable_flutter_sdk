@@ -5,8 +5,10 @@ import 'package:tradeable_flutter_sdk/src/utils/app_theme.dart';
 class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
   final String title;
   final Color color;
+  final VoidCallback? onBack;
 
-  const AppBarWidget({super.key, required this.title, required this.color});
+  const AppBarWidget(
+      {super.key, required this.title, required this.color, this.onBack});
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +22,11 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
       actionsPadding: EdgeInsets.only(right: 10),
       leading: IconButton(
           onPressed: () {
-            Navigator.of(context).pop();
+            if (onBack != null) {
+              onBack!();
+            } else {
+              Navigator.of(context).pop();
+            }
           },
           icon: Icon(Icons.arrow_back)),
     );

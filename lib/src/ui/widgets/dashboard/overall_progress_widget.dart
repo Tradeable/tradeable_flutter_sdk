@@ -4,6 +4,7 @@ import 'package:tradeable_flutter_sdk/src/models/courses_model.dart';
 import 'package:tradeable_flutter_sdk/src/models/progress_model.dart';
 import 'package:tradeable_flutter_sdk/src/network/api.dart';
 import 'package:tradeable_flutter_sdk/src/ui/widgets/axis_dashboard/recent_activity.dart';
+import 'package:tradeable_flutter_sdk/src/ui/widgets/dashboard/recent_activity_shimmer.dart';
 import 'package:tradeable_flutter_sdk/src/ui/widgets/dashboard/user_activity_screen.dart';
 import 'package:tradeable_flutter_sdk/src/utils/app_theme.dart';
 import 'package:tradeable_flutter_sdk/src/tfs.dart';
@@ -30,6 +31,9 @@ class _OverallProgressIndicator extends State<OverallProgressWidget> {
   }
 
   void getProgress() async {
+    setState(() {
+      model = null;
+    });
     API().getUserProgress().then((va) {
       setState(() {
         model = va;
@@ -92,8 +96,11 @@ class _OverallProgressIndicator extends State<OverallProgressWidget> {
               ? RecentActivity(
                   overallProgress: model!.overall,
                   progressPercent: completedPercent,
-                  coursesModel: widget.coursesModel)
-              : Container(),
+                  coursesModel: widget.coursesModel,
+                  updateProgress: () {
+                    getProgress();
+                  })
+              : RecentActivityShimmer(),
         ],
       ),
     );
@@ -169,10 +176,15 @@ class _OverallProgressIndicator extends State<OverallProgressWidget> {
                       )),
                   const SizedBox(width: 10),
                   InkWell(
-                    onTap: () {
-                      Navigator.of(context).push(MaterialPageRoute(
+                    onTap: () async {
+                      await Navigator.of(context).push(MaterialPageRoute(
                           builder: (context) => UserActivityScreen(
-                              progressItems: model?.overall ?? [])));
+                                progressItems: model?.overall ?? [],
+                                updateProgress: () {
+                                  getProgress();
+                                },
+                              )));
+                      getProgress();
                     },
                     child: Row(
                       children: [
