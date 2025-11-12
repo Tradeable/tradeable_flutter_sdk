@@ -293,7 +293,10 @@ class _FlowsList extends State<FlowsList> {
                         borderRadius: BorderRadius.circular(12),
                         textStyle: textStyles.smallBold
                             .copyWith(fontSize: 12, color: Colors.white),
-                        onTap: () {}),
+                        onTap: () {
+                          Navigator.of(context).pop();
+                          Navigator.of(context).pop();
+                        }),
                   )
                 ],
               ),

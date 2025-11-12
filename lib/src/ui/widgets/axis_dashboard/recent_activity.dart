@@ -5,17 +5,20 @@ import 'package:tradeable_flutter_sdk/src/models/progress_model.dart';
 import 'package:tradeable_flutter_sdk/src/tfs.dart';
 import 'package:tradeable_flutter_sdk/src/ui/pages/course_details_page.dart';
 import 'package:tradeable_flutter_sdk/src/utils/app_theme.dart';
+import 'package:tradeable_flutter_sdk/src/utils/events.dart';
 
 class RecentActivity extends StatelessWidget {
   final List<OverallProgressModel> overallProgress;
   final double progressPercent;
   final CoursesModel? coursesModel;
+  final VoidCallback updateProgress;
 
   const RecentActivity(
       {super.key,
       required this.overallProgress,
       required this.progressPercent,
-      this.coursesModel});
+      this.coursesModel,
+      required this.updateProgress});
 
   @override
   Widget build(BuildContext context) {
@@ -94,9 +97,15 @@ class RecentActivity extends StatelessWidget {
       Color accentColor,
       double progressPercent) {
     return InkWell(
-      onTap: () => Navigator.of(context).push(
-        MaterialPageRoute(builder: (_) => CourseDetailsPage(courseId: item.id)),
-      ),
+      onTap: () async {
+        TFS().onEvent(eventName: AppEvents.viewAllTopicsInCourse, data: {
+          "progressPercent": progressPercent,
+          "courseTitle": item.name
+        });
+        await Navigator.of(context).push(MaterialPageRoute(
+            builder: (_) => CourseDetailsPage(courseId: item.id)));
+        updateProgress();
+      },
       borderRadius: BorderRadius.circular(12),
       child: Container(
         width: double.infinity,
@@ -169,9 +178,15 @@ class RecentActivity extends StatelessWidget {
         TFS().themeData?.customTextStyles ?? Theme.of(context).customTextStyles;
 
     return InkWell(
-      onTap: () => Navigator.of(context).push(
-        MaterialPageRoute(builder: (_) => CourseDetailsPage(courseId: item.id)),
-      ),
+      onTap: () async {
+        TFS().onEvent(eventName: AppEvents.viewAllTopicsInCourse, data: {
+          "progressPercent": progressPercent,
+          "courseTitle": item.name
+        });
+        await Navigator.of(context).push(MaterialPageRoute(
+            builder: (_) => CourseDetailsPage(courseId: item.id)));
+        updateProgress();
+      },
       borderRadius: BorderRadius.circular(12),
       child: Container(
         width: double.infinity,

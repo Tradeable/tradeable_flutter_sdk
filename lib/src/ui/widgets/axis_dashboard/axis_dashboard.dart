@@ -49,6 +49,7 @@ class _AxisDashboardState extends State<AxisDashboard> {
       updatedCourses.removeAt(0);
     }
 
+    if (!mounted) return;
     setState(() {
       model = progress;
       selectedProgress = pickedProgress;
@@ -69,9 +70,15 @@ class _AxisDashboardState extends State<AxisDashboard> {
       children: [
         InkWell(
           onTap: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => LearnDashboard()),
-            );
+            Navigator.of(context)
+                .push(
+              MaterialPageRoute(builder: (context) => const LearnDashboard()),
+            )
+                .then((value) {
+              if (value == true) {
+                fetchData();
+              }
+            });
           },
           child: Padding(
             padding: EdgeInsets.only(left: widget.padding.left),

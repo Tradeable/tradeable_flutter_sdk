@@ -5,6 +5,7 @@ import 'package:tradeable_flutter_sdk/src/ui/pages/course_details_page.dart';
 import 'package:tradeable_flutter_sdk/src/ui/widgets/dashboard/appbar_widget.dart';
 import 'package:tradeable_flutter_sdk/src/utils/app_theme.dart';
 import 'package:tradeable_flutter_sdk/src/tfs.dart';
+import 'package:tradeable_flutter_sdk/src/utils/events.dart';
 
 class CoursesListPage extends StatefulWidget {
   final List<CoursesModel> courses;
@@ -21,6 +22,7 @@ class _CoursesListScreen extends State<CoursesListPage> {
 
   @override
   void initState() {
+    TFS().onEvent(eventName: AppEvents.viewAllCourses, data: {});
     if (widget.courses.isEmpty) {
       getModules();
     } else {
@@ -76,10 +78,24 @@ class _CoursesListScreen extends State<CoursesListPage> {
                                 .ceil()
                                 .toInt();
                             return InkWell(
-                              onTap: () {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) =>
-                                        CourseDetailsPage(model: item)));
+                              onTap: () async {
+                                TFS().onEvent(
+                                    eventName: AppEvents.viewAllTopicsInCourse,
+                                    data: {
+                                      "progressPercent": totalPercent,
+                                      "courseTitle": item.name
+                                    });
+                                await Navigator.of(context)
+                                    .push(MaterialPageRoute(
+                                        builder: (context) =>
+                                            CourseDetailsPage(model: item)))
+                                    .then((val) {
+                                  setState(() {
+                                    isLoading = true;
+                                    courses = [];
+                                  });
+                                  getModules();
+                                });
                               },
                               child: Container(
                                 padding: const EdgeInsets.symmetric(
