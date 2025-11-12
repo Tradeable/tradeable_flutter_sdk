@@ -85,15 +85,21 @@ class _AxisDashboardState extends State<AxisDashboard> {
                         children: [
                           Text("Learn Dashboard",
                               style: TextStyle(
-                                  fontSize: 14, fontWeight: FontWeight.bold)),
+                                  fontSize: 16, fontWeight: FontWeight.w700)),
                           const SizedBox(width: 4),
                           Icon(Icons.keyboard_arrow_right_sharp, size: 20)
                         ],
                       ),
                       const SizedBox(height: 8),
-                      Text(completedPercent > 0
-                          ? "Your space to track and manage your learning progress."
-                          : "Start your learning journey")
+                      Text(
+                        completedPercent > 0
+                            ? "Your space to track and manage your learning progress."
+                            : "Start your learning journey",
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      )
                     ],
                   ),
                 ),
