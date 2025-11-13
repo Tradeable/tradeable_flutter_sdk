@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:tradeable_flutter_sdk/src/models/topic_user_model.dart';
-import 'package:tradeable_flutter_sdk/src/network/api.dart';
-import 'package:tradeable_flutter_sdk/src/ui/pages/learn_dashboard.dart';
-import 'package:tradeable_flutter_sdk/src/ui/pages/topic_details_page.dart';
 import 'package:tradeable_flutter_sdk/src/ui/widgets/topic_tile.dart';
 import 'package:tradeable_flutter_sdk/src/ui/widgets/module_card_shimmer.dart';
 import 'package:tradeable_flutter_sdk/src/utils/events.dart';
