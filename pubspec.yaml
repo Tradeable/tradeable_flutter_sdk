@@ -17,11 +17,16 @@ dependencies:
     git:
       url: https://github.com/Tradeable/tradeable_learn_widget.git
       ref: main
+  lottie: ^3.3.1
   smooth_page_indicator: ^1.2.1
   auto_size_text: ^3.0.0
   flutter_svg: ^2.2.0
   encrypt: ^5.0.3
   crypto: ^3.0.6
+  pointycastle: ^3.9.1
+  cryptography: ^2.7.0
+  basic_utils: ^5.7.0
+  asn1lib: ^1.6.5
 
 dev_dependencies:
   flutter_test:

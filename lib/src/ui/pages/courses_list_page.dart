@@ -5,6 +5,7 @@ import 'package:tradeable_flutter_sdk/src/ui/pages/course_details_page.dart';
 import 'package:tradeable_flutter_sdk/src/ui/widgets/dashboard/appbar_widget.dart';
 import 'package:tradeable_flutter_sdk/src/utils/app_theme.dart';
 import 'package:tradeable_flutter_sdk/src/tfs.dart';
+import 'package:tradeable_flutter_sdk/src/utils/events.dart';
 
 class CoursesListPage extends StatefulWidget {
   final List<CoursesModel> courses;
@@ -21,6 +22,7 @@ class _CoursesListScreen extends State<CoursesListPage> {
 
   @override
   void initState() {
+    TFS().onEvent(eventName: AppEvents.viewAllCourses, data: {});
     if (widget.courses.isEmpty) {
       getModules();
     } else {
@@ -48,24 +50,13 @@ class _CoursesListScreen extends State<CoursesListPage> {
 
     return Scaffold(
       backgroundColor: colors.background,
-      appBar: AppBarWidget(title: "All Courses"),
+      appBar: AppBarWidget(title: "All Courses", color: colors.background),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
-                  width: double.infinity,
-                  height: 160,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Image.asset(
-                      "packages/tradeable_flutter_sdk/lib/assets/images/all_courses.png")),
-              const SizedBox(height: 20),
-              Text("Welcome Deepak!", style: textStyles.mediumBold),
-              const SizedBox(height: 10),
               isLoading
                   ? Center(child: CircularProgressIndicator())
                   : courses.isEmpty
@@ -74,28 +65,41 @@ class _CoursesListScreen extends State<CoursesListPage> {
                           itemCount: courses.length,
                           shrinkWrap: true,
                           physics: const NeverScrollableScrollPhysics(),
-                          separatorBuilder: (_, __) =>
-                              const SizedBox(height: 16),
+                          separatorBuilder: (_, __) => Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 12),
+                            child:
+                                Divider(color: colors.darkShade2, thickness: 1),
+                          ),
                           itemBuilder: (context, index) {
                             final item = courses[index];
+                            int totalPercent = ((item.progress.completed /
+                                        item.progress.total) *
+                                    100)
+                                .ceil()
+                                .toInt();
                             return InkWell(
-                              onTap: () {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) =>
-                                        CourseDetailsPage(model: item)));
+                              onTap: () async {
+                                TFS().onEvent(
+                                    eventName: AppEvents.viewAllTopicsInCourse,
+                                    data: {
+                                      "progressPercent": totalPercent,
+                                      "courseTitle": item.name
+                                    });
+                                await Navigator.of(context)
+                                    .push(MaterialPageRoute(
+                                        builder: (context) =>
+                                            CourseDetailsPage(model: item)))
+                                    .then((val) {
+                                  setState(() {
+                                    isLoading = true;
+                                    courses = [];
+                                  });
+                                  getModules();
+                                });
                               },
                               child: Container(
-                                padding: const EdgeInsets.all(10),
-                                decoration: BoxDecoration(
-                                  color: index % 2 == 0
-                                      ? Color(0xFFFCF5E8)
-                                      : Color(0xFFFFE3F1),
-                                  borderRadius: BorderRadius.circular(12),
-                                  border: Border.all(
-                                      color: index % 2 == 0
-                                          ? Color(0xFFFCF5E8)
-                                          : Color(0xFFFFE3F1)),
-                                ),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 6, vertical: 12),
                                 child: Row(
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
@@ -126,24 +130,71 @@ class _CoursesListScreen extends State<CoursesListPage> {
                                           Text(item.name,
                                               style: textStyles.smallBold),
                                           const SizedBox(height: 6),
-                                          Text(
-                                            "${item.progress.total} Topics | 30m",
-                                            style: textStyles.smallNormal
-                                                .copyWith(
-                                                    color: colors
-                                                        .textColorSecondary),
-                                          )
+                                          totalPercent > 0
+                                              ? Row(
+                                                  children: [
+                                                    Expanded(
+                                                      child: ClipRRect(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(10),
+                                                        child:
+                                                            LinearProgressIndicator(
+                                                          value: ((item.progress
+                                                                  .completed /
+                                                              item.progress
+                                                                  .total)),
+                                                          backgroundColor: colors
+                                                              .cardColorSecondary,
+                                                          valueColor:
+                                                              AlwaysStoppedAnimation<
+                                                                      Color>(
+                                                                  colors
+                                                                      .sliderColor),
+                                                          minHeight: 5,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    const SizedBox(width: 4),
+                                                    Text(
+                                                      "${(item.progress.completed)}/${item.progress.total} ${totalPercent == 100 ? "Completed" : "Ongoing..."}",
+                                                      style: textStyles
+                                                          .smallNormal
+                                                          .copyWith(
+                                                              fontSize: 10),
+                                                    )
+                                                  ],
+                                                )
+                                              : Text(
+                                                  totalPercent == 100
+                                                      ? "100% Complete"
+                                                      : item.description,
+                                                  maxLines: 1,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  style: totalPercent == 100
+                                                      ? textStyles.smallNormal
+                                                      : textStyles.smallNormal
+                                                          .copyWith(
+                                                              fontSize: 12,
+                                                              color: colors
+                                                                  .textColorSecondary),
+                                                )
                                         ],
                                       ),
                                     ),
-                                    const SizedBox(width: 6),
-                                    Text("MORE INFO",
+                                    const SizedBox(width: 20),
+                                    Text(
+                                        totalPercent == 0
+                                            ? "BEGIN"
+                                            : totalPercent == 100
+                                                ? "REVIST"
+                                                : "CONTINUE",
                                         style: textStyles.smallBold.copyWith(
                                             fontSize: 12,
-                                            color: colors.borderColorPrimary)),
+                                            color: colors.sliderColor)),
                                     Icon(Icons.arrow_forward_ios,
-                                        size: 12,
-                                        color: colors.borderColorPrimary)
+                                        size: 12, color: colors.sliderColor)
                                   ],
                                 ),
                               ),

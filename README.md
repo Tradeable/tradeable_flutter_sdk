@@ -24,6 +24,7 @@ flutter pub upgrade tradeable_flutter_sdk
 ## Initialization
 
 Add this to your main.dart file:
+Where you have to pass authorization, authToken, token, appId, clientId & publicKey
 
 ```dart
 void main() {
@@ -35,7 +36,13 @@ void main() {
       //print("Event triggered : $eventName with data: $data");
     },
     onTokenExpiration: () async {
-      //TFS().registerApp(token: "", appId: "", clientId: "", encryptionKey: "");
+      // TFS().registerApp(
+      //     authorization: "",
+      //     authToken: "",
+      //     token: "",
+      //     appId: "",
+      //     clientId: "",
+      //     publicKey: "");
     });
   runApp(const MyApp());
 }
@@ -76,4 +83,27 @@ Widget build(BuildContext context) {
     )
   );
 }
+```
+### Adding Dashboard Widget
+You can access the home screen trade:able Widget by calling `AxisDashboard`:
+```dart
+@override
+Widget build(BuildContext context) {
+  return Scaffold(
+    appBar: AppBar(),
+    body: SafeArea(
+      child: AxisDashboard()
+    )
+  );
+}
+```
+
+**Optional Parameters:**
+- `padding`: Custom padding for the dashboard (default: `EdgeInsets.all(12)`)
+- `dateThreshold`: Number of days to filter courses (default: `100000`)
+```dart
+AxisDashboard(
+  padding: EdgeInsets.all(16),
+  dateThreshold: 30, // Shows courses from last 30 days
+)
 ```

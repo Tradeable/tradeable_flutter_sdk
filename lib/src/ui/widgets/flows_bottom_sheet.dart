@@ -7,9 +7,13 @@ import 'package:tradeable_flutter_sdk/src/ui/widgets/flows_list.dart';
 class FlowsBottomSheet extends StatefulWidget {
   final TopicUserModel topic;
   final Function(int) onFlowItemClicked;
+  final int completedFlowId;
 
   const FlowsBottomSheet(
-      {super.key, required this.topic, required this.onFlowItemClicked});
+      {super.key,
+      required this.topic,
+      required this.onFlowItemClicked,
+      required this.completedFlowId});
 
   @override
   State<StatefulWidget> createState() => _FlowsBottomSheet();
@@ -30,7 +34,15 @@ class _FlowsBottomSheet extends State<FlowsBottomSheet> {
 
   void getTopics() async {
     await API()
-        .fetchTopicById(widget.topic.topicId, widget.topic.topicTagId)
+        .fetchTopicById(widget.topic.topicId,
+            topicTagId: widget.topic.topicContextType != null &&
+                    widget.topic.topicContextType == TopicContextType.tag
+                ? widget.topic.topicContextId
+                : null,
+            moduleId: widget.topic.topicContextType != null &&
+                    widget.topic.topicContextType == TopicContextType.course
+                ? widget.topic.topicContextId
+                : null)
         .then((val) {
       setState(() {
         flows = (val.flows?.map((e) => TopicFlowsListModel(
@@ -64,7 +76,8 @@ class _FlowsBottomSheet extends State<FlowsBottomSheet> {
                 flowModel: TopicFlowModel(
                   topicId: widget.topic.topicId,
                   userFlowsList: flows,
-                  topicTagId: widget.topic.topicTagId,
+                  topicContextType: widget.topic.topicContextType,
+                  topicContextId: widget.topic.topicContextId,
                 ),
                 onFlowSelected: (flowId) {
                   setState(() {
@@ -73,6 +86,7 @@ class _FlowsBottomSheet extends State<FlowsBottomSheet> {
                     widget.onFlowItemClicked(currentFlowId!);
                   });
                 },
+                completedFlowId: widget.completedFlowId,
               ),
             ),
           ),

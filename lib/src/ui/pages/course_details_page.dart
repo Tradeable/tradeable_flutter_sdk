@@ -7,6 +7,7 @@ import 'package:tradeable_flutter_sdk/src/tfs.dart';
 import 'package:tradeable_flutter_sdk/src/ui/pages/topic_details_page.dart';
 import 'package:tradeable_flutter_sdk/src/ui/widgets/dashboard/appbar_widget.dart';
 import 'package:tradeable_flutter_sdk/src/utils/app_theme.dart';
+import 'package:tradeable_flutter_sdk/src/utils/events.dart';
 
 class CourseDetailsPage extends StatefulWidget {
   final CoursesModel? model;
@@ -45,7 +46,8 @@ class _CourseDetailsScreen extends State<CourseDetailsPage> {
 
     return Scaffold(
       backgroundColor: colors.background,
-      appBar: AppBarWidget(title: (coursesModel?.name ?? "")),
+      appBar: AppBarWidget(
+          title: (coursesModel?.name ?? ""), color: colors.background),
       body: coursesModel != null
           ? Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -59,15 +61,26 @@ class _CourseDetailsScreen extends State<CourseDetailsPage> {
                     Topic item = coursesModel!.topics![index];
                     return InkWell(
                       onTap: () {
+                        TFS().onEvent(eventName: AppEvents.beginTopic, data: {
+                          "courseTitle": coursesModel!.name,
+                          "topicTitle": item.name,
+                          "progress":
+                              ((item.progress.completed / item.progress.total) *
+                                      100)
+                                  .ceil()
+                                  .toStringAsFixed(0)
+                        });
                         Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) => TopicDetailPage(
+                                courseId: widget.courseId,
                                 topic: TopicUserModel(
                                     topicId: item.id,
                                     name: item.name,
                                     description: item.description,
                                     logo: item.logo,
                                     progress: item.progress,
-                                    topicTagId: coursesModel!.id))));
+                                    topicContextType: TopicContextType.course,
+                                    topicContextId: coursesModel!.id))));
                       },
                       child: Container(
                         padding: const EdgeInsets.all(10),

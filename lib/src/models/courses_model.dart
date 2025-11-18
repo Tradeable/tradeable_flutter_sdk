@@ -8,26 +8,29 @@ class CoursesModel {
   final Logo logo;
   final Progress progress;
   final List<Topic>? topics;
+  final DateTime createdAt;
 
-  CoursesModel({
-    required this.id,
-    required this.name,
-    required this.description,
-    required this.logo,
-    required this.progress,
-    this.topics,
-  });
+  CoursesModel(
+      {required this.id,
+      required this.name,
+      required this.description,
+      required this.logo,
+      required this.progress,
+      this.topics,
+      required this.createdAt});
 
   factory CoursesModel.fromJson(Map<String, dynamic> json) {
     return CoursesModel(
-      id: json['id'],
-      name: json['name'],
-      description: json['description'],
-      logo: Logo.fromJson(json['logo']),
-      progress: Progress.fromJson(json['progress']),
-      topics: json['topics'] != null
-          ? (json['topics'] as List).map((e) => Topic.fromJson(e)).toList()
-          : null,
-    );
+        id: json['id'],
+        name: json['name'],
+        description: json['description'],
+        logo: Logo.fromJson(json['logo']),
+        progress: Progress.fromJson(json['progress']),
+        topics: json['topics'] != null
+            ? (json['topics'] as List).map((e) => Topic.fromJson(e)).toList()
+            : null,
+        createdAt: json["created_at"] != null
+            ? DateTime.parse(json["created_at"])
+            : DateTime.now());
   }
 }

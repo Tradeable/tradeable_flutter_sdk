@@ -40,9 +40,7 @@ class _TopicHeaderWidgetState extends State<TopicHeaderWidget> {
   }
 
   void getFlows() async {
-    await API()
-        .fetchTopicById(widget.topic.topicId, widget.topic.topicTagId)
-        .then((val) {
+    await API().fetchTopicById(widget.topic.topicId).then((val) {
       setState(() {
         flows = (val.flows?.map((e) => TopicFlowsListModel(
                     flowId: e.id,
@@ -80,9 +78,11 @@ class _TopicHeaderWidgetState extends State<TopicHeaderWidget> {
             child: isExpanded
                 ? FlowsList(
                     flowModel: TopicFlowModel(
-                        topicId: widget.topic.topicId,
-                        userFlowsList: flows,
-                        topicTagId: widget.topic.topicTagId),
+                      topicId: widget.topic.topicId,
+                      userFlowsList: flows,
+                      topicContextId: widget.topic.topicContextId,
+                    ),
+                    completedFlowId: -1,
                     onFlowSelected: (flowId) {
                       setState(() {
                         setState(() {
@@ -195,8 +195,8 @@ class _TopicHeaderWidgetState extends State<TopicHeaderWidget> {
                   color: colors.progressIndColor1,
                   backgroundColor: colors.progressIndColor2,
                   strokeWidth: 4,
-                  value: widget.topic.progress.completed! /
-                      widget.topic.progress.total!,
+                  value: widget.topic.progress.completed /
+                      widget.topic.progress.total,
                 ),
                 Text(
                   '${widget.topic.progress.completed}/${widget.topic.progress.total}',

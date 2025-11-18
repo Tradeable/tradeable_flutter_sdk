@@ -58,15 +58,18 @@ class TagModel {
 }
 
 class Progress {
-  int? total;
-  int? completed;
+  final int total;
+  final int completed;
 
-  Progress({this.total, this.completed});
+  Progress({required this.total, required this.completed});
 
-  factory Progress.fromJson(Map<String, dynamic> json) {
-    return Progress(
-      total: json["total"] ?? 0,
-      completed: json["completed"] ?? 0,
-    );
-  }
+  factory Progress.fromJson(Map<String, dynamic> json) => Progress(
+        total: json['total'] ?? 0,
+        completed: json['completed'] ?? 0,
+      );
+
+  Map<String, dynamic> toJson() => {
+        'total': total,
+        'completed': completed,
+      };
 }

@@ -1,16 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:tradeable_flutter_sdk/src/utils/security.dart';
 import 'package:tradeable_flutter_sdk/tradeable_flutter_sdk.dart';
 import 'package:tradeable_learn_widget/tlw.dart';
 
 typedef TokenExpirationCallback = Future<void> Function();
 typedef EventCallback = Function(String, Map<String, dynamic>?);
 
+enum Client { tradeable, axis }
+
 class TFS {
   late String baseUrl;
-  String? _token;
+  final Client _client = Client.tradeable;
+  String? _authorization;
+  String? _portalToken;
   String? _appId;
   String? _clientId;
-  String? _encryptionKey;
+  String? _secretKey;
+  String? _publicKey;
   ThemeData? themeData;
   EventCallback? _onEventCallback;
   TokenExpirationCallback? _tokenExpirationCallback;
@@ -19,14 +25,17 @@ class TFS {
 
   factory TFS() => _instance;
 
-  String? get token => _token;
+  String? get authorization => _authorization;
+  String? get portalToken => _portalToken;
   String? get appId => _appId;
   String? get clientId => _clientId;
-  String? get encryptionKey => _encryptionKey;
+  String? get publicKey => _publicKey;
+  String? get secretKey => _secretKey;
+  Client? get client => _client;
 
   TFS._internal();
 
-  bool get isInitialized => _token != null;
+  bool get isInitialized => _portalToken != null;
 
   void initialize({
     required String baseUrl,
@@ -35,9 +44,8 @@ class TFS {
     TokenExpirationCallback? onTokenExpiration,
   }) {
     this.baseUrl = baseUrl;
+    _secretKey = generateSecretKey();
     themeData = theme ?? AppTheme.lightTheme();
-  _token =
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiMSIsIm9pZCI6MiwiaWF0IjoxNzQyNDkwOTY0LCJleHAiOjk5OTk5OTk5OTl9.BbSv_2Z9JgE53bIMbFzg2MaeeCFsrza-epaay7BfEj0";
     TLW().initialize(themeData: themeData);
 
     if (onTokenExpiration != null) {
@@ -50,14 +58,16 @@ class TFS {
   }
 
   void registerApp(
-      {required String token,
+      {required String authorization,
+      required String portalToken,
       required String appId,
       required String clientId,
-      required String encryptionKey}) {
-    _token = token;
+      required String publicKey}) {
+    _authorization = authorization;
+    _portalToken = portalToken;
     _appId = appId;
     _clientId = clientId;
-    _encryptionKey = encryptionKey;
+    _publicKey = publicKey;
   }
 
   Future<void> onTokenExpired() async {

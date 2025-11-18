@@ -1,9 +1,12 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:lottie/lottie.dart';
 import 'package:tradeable_flutter_sdk/src/models/topic_flow_model.dart';
+import 'package:tradeable_flutter_sdk/src/models/topic_user_model.dart';
 import 'package:tradeable_flutter_sdk/src/network/api.dart';
 import 'package:tradeable_flutter_sdk/src/tfs.dart';
+import 'package:tradeable_flutter_sdk/src/ui/widgets/bouncing_widget.dart';
 import 'package:tradeable_flutter_sdk/src/utils/app_theme.dart';
 import 'package:tradeable_flutter_sdk/src/utils/extensions.dart';
 import 'package:tradeable_learn_widget/utils/button_widget.dart';
@@ -11,9 +14,13 @@ import 'package:tradeable_learn_widget/utils/button_widget.dart';
 class FlowsList extends StatefulWidget {
   final TopicFlowModel flowModel;
   final Function(int) onFlowSelected;
+  final int completedFlowId;
 
   const FlowsList(
-      {super.key, required this.flowModel, required this.onFlowSelected});
+      {super.key,
+      required this.flowModel,
+      required this.onFlowSelected,
+      required this.completedFlowId});
 
   @override
   State<StatefulWidget> createState() => _FlowsList();
@@ -37,8 +44,15 @@ class _FlowsList extends State<FlowsList> {
   }
 
   void getTopicById() async {
-    final val = await API()
-        .fetchTopicById(widget.flowModel.topicId, widget.flowModel.topicTagId);
+    final val = await API().fetchTopicById(widget.flowModel.topicId,
+        topicTagId: widget.flowModel.topicContextType != null &&
+                widget.flowModel.topicContextType == TopicContextType.tag
+            ? widget.flowModel.topicContextId
+            : null,
+        moduleId: widget.flowModel.topicContextType != null &&
+                widget.flowModel.topicContextType == TopicContextType.course
+            ? widget.flowModel.topicContextId
+            : null);
     final fetchedFlows = (val.flows
             ?.map((e) => TopicFlowsListModel(
                   name: e.name ?? "",
@@ -71,10 +85,25 @@ class _FlowsList extends State<FlowsList> {
     });
   }
 
+  int? _getBounceFlowId() {
+    if (widget.completedFlowId == -1) return null;
+    bool foundCompleted = false;
+
+    for (final category in segregratedFlows) {
+      for (final flow in category.flowsList) {
+        if (foundCompleted && !flow.isCompleted) return flow.flowId;
+        if (flow.flowId == widget.completedFlowId) foundCompleted = true;
+      }
+    }
+
+    return null;
+  }
+
   @override
   Widget build(BuildContext context) {
     final colors =
         TFS().themeData?.customColors ?? Theme.of(context).customColors;
+    final bounceFlowId = _getBounceFlowId();
 
     return SingleChildScrollView(
       child: Column(
@@ -94,7 +123,7 @@ class _FlowsList extends State<FlowsList> {
                         const SizedBox(height: 24),
                         ...segregratedFlows.asMap().entries.map((entry) {
                           final flow = entry.value;
-                          return _buildHorizontalList(flow);
+                          return _buildHorizontalList(flow, bounceFlowId);
                         }),
                         renderBanner(),
                         const SizedBox(height: 20)
@@ -105,7 +134,7 @@ class _FlowsList extends State<FlowsList> {
     );
   }
 
-  Widget _buildHorizontalList(CategorisedFlow flow) {
+  Widget _buildHorizontalList(CategorisedFlow flow, int? bounceFlowId) {
     final textStyles =
         TFS().themeData?.customTextStyles ?? Theme.of(context).customTextStyles;
 
@@ -116,15 +145,15 @@ class _FlowsList extends State<FlowsList> {
         children: [
           Text(flow.category.capitalize(), style: textStyles.smallBold),
           const SizedBox(height: 12),
-          _buildListView(flow.category, flow.flowsList),
+          _buildListView(flow.category, flow.flowsList, bounceFlowId),
           const SizedBox(height: 24)
         ],
       ),
     );
   }
 
-  Widget _buildListView(
-      String categoryTitle, List<TopicFlowsListModel> flowsList) {
+  Widget _buildListView(String categoryTitle,
+      List<TopicFlowsListModel> flowsList, int? bounceFlowId) {
     final colors =
         TFS().themeData?.customColors ?? Theme.of(context).customColors;
     final nameGroup = AutoSizeGroup();
@@ -133,84 +162,100 @@ class _FlowsList extends State<FlowsList> {
       physics: NeverScrollableScrollPhysics(),
       shrinkWrap: true,
       itemCount: flowsList.length,
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 4,
-      ),
+      gridDelegate:
+          SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 4),
       itemBuilder: (context, index) {
         final item = flowsList[index];
+        final showAnimation = widget.completedFlowId != -1 &&
+            widget.completedFlowId == item.flowId;
+        final shouldBounce = item.flowId == bounceFlowId;
+
+        Widget flowIcon = Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            if (item.logo.type == 'image/png')
+              Stack(
+                children: [
+                  Container(
+                    height: 48,
+                    width: 48,
+                    decoration: BoxDecoration(
+                      color: colors.buttonColor,
+                      border: Border.all(color: colors.cardColorSecondary),
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Image.network(item.logo.url),
+                    ),
+                  ),
+                  Positioned(
+                    right: 0,
+                    top: 0,
+                    child: ClipPath(
+                      clipper: TriangleClipper(),
+                      child: Container(
+                        width: 24,
+                        height: 24,
+                        decoration: BoxDecoration(
+                          borderRadius: const BorderRadius.only(
+                              topRight: Radius.circular(4)),
+                          color: colors.primary,
+                        ),
+                        child: Align(
+                          alignment: Alignment.center,
+                          child: Transform.translate(
+                            offset: const Offset(5, -3),
+                            child: SvgPicture.asset(
+                              item.isCompleted
+                                  ? "packages/tradeable_flutter_sdk/lib/assets/images/course_completed_icon.svg"
+                                  : categoryTitle
+                                          .toLowerCase()
+                                          .contains("education")
+                                      ? "packages/tradeable_flutter_sdk/lib/assets/images/search_icon.svg"
+                                      : "packages/tradeable_flutter_sdk/lib/assets/images/video_icon.svg",
+                              height: 10,
+                              width: 10,
+                              fit: BoxFit.contain,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  if (showAnimation)
+                    SizedBox(
+                      height: 50,
+                      width: 50,
+                      child: Lottie.asset(
+                        'packages/tradeable_flutter_sdk/lib/assets/images/completed_animation.json',
+                        repeat: false,
+                      ),
+                    ),
+                ],
+              ),
+            const SizedBox(height: 10),
+            Expanded(
+              child: AutoSizeText(
+                item.name ?? "",
+                maxLines: 2,
+                textAlign: TextAlign.center,
+                group: nameGroup,
+                maxFontSize: 14,
+                minFontSize: 10,
+                style: const TextStyle(fontWeight: FontWeight.w500),
+              ),
+            ),
+          ],
+        );
+
         return MaterialButton(
           padding: EdgeInsets.zero,
           onPressed: () => widget.onFlowSelected(item.flowId),
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              if (item.logo.type == 'image/png')
-                Stack(
-                  children: [
-                    Container(
-                      height: 48,
-                      width: 48,
-                      decoration: BoxDecoration(
-                        color: colors.buttonColor,
-                        border: Border.all(color: colors.cardColorSecondary),
-                        borderRadius: BorderRadius.circular(4),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Image.network(item.logo.url),
-                      ),
-                    ),
-                    Positioned(
-                      right: 0,
-                      top: 0,
-                      child: ClipPath(
-                        clipper: TriangleClipper(),
-                        child: Container(
-                          width: 24,
-                          height: 24,
-                          decoration: BoxDecoration(
-                            borderRadius: const BorderRadius.only(
-                                topRight: Radius.circular(4)),
-                            color: colors.primary,
-                          ),
-                          child: Align(
-                            alignment: Alignment.center,
-                            child: Transform.translate(
-                              offset: const Offset(5, -3),
-                              child: SvgPicture.asset(
-                                categoryTitle
-                                        .toLowerCase()
-                                        .contains("education")
-                                    ? "packages/tradeable_flutter_sdk/lib/assets/images/search_icon.svg"
-                                    : "packages/tradeable_flutter_sdk/lib/assets/images/video_icon.svg",
-                                height: 10,
-                                width: 10,
-                                fit: BoxFit.contain,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    )
-                  ],
-                ),
-              const SizedBox(height: 10),
-              Expanded(
-                child: AutoSizeText(
-                  item.name ?? "",
-                  maxLines: 2,
-                  textAlign: TextAlign.center,
-                  group: nameGroup,
-                  maxFontSize: 14,
-                  minFontSize: 10,
-                  style: const TextStyle(fontWeight: FontWeight.w500),
-                ),
-              ),
-            ],
-          ),
+          child: shouldBounce ? BouncingWidget(child: flowIcon) : flowIcon,
         );
       },
     );
@@ -248,7 +293,10 @@ class _FlowsList extends State<FlowsList> {
                         borderRadius: BorderRadius.circular(12),
                         textStyle: textStyles.smallBold
                             .copyWith(fontSize: 12, color: Colors.white),
-                        onTap: () {}),
+                        onTap: () {
+                          Navigator.of(context).pop();
+                          Navigator.of(context).pop();
+                        }),
                   )
                 ],
               ),

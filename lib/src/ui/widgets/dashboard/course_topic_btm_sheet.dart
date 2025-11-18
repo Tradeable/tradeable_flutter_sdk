@@ -5,6 +5,7 @@ import 'package:tradeable_flutter_sdk/src/ui/pages/course_details_page.dart';
 import 'package:tradeable_flutter_sdk/src/utils/app_theme.dart';
 import 'package:tradeable_flutter_sdk/src/tfs.dart';
 import 'package:tradeable_flutter_sdk/src/ui/widgets/dashboard/topic_progress_widget.dart';
+import 'package:tradeable_flutter_sdk/src/utils/events.dart';
 import 'package:tradeable_learn_widget/utils/button_widget.dart';
 
 class CourseTopicsBottomSheet extends StatefulWidget {
@@ -93,6 +94,9 @@ class _CourseTopicsBottomSheetState extends State<CourseTopicsBottomSheet> {
                             color: colors.primary,
                             btnContent: "View more",
                             onTap: () {
+                              TFS().onEvent(
+                                  eventName: AppEvents.viewAllTopicsInCourse,
+                                  data: {"courseTitle": coursesModel!.name});
                               Navigator.of(context).pop();
                               Navigator.of(context).push(MaterialPageRoute(
                                 builder: (context) =>
