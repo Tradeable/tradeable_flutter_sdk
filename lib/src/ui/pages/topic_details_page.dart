@@ -1,6 +1,8 @@
 import 'dart:ui';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:tradeable_flutter_sdk/src/models/flow_model.dart';
 import 'package:tradeable_flutter_sdk/src/models/topic_user_model.dart';
 import 'package:tradeable_flutter_sdk/src/models/user_widgets_model.dart';
 import 'package:tradeable_flutter_sdk/src/network/api.dart';
@@ -36,7 +38,7 @@ class _TopicDetailPageState extends State<TopicDetailPage> {
     super.initState();
     if (widget.topic != null) {
       _topicUserModel = widget.topic;
-      flowId = _topicUserModel!.startFlow;
+      //flowId = _topicUserModel!.startFlow;
       if (flowId == null) {
         getFlows();
       }
@@ -75,7 +77,34 @@ class _TopicDetailPageState extends State<TopicDetailPage> {
             ? _topicUserModel!.topicContextId
             : null);
     setState(() {
-      flowId ??= val.flows!.first.id;
+      if (_topicUserModel?.startFlow != null) {
+        try {
+          FlowModel? flowModel = val.flows
+              ?.firstWhere((flow) => flow.id == _topicUserModel!.startFlow);
+          if (flowModel != null && !flowModel.isCompleted) {
+            flowId = _topicUserModel!.startFlow;
+          } else {
+            flowId ??= val.flows!
+                .firstWhere((flow) => !flow.isCompleted,
+                    orElse: () => val.flows!.first)
+                .id;
+          }
+        } catch (e) {
+          flowId ??= val.flows!
+              .firstWhere((flow) => !flow.isCompleted,
+                  orElse: () => val.flows!.first)
+              .id;
+        }
+      } else {
+        flowId ??= val.flows!
+            .firstWhere((flow) => !flow.isCompleted,
+                orElse: () => val.flows!.first)
+            .id;
+      }
+      // start flow id present but incomplete then start with startFlow
+      // statrt flow id present but complete then start with first incomplete
+      // start flow id absent then start from first incomplete
+
       completedFlows = (val.flows ?? []).where((f) => f.isCompleted).length;
       totalFlows = (val.flows ?? []).length;
     });
@@ -135,7 +164,7 @@ class _TopicDetailPageState extends State<TopicDetailPage> {
         ));
   }
 
-  PreferredSizeWidget renderAppBar() {
+  AppBar renderAppBar() {
     final colors =
         TFS().themeData?.customColors ?? Theme.of(context).customColors;
 
@@ -152,7 +181,9 @@ class _TopicDetailPageState extends State<TopicDetailPage> {
       title: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(_topicUserModel?.name ?? "",
+          AutoSizeText(_topicUserModel?.name ?? "",
+              minFontSize: 9,
+              maxFontSize: 18,
               style: TextStyle(fontWeight: FontWeight.bold)),
           _topicUserModel != null
               ? Row(
@@ -169,7 +200,7 @@ class _TopicDetailPageState extends State<TopicDetailPage> {
                     ),
                     const SizedBox(width: 6),
                     Text(
-                      '$completedFlows/$totalFlows ${completedFlows == totalFlows ? "Ongoing..." : "Completed"}',
+                      '$completedFlows/$totalFlows ${completedFlows == totalFlows ? "Completed" : "Ongoing..."}',
                       style: TextStyle(fontSize: 10, color: Colors.black),
                     ),
                   ],

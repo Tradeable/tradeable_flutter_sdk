@@ -41,9 +41,10 @@ class TopicTile extends StatelessWidget {
                     ),
                     Text(
                         moduleModel.description.trim().isEmpty
-                            ? "dolor sit amet, consectetur"
+                            ? ""
                             : moduleModel.description,
                         maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
                         style: const TextStyle(
                           fontSize: 12,
                           fontWeight: FontWeight.w400,

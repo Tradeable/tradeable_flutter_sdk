@@ -7,7 +7,6 @@ enum PageId {
   axisFundamentals,
   axisOrderType,
   axisMiscellaneous,
-  demo,
   axisFuture,
 }
 
@@ -21,15 +20,16 @@ extension PageIdValue on PageId {
     PageId.axisFundamentals: 10,
     PageId.axisOrderType: 13,
     PageId.axisMiscellaneous: 14,
-    PageId.demo: 15,
     PageId.axisFuture: 17,
   };
 
   int get topicTagId => _values[this] ?? 0;
 
   String get formattedName {
-    final name =
-        this.name.replaceAll('axis', '').replaceAllMapped(RegExp(r'([A-Z])'), (m) => ' ${m[1]}');
+    final name = this
+        .name
+        .replaceAll('axis', '')
+        .replaceAllMapped(RegExp(r'([A-Z])'), (m) => ' ${m[1]}');
     return name[0].toUpperCase() + name.substring(1);
   }
 }
