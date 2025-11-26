@@ -184,7 +184,8 @@ class _TopicDetailPageState extends State<TopicDetailPage> {
           AutoSizeText(_topicUserModel?.name ?? "",
               minFontSize: 9,
               maxFontSize: 18,
-              style: TextStyle(fontWeight: FontWeight.bold)),
+              style:
+                  TextStyle(fontWeight: FontWeight.bold, color: Colors.black)),
           _topicUserModel != null
               ? Row(
                   children: [
