@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:tradeable_flutter_sdk/src/ui/pages/topic_list_page.dart';
 import 'package:tradeable_flutter_sdk/src/ui/widgets/tradeable_right_side_drawer.dart';
 import 'package:tradeable_flutter_sdk/tradeable_flutter_sdk.dart';
@@ -64,7 +65,14 @@ class _TradeableContainerState extends State<TradeableContainer>
                   gradient: LinearGradient(
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
-                    colors: [Color(0xffed1164), Color(0xff97144d)],
+                    colors: [Colors.white, Colors.white],
+                    //colors: [Color(0xffed1164), Color(0xff97144d)],
+                  ),
+                  // border: Border.all(color: Color(0xFF97144D), width: 2),
+                  border: Border(
+                    left: BorderSide(color: Color(0xFF97144D), width: 2),
+                    top: BorderSide(color: Color(0xFF97144D), width: 2),
+                    bottom: BorderSide(color: Color(0xFF97144D), width: 2),
                   ),
                   borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(8),
@@ -96,8 +104,8 @@ class _TradeableContainerState extends State<TradeableContainer>
                 },
                 child: Center(
                   child: //Icon(Icons.chevron_left, color: Colors.white),
-                      Image.asset(
-                    "packages/tradeable_flutter_sdk/lib/assets/images/axis_learn_logo.png",
+                      SvgPicture.asset(
+                    "packages/tradeable_flutter_sdk/lib/assets/images/axis_learn_logo_dec.svg",
                     height: 30,
                   ),
                 ),

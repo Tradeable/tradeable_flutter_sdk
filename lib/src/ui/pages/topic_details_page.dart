@@ -182,10 +182,13 @@ class _TopicDetailPageState extends State<TopicDetailPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           AutoSizeText(_topicUserModel?.name ?? "",
-              minFontSize: 9,
+              minFontSize: 12,
               maxFontSize: 18,
               style:
                   TextStyle(fontWeight: FontWeight.bold, color: Colors.black)),
+          SizedBox(
+            height: 4,
+          ),
           _topicUserModel != null
               ? Row(
                   children: [
