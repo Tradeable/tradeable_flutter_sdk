@@ -10,8 +10,11 @@ final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   TFS().initialize(
-    baseUrl: "",
-    theme: AppTheme.lightTheme(),
+    baseUrl: "https://dev.api.tradeable.app/axis/",
+    theme: WidgetsBinding.instance.platformDispatcher.platformBrightness ==
+            Brightness.dark
+        ? AppTheme.darkTheme()
+        : AppTheme.lightTheme(),
     onEvent: (String eventName, Map<String, dynamic>? data) {
       //print("Event triggered : $eventName with data: $data");
     },
@@ -65,7 +68,7 @@ class _MyAppState extends State<MyApp> {
       title: 'Flutter Demo',
       theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(
-              seedColor: Colors.deepPurple, brightness: Brightness.light),
+              seedColor: Colors.deepPurple, brightness: Brightness.dark),
           useMaterial3: true),
       navigatorKey: navigatorKey,
       initialRoute: '/',

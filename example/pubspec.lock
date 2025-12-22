@@ -318,7 +318,7 @@ packages:
     description:
       path: "."
       ref: main
-      resolved-ref: f2b726634349e1844c470934a4e392094167501a
+      resolved-ref: "9586d72083304012d198901887b523f52e118077"
       url: "https://github.com/adityagohad/fin_chart.git"
     source: git
     version: "0.0.1"
@@ -826,7 +826,7 @@ packages:
     description:
       path: "."
       ref: main
-      resolved-ref: b6c560e42cd4b087ee68d748053077309e429460
+      resolved-ref: a6640576b887510251b1e8376b5e28b076c0ee12
       url: "https://github.com/Tradeable/tradeable_learn_widget.git"
     source: git
     version: "0.0.1"

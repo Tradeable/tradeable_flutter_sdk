@@ -15,6 +15,7 @@ class TradeableAuthInterceptor extends Interceptor {
       options.headers['x-axis-token'] = TFS().portalToken ?? '';
       options.headers['x-axis-app-id'] = TFS().appId ?? '';
       options.headers['x-axis-client-id'] = TFS().clientId ?? '';
+      options.headers['x-subAccountId'] = '123';
       options.headers['Content-Type'] = 'application/json';
       options.headers['Accept'] = 'application/json';
     }
@@ -49,6 +50,7 @@ class TradeableAuthInterceptor extends Interceptor {
       requestOptions.headers['x-axis-token'] = TFS().portalToken ?? '';
       requestOptions.headers['x-axis-app-id'] = TFS().appId ?? '';
       requestOptions.headers['x-axis-client-id'] = TFS().clientId ?? '';
+      requestOptions.headers['x-subAccountId'] = '123';
       requestOptions.headers['Content-Type'] = 'application/json';
       requestOptions.headers['Accept'] = 'application/json';
 
