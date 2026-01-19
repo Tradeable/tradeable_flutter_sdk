@@ -7,9 +7,8 @@ class PageList extends StatefulWidget {
   @override
   State<PageList> createState() => _PageListState();
 }
-
 class _PageListState extends State<PageList> {
-  PageId? selectedPage;
+  PageId? selectedPage = PageId.axisTechnical;
 
   @override
   void initState() {

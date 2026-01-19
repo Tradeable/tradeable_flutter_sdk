@@ -3,11 +3,14 @@ import 'package:tradeable_flutter_sdk/src/models/course_progress_model.dart';
 import 'package:tradeable_flutter_sdk/src/models/flow_model.dart';
 import 'package:tradeable_flutter_sdk/src/models/topic_model.dart';
 import 'package:tradeable_flutter_sdk/src/network/auth_interceptor.dart';
+import 'package:tradeable_flutter_sdk/src/network/tradeable_auth_interceptor.dart';
 import 'package:tradeable_flutter_sdk/tradeable_flutter_sdk.dart';
 
 class API {
   Dio dio = Dio(BaseOptions(baseUrl: TFS().baseUrl))
-    ..interceptors.add(AuthInterceptor());
+    ..interceptors.add(TFS().client == Client.axis
+        ? AuthInterceptor()
+        : TradeableAuthInterceptor());
 
   Future<List<Topic>> fetchTopicByTagId(int tagId) async {
     Response response = await dio.get(
