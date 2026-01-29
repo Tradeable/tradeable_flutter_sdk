@@ -6,8 +6,11 @@ import 'package:tradeable_learn_widget/tlw.dart';
 typedef TokenExpirationCallback = Future<void> Function();
 typedef EventCallback = Function(String, Map<String, dynamic>?);
 
+enum Client { tradeable, axis }
+
 class TFS {
   late String baseUrl;
+  final Client _client = Client.tradeable;
   String? _authorization;
   String? _portalToken;
   String? _appId;
@@ -28,6 +31,7 @@ class TFS {
   String? get clientId => _clientId;
   String? get publicKey => _publicKey;
   String? get secretKey => _secretKey;
+  Client? get client => _client;
 
   TFS._internal();
 

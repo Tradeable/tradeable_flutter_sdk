@@ -57,6 +57,7 @@ class _OverallProgressIndicator extends State<OverallProgressWidget> {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
+          color: colors.overallProgressBg,
           borderRadius: BorderRadius.circular(12),
           border: Border.all(color: colors.darkShade2)),
       child: Column(
@@ -129,7 +130,8 @@ class _OverallProgressIndicator extends State<OverallProgressWidget> {
             children: [
               Text(
                 "${(completedPercent * 100).toInt()}%",
-                style: textStyles.smallBold.copyWith(color: colors.sliderColor),
+                style: textStyles.smallBold
+                    .copyWith(color: colors.overallProgressPercentageColor),
               ),
             ],
           ),
@@ -192,14 +194,14 @@ class _OverallProgressIndicator extends State<OverallProgressWidget> {
                           "VIEW ALL",
                           style: textStyles.smallBold.copyWith(
                             fontSize: 12,
-                            color: colors.sliderColor,
+                            color: colors.viewAllTextColor,
                           ),
                         ),
                         const SizedBox(width: 4),
                         Icon(
                           Icons.arrow_forward_ios,
                           size: 10,
-                          color: colors.sliderColor,
+                          color: colors.viewAllTextColor,
                         ),
                       ],
                     ),

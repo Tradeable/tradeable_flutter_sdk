@@ -99,6 +99,28 @@ class ThemeColors {
   final Color dataVis1;
   final Color dataVis2;
   final Color supportPositive;
+  final Color topicCardColor1;
+  final Color topicCardColor2;
+  final Color topicCardColor3;
+  final Color topicCardColor4;
+  final Color goToLearnDashboardBtn;
+  final Color backBtnColor;
+  final Color flowTileIconBg;
+  final Color learnDashboardAppbarColor;
+  final Color sliderInactiveDotColor;
+  final Color overallProgressBg;
+  final Color recentActivityText;
+  final Color recentActivityItemColor;
+  final Color recentActivityImageBgColor;
+  final Color viewAllTextColor;
+  final Color courseCardColor1;
+  final Color courseCardColor2;
+  final Color courseCardColor3;
+  final Color courseCardColor4;
+  final Color overallProgressPercentageColor;
+  final Color headerColor;
+  final Color courseBtmSheetBtnColor;
+  final Color topicDetailsHeadersColor;
 
   ThemeColors(
       {required this.primary,
@@ -153,7 +175,29 @@ class ThemeColors {
       required this.neutral_2,
       required this.dataVis1,
       required this.dataVis2,
-      required this.supportPositive});
+      required this.supportPositive,
+      required this.topicCardColor1,
+      required this.topicCardColor2,
+      required this.topicCardColor3,
+      required this.topicCardColor4,
+      required this.goToLearnDashboardBtn,
+      required this.backBtnColor,
+      required this.flowTileIconBg,
+      required this.learnDashboardAppbarColor,
+      required this.sliderInactiveDotColor,
+      required this.overallProgressBg,
+      required this.recentActivityText,
+      required this.recentActivityItemColor,
+      required this.recentActivityImageBgColor,
+      required this.viewAllTextColor,
+      required this.courseCardColor1,
+      required this.courseCardColor2,
+      required this.courseCardColor3,
+      required this.courseCardColor4,
+      required this.overallProgressPercentageColor,
+      required this.headerColor,
+      required this.courseBtmSheetBtnColor,
+      required this.topicDetailsHeadersColor});
 
   // Light theme colors factory
   static ThemeColors light() {
@@ -210,7 +254,29 @@ class ThemeColors {
         neutral_2: const Color(0xffEBF9F8),
         dataVis1: const Color(0xffC578D3),
         dataVis2: const Color(0xffD87D23),
-        supportPositive: const Color(0xff278829));
+        supportPositive: const Color(0xff278829),
+        topicCardColor1: const Color(0xffF9EBEF),
+        topicCardColor2: const Color(0xffEBF0F9),
+        topicCardColor3: const Color(0xffF9F1EB),
+        topicCardColor4: const Color(0xffEFF9EB),
+        goToLearnDashboardBtn: const Color(0xff97144D),
+        backBtnColor: Colors.black,
+        flowTileIconBg: const Color(0xff97144D),
+        learnDashboardAppbarColor: const Color(0xffF4EBF9),
+        sliderInactiveDotColor: const Color(0xffB4B4B4),
+        overallProgressBg: Colors.transparent,
+        recentActivityText: const Color(0xff282828),
+        recentActivityItemColor: const Color(0xffEBF9F8),
+        recentActivityImageBgColor: Colors.white,
+        viewAllTextColor: const Color(0xffF14687),
+        courseCardColor1: const Color(0xffF9F1EB),
+        courseCardColor2: const Color(0xffEBF0F9),
+        courseCardColor3: const Color(0xffF9EBEF),
+        courseCardColor4: const Color(0xffEFF9EB),
+        overallProgressPercentageColor: const Color(0xffED1164),
+        headerColor: const Color(0xff97144D),
+        courseBtmSheetBtnColor: const Color(0xff97144D),
+        topicDetailsHeadersColor: Colors.black);
   }
 
   // Dark theme colors factory
@@ -218,9 +284,9 @@ class ThemeColors {
     return ThemeColors(
         primary: const Color(0xff50F3BF),
         secondary: const Color(0xffB4B4B4),
-        background: Color(0xff2A2929),
+        background: Color(0xff282828),
         borderColorPrimary: const Color(0xff357D5B),
-        borderColorSecondary: Colors.transparent,
+        borderColorSecondary: Colors.white,
         cardColorPrimary: const Color(0xff222838),
         cardColorSecondary: const Color(0xff303030),
         bullishColor: Colors.green,
@@ -230,22 +296,22 @@ class ThemeColors {
         sipColor: Colors.orangeAccent,
         lumpSumColor: Colors.blueAccent,
         cardBasicBackground: Colors.black,
-        buttonColor: Colors.white,
-        buttonBorderColor: Colors.white38,
+        buttonColor: const Color(0xff404040),
+        buttonBorderColor: Color(0xff6E6E6E),
         sliderColor: const Color(0xffED1164),
         textColorSecondary: Colors.white,
         disabledContainer: const Color(0xffB3BCB9),
         supportItemColor: const Color(0xff165964),
         darkShade1: const Color(0xff1D1D1D),
-        darkShade2: const Color(0xff1F1F1F),
+        darkShade2: const Color(0x001F1F1F),
         darkShade3: const Color(0xff303030),
         itemFocusColor: const Color(0xff666666),
         itemUnfocusedColor: const Color(0xff1C1C1C),
         listItemColor: const Color(0xff242424),
         listItemTextColor1: const Color(0xffD3CABD),
         listItemTextColor2: const Color(0xffD3CABD),
-        progressIndColor1: const Color(0xff919191),
-        progressIndColor2: const Color(0xff4A4949),
+        progressIndColor1: const Color(0xffed1164),
+        progressIndColor2: const Color(0xffcbcbcb),
         dropdownShade1: const Color(0xff204135),
         dropdownShade2: const Color(0xff3D9D7F),
         listBgColor: const Color(0xff1D1C1C),
@@ -268,7 +334,29 @@ class ThemeColors {
         neutral_2: const Color(0xffEBF9F8),
         dataVis1: const Color(0xffC578D3),
         dataVis2: const Color(0xffD87D23),
-        supportPositive: const Color(0xff278829));
+        supportPositive: const Color(0xff278829),
+        topicCardColor1: const Color(0xff322A0F),
+        topicCardColor2: const Color(0xff0F1B32),
+        topicCardColor3: const Color(0xff321E0F),
+        topicCardColor4: const Color(0xff0F322F),
+        goToLearnDashboardBtn: Colors.white,
+        backBtnColor: Colors.white,
+        flowTileIconBg: const Color(0xff97144D),
+        learnDashboardAppbarColor: const Color(0xff260F32),
+        sliderInactiveDotColor: const Color(0xffB4B4B4),
+        overallProgressBg: const Color(0xff404040),
+        recentActivityText: Colors.white,
+        recentActivityItemColor: const Color(0xff0F322F),
+        recentActivityImageBgColor: const Color(0xff282828),
+        viewAllTextColor: const Color(0xffED1164),
+        courseCardColor1: const Color(0xff322A0F),
+        courseCardColor2: const Color(0xff260F32),
+        courseCardColor3: const Color(0xff0F322F),
+        courseCardColor4: const Color(0xff0C1015),
+        overallProgressPercentageColor: Colors.white,
+        headerColor: Colors.white,
+        courseBtmSheetBtnColor: const Color(0xffF14687),
+        topicDetailsHeadersColor: Colors.white);
   }
 }
 
@@ -489,7 +577,7 @@ class AppTheme {
       useMaterial3: true,
       brightness: Brightness.dark,
       primaryColor: customColors.primary,
-      scaffoldBackgroundColor: const Color(0xFF161A26),
+      scaffoldBackgroundColor: customColors.background,
       colorScheme: ColorScheme.dark(
         primary: customColors.primary,
         secondary: customColors.secondary,

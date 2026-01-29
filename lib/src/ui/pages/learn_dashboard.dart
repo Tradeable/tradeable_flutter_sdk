@@ -51,8 +51,8 @@ class _LearnDashboard extends State<LearnDashboard> {
 
     return Scaffold(
       backgroundColor: colors.background,
-      appBar:
-          AppBarWidget(title: "Learn Dashboard", color: colors.neutralColor),
+      appBar: AppBarWidget(
+          title: "Learn Dashboard", color: colors.learnDashboardAppbarColor),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -87,13 +87,13 @@ class _LearnDashboard extends State<LearnDashboard> {
 
     return Container(
       padding: const EdgeInsets.only(left: 16, right: 16, bottom: 20, top: 12),
-      color: colors.neutralColor,
+      color: colors.learnDashboardAppbarColor,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text("Welcome!",
               style: textStyles.mediumBold.copyWith(
-                  fontStyle: FontStyle.italic, color: colors.primary)),
+                  fontStyle: FontStyle.italic, color: colors.headerColor)),
           Text("Ready to learn the ropes? Your trading adventure begins now!",
               style: textStyles.smallNormal
                   .copyWith(color: colors.textColorSecondary)),
@@ -129,7 +129,7 @@ class _LearnDashboard extends State<LearnDashboard> {
                             dotHeight: 6,
                             dotWidth: 6,
                             spacing: 4,
-                            dotColor: colors.borderColorSecondary),
+                            dotColor: colors.sliderInactiveDotColor),
                       ),
                     ),
                   ],

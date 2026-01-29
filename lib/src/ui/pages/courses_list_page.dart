@@ -192,9 +192,10 @@ class _CoursesListScreen extends State<CoursesListPage> {
                                                 : "CONTINUE",
                                         style: textStyles.smallBold.copyWith(
                                             fontSize: 12,
-                                            color: colors.sliderColor)),
+                                            color: colors.viewAllTextColor)),
                                     Icon(Icons.arrow_forward_ios,
-                                        size: 12, color: colors.sliderColor)
+                                        size: 12,
+                                        color: colors.viewAllTextColor)
                                   ],
                                 ),
                               ),

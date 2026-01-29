@@ -105,31 +105,37 @@ class _FlowsList extends State<FlowsList> {
         TFS().themeData?.customColors ?? Theme.of(context).customColors;
     final bounceFlowId = _getBounceFlowId();
 
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          isLoading
-              ? Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: CircularProgressIndicator(
-                    color: colors.progressIndColor1,
-                    backgroundColor: colors.progressIndColor2,
-                  ),
-                )
-              : segregratedFlows.isEmpty
-                  ? Text("No data found")
-                  : Column(
-                      children: [
-                        const SizedBox(height: 24),
-                        ...segregratedFlows.asMap().entries.map((entry) {
-                          final flow = entry.value;
-                          return _buildHorizontalList(flow, bounceFlowId);
-                        }),
-                        renderBanner(),
-                        const SizedBox(height: 20)
-                      ],
+    return Container(
+      decoration: BoxDecoration(
+        color: colors.background,
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            isLoading
+                ? Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: CircularProgressIndicator(
+                      color: colors.progressIndColor1,
+                      backgroundColor: colors.progressIndColor2,
                     ),
-        ],
+                  )
+                : segregratedFlows.isEmpty
+                    ? Text("No data found")
+                    : Column(
+                        children: [
+                          const SizedBox(height: 24),
+                          ...segregratedFlows.asMap().entries.map((entry) {
+                            final flow = entry.value;
+                            return _buildHorizontalList(flow, bounceFlowId);
+                          }),
+                          renderBanner(),
+                          const SizedBox(height: 20)
+                        ],
+                      ),
+          ],
+        ),
       ),
     );
   }
@@ -182,7 +188,7 @@ class _FlowsList extends State<FlowsList> {
                     width: 48,
                     decoration: BoxDecoration(
                       color: colors.buttonColor,
-                      border: Border.all(color: colors.cardColorSecondary),
+                      border: Border.all(color: colors.buttonBorderColor),
                       borderRadius: BorderRadius.circular(4),
                     ),
                     child: Padding(
@@ -201,7 +207,7 @@ class _FlowsList extends State<FlowsList> {
                         decoration: BoxDecoration(
                           borderRadius: const BorderRadius.only(
                               topRight: Radius.circular(4)),
-                          color: colors.primary,
+                          color: colors.flowTileIconBg,
                         ),
                         child: Align(
                           alignment: Alignment.center,
@@ -270,7 +276,7 @@ class _FlowsList extends State<FlowsList> {
     return Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(16),
-          color: Color(0xffF4EBF9),
+          color: colors.neutralColor,
         ),
         height: 130,
         margin: const EdgeInsets.symmetric(horizontal: 16),
@@ -291,8 +297,12 @@ class _FlowsList extends State<FlowsList> {
                         color: colors.primary,
                         btnContent: "Let's go!",
                         borderRadius: BorderRadius.circular(12),
-                        textStyle: textStyles.smallBold
-                            .copyWith(fontSize: 12, color: Colors.white),
+                        textStyle: textStyles.smallBold.copyWith(
+                            fontSize: 12,
+                            color:
+                                Theme.of(context).brightness == Brightness.dark
+                                    ? Colors.black
+                                    : Colors.white),
                         onTap: () {
                           Navigator.of(context).pop();
                           Navigator.of(context).pop();

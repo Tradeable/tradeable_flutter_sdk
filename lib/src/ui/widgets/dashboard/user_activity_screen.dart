@@ -82,7 +82,7 @@ class _UserActivityScreen extends State<UserActivityScreen> {
       backgroundColor: colors.background,
       appBar: AppBarWidget(
         title: "My Activity",
-        color: colors.background,
+        color: colors.learnDashboardAppbarColor,
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -119,7 +119,7 @@ class _UserActivityScreen extends State<UserActivityScreen> {
       padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16, top: 24),
       width: double.infinity,
       height: 160,
-      decoration: BoxDecoration(color: colors.neutralColor),
+      decoration: BoxDecoration(color: colors.learnDashboardAppbarColor),
       child: Image.asset(
         "packages/tradeable_flutter_sdk/lib/assets/images/all_courses.png",
       ),
@@ -131,11 +131,18 @@ class _UserActivityScreen extends State<UserActivityScreen> {
         TFS().themeData?.customTextStyles ?? Theme.of(context).customTextStyles;
     final colors =
         TFS().themeData?.customColors ?? Theme.of(context).customColors;
-    final cardColors = [
-      const Color(0xffEBF0F9),
-      const Color(0xffF9F1EB),
-      const Color(0xffF9EBEF),
-    ];
+
+    // Check if these are completed items
+    final isCompletedItems = items.isNotEmpty &&
+        ((items[0].progress.completed / items[0].progress.total) * 100) == 100;
+
+    final cardColors = isCompletedItems
+        ? [colors.courseCardColor2]
+        : [
+            colors.courseCardColor4,
+            colors.courseCardColor1,
+            colors.courseCardColor3
+          ];
 
     return Column(
       children: items.asMap().entries.map((entry) {
@@ -216,14 +223,14 @@ class _UserActivityScreen extends State<UserActivityScreen> {
                           "MORE INFO",
                           style: textStyles.smallBold.copyWith(
                             fontSize: 12,
-                            color: colors.borderColorPrimary,
+                            color: colors.viewAllTextColor,
                           ),
                         ),
                         const SizedBox(width: 4),
                         Icon(
                           Icons.arrow_forward_ios,
                           size: 12,
-                          color: colors.borderColorPrimary,
+                          color: colors.viewAllTextColor,
                         ),
                       ],
                     ),
