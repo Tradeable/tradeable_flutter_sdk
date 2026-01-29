@@ -116,11 +116,11 @@ class _CourseDetailsScreen extends State<CourseDetailsPage> {
                                     Text("BEGIN",
                                         style: textStyles.smallBold.copyWith(
                                             fontSize: 12,
-                                            color: colors.borderColorPrimary)),
+                                            color: colors.viewAllTextColor)),
                                     const SizedBox(width: 4),
                                     Icon(Icons.arrow_forward_ios,
                                         size: 10,
-                                        color: colors.borderColorPrimary)
+                                        color: colors.viewAllTextColor)
                                   ],
                                 ),
                               ],

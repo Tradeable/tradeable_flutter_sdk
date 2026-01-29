@@ -35,8 +35,8 @@ class RecentActivity extends StatelessWidget {
                   progressPercent > 0
                       ? "Recent Activity"
                       : "Let's get you started",
-                  style:
-                      textStyles.smallNormal.copyWith(color: colors.iconColor)),
+                  style: textStyles.smallNormal
+                      .copyWith(color: colors.recentActivityText)),
               const SizedBox(height: 10),
               renderList(context)
             ],
@@ -112,7 +112,7 @@ class RecentActivity extends StatelessWidget {
         margin: const EdgeInsets.only(bottom: 8),
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
         decoration: BoxDecoration(
-          color: colors.neutral_2,
+          color: colors.recentActivityItemColor,
           borderRadius: BorderRadius.circular(12),
         ),
         child: Row(
@@ -120,8 +120,9 @@ class RecentActivity extends StatelessWidget {
             Container(
               width: 40,
               height: 40,
-              decoration: const BoxDecoration(
-                  shape: BoxShape.circle, color: Colors.white),
+              decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: colors.recentActivityImageBgColor),
               clipBehavior: Clip.antiAlias,
               child: Image.network(item.logo.url, fit: BoxFit.cover),
             ),
@@ -140,6 +141,9 @@ class RecentActivity extends StatelessWidget {
                           maxFontSize: 14,
                           minFontSize: 8,
                           maxLines: 1,
+                          style: TextStyle(
+                            color: Colors.grey,
+                          ),
                         ),
                       ),
                       Padding(
@@ -193,7 +197,7 @@ class RecentActivity extends StatelessWidget {
         margin: const EdgeInsets.only(bottom: 8),
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
         decoration: BoxDecoration(
-          color: colors.neutral_2,
+          color: colors.recentActivityItemColor,
           borderRadius: BorderRadius.circular(12),
         ),
         child: Row(
@@ -201,8 +205,9 @@ class RecentActivity extends StatelessWidget {
             Container(
               width: 40,
               height: 40,
-              decoration: const BoxDecoration(
-                  shape: BoxShape.circle, color: Colors.white),
+              decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: colors.recentActivityImageBgColor),
               clipBehavior: Clip.antiAlias,
               child: Image.network(item.logo.url, fit: BoxFit.cover),
             ),
@@ -228,12 +233,12 @@ class RecentActivity extends StatelessWidget {
                             "BEGIN",
                             style: textStyles.smallBold.copyWith(
                               fontSize: 12,
-                              color: colors.borderColorPrimary,
+                              color: colors.viewAllTextColor,
                             ),
                           ),
                           const SizedBox(width: 4),
                           Icon(Icons.arrow_forward_ios,
-                              size: 12, color: colors.borderColorPrimary),
+                              size: 12, color: colors.viewAllTextColor),
                         ],
                       ),
                     ],

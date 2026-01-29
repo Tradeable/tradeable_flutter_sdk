@@ -26,10 +26,10 @@ class _WebinarsList extends State<WebinarsList> {
             Spacer(),
             Text("View all",
                 style: textStyles.smallBold
-                    .copyWith(color: colors.borderColorPrimary)),
+                    .copyWith(color: colors.viewAllTextColor)),
             const SizedBox(width: 6),
             Icon(Icons.arrow_forward_ios,
-                size: 10, color: colors.borderColorPrimary),
+                size: 10, color: colors.viewAllTextColor),
           ],
         ),
         const SizedBox(height: 12),

@@ -14,12 +14,15 @@ class TopicTagWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final textStyles =
         TFS().themeData?.customTextStyles ?? Theme.of(context).customTextStyles;
+
+    final colors =
+        TFS().themeData?.customColors ?? Theme.of(context).customColors;
     final tags = PageId.values;
     final cardColors = [
-      const Color(0xffF9EBEF),
-      const Color(0xffEBF0F9),
-      const Color(0xffF9F1EB),
-      const Color(0xffEFF9EB),
+      colors.courseCardColor3,
+      colors.courseCardColor4,
+      colors.courseCardColor1,
+      colors.courseCardColor2
     ];
 
     return Column(
