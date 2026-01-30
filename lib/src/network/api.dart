@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:tradeable_flutter_sdk/src/models/banner_model.dart';
 import 'package:tradeable_flutter_sdk/src/models/course_progress_model.dart';
 import 'package:tradeable_flutter_sdk/src/models/flow_model.dart';
 import 'package:tradeable_flutter_sdk/src/models/topic_model.dart';
@@ -101,9 +102,9 @@ class API {
     return ProgressModel.fromJson(response.data['data']);
   }
 
-  Future<List<Map<String, dynamic>>> getBanners() async {
+  Future<List<BannerModel>> getBanners() async {
     final response = await dio.get("/v0/sdk/ui/learn-dashboard/banner");
     final data = response.data['data'] as List;
-    return data.map((e) => {'url': e}).toList();
+    return data.map((e) => BannerModel.fromJson(e)).toList();
   }
 }

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:tradeable_flutter_sdk/src/models/banner_model.dart';
 import 'package:tradeable_flutter_sdk/src/models/courses_model.dart';
 import 'package:tradeable_flutter_sdk/src/network/api.dart';
 import 'package:tradeable_flutter_sdk/src/tfs.dart';
@@ -19,7 +21,7 @@ class LearnDashboard extends StatefulWidget {
 
 class _LearnDashboard extends State<LearnDashboard> {
   final PageController _controller = PageController();
-  List<String> banners = [];
+  List<BannerModel> banners = [];
   List<CoursesModel> courses = [];
 
   @override
@@ -32,7 +34,7 @@ class _LearnDashboard extends State<LearnDashboard> {
   void getBanners() async {
     API().getBanners().then((v) {
       setState(() {
-        banners = v.map((e) => e['url'].toString()).toList();
+        banners = v;
       });
     });
   }
@@ -43,6 +45,19 @@ class _LearnDashboard extends State<LearnDashboard> {
         courses = val;
       });
     });
+  }
+
+  Future<void> openCtaUrl() async {
+    final index = _controller.page?.round() ?? 0;
+    if (index >= banners.length) return;
+
+    final ctaUri = banners[index].ctaUri;
+    if (ctaUri == null || ctaUri.isEmpty) return;
+
+    final uri = Uri.tryParse(ctaUri);
+    if (uri == null) return;
+
+    await launchUrl(uri);
   }
 
   @override
@@ -114,12 +129,13 @@ class _LearnDashboard extends State<LearnDashboard> {
                                   eventName:
                                       AppEvents.learnDashboardBannerClick,
                                   data: {});
+                              openCtaUrl();
                             },
                             child: PageView(
                               controller: _controller,
-                              children: banners.map((url) {
+                              children: banners.map((banner) {
                                 return Image.network(
-                                  url,
+                                  banner.imageUrl ?? '',
                                   fit: BoxFit.fill,
                                   errorBuilder: (context, error, stackTrace) =>
                                       const Icon(Icons.broken_image),
