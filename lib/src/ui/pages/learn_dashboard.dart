@@ -8,6 +8,7 @@ import 'package:tradeable_flutter_sdk/src/ui/widgets/dashboard/courses_horizonta
 import 'package:tradeable_flutter_sdk/src/ui/widgets/dashboard/overall_progress_widget.dart';
 import 'package:tradeable_flutter_sdk/src/ui/widgets/dashboard/topic_tag_widget.dart';
 import 'package:tradeable_flutter_sdk/src/utils/app_theme.dart';
+import 'package:tradeable_flutter_sdk/src/utils/events.dart';
 
 class LearnDashboard extends StatefulWidget {
   const LearnDashboard({super.key});
@@ -107,16 +108,24 @@ class _LearnDashboard extends State<LearnDashboard> {
                           borderRadius: BorderRadius.circular(14)),
                       child: ClipRRect(
                           borderRadius: BorderRadius.circular(14),
-                          child: PageView(
-                            controller: _controller,
-                            children: banners.map((url) {
-                              return Image.network(
-                                url,
-                                fit: BoxFit.fill,
-                                errorBuilder: (context, error, stackTrace) =>
-                                    const Icon(Icons.broken_image),
-                              );
-                            }).toList(),
+                          child: GestureDetector(
+                            onTap: () {
+                              TFS().onEvent(
+                                  eventName:
+                                      AppEvents.learnDashboardBannerClick,
+                                  data: {});
+                            },
+                            child: PageView(
+                              controller: _controller,
+                              children: banners.map((url) {
+                                return Image.network(
+                                  url,
+                                  fit: BoxFit.fill,
+                                  errorBuilder: (context, error, stackTrace) =>
+                                      const Icon(Icons.broken_image),
+                                );
+                              }).toList(),
+                            ),
                           )),
                     ),
                     const SizedBox(height: 16),

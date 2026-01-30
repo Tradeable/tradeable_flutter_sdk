@@ -13,4 +13,7 @@ class AppEvents {
   static const String beginTopic = "USER_CLICKED_BEGIN_TOPIC";
 
   static const String quickLinkClick = "USER_CLICKED_QUICK_LINK";
+
+  static const String learnDashboardBannerClick =
+      'USER_CLICKED_LEARN_DASHBOARD_BANNER';
 }
