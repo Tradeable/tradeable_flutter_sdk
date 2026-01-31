@@ -59,15 +59,14 @@ class _CourseTopicsBottomSheetState extends State<CourseTopicsBottomSheet> {
                   shape: BoxShape.circle, color: colors.iconColor),
               child: IconButton(
                   onPressed: () => Navigator.of(context).pop(),
-                  icon: Icon(Icons.close,
-                      color: colors.cardBasicBackground, size: 20)),
+                  icon: Icon(Icons.close, color: colors.axisColor, size: 20)),
             ),
           ),
           Expanded(
             child: Container(
               width: double.infinity,
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: colors.background,
                 borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
               ),
               child: coursesModel != null
@@ -91,7 +90,7 @@ class _CourseTopicsBottomSheetState extends State<CourseTopicsBottomSheet> {
                           ),
                           SizedBox(height: 20),
                           ButtonWidget(
-                            color: colors.primary,
+                            color: colors.courseBtmSheetBtnColor,
                             btnContent: "View more",
                             onTap: () {
                               TFS().onEvent(

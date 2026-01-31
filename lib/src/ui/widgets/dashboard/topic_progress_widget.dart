@@ -38,7 +38,7 @@ class TopicProgressList extends StatelessWidget {
                   painter: _CircleProgressPainter(
                       progress: percent,
                       isCompleted: isCompleted,
-                      color: colors.borderColorPrimary),
+                      color: colors.courseBtmSheetBtnColor),
                   child: SizedBox(width: 25, height: 25),
                 ),
                 if (index != topics.length - 1)
@@ -72,7 +72,7 @@ class TopicProgressList extends StatelessWidget {
                   ),
                   const SizedBox(width: 6),
                   Icon(Icons.chevron_right,
-                      color: colors.borderColorPrimary, size: 20)
+                      color: colors.courseBtmSheetBtnColor, size: 20)
                 ],
               ),
             )

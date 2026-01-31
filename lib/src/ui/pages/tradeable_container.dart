@@ -36,84 +36,87 @@ class _TradeableContainerState extends State<TradeableContainer>
   @override
   Widget build(BuildContext context) {
     return Material(
+        color: Theme.of(context).customColors.background,
         child: Stack(
-      children: [
-        widget.child,
-        Positioned(
-          right: 0,
-          top: learnBtnTopPos,
-          child: GestureDetector(
-            onVerticalDragUpdate: (details) {
-              if (!widget.isLearnBtnStatic) {
-                setState(() {
-                  learnBtnTopPos += details.delta.dy;
-                });
-              }
-            },
-            child: Container(
-              width: 40,
-              height: 40,
-              decoration: BoxDecoration(
-                  boxShadow: [
-                    BoxShadow(
-                      color: Color.fromARGB(255, 245, 241, 10),
-                      blurRadius: animationValue * 8,
-                      spreadRadius: animationValue,
-                      offset: Offset(0, 0),
-                    ),
-                  ],
-                  gradient: LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    colors: [Colors.white, Colors.white],
-                    //colors: [Color(0xffed1164), Color(0xff97144d)],
-                  ),
-                  // border: Border.all(color: Color(0xFF97144D), width: 2),
-                  border: Border(
-                    left: BorderSide(color: Color(0xFF97144D), width: 2),
-                    top: BorderSide(color: Color(0xFF97144D), width: 2),
-                    bottom: BorderSide(color: Color(0xFF97144D), width: 2),
-                  ),
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(8),
-                      bottomLeft: Radius.circular(8))),
-              child: MaterialButton(
-                padding: const EdgeInsets.all(0),
-                shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(8),
-                    bottomLeft: Radius.circular(8),
-                    topRight: Radius.zero,
-                    bottomRight: Radius.zero,
-                  ),
-                ),
-                onPressed: () {
-                  TradeableRightSideDrawer.open(
-                      context: context,
-                      drawerBorderRadius: 24,
-                      body: widget.pageId != null
-                          ? TopicListPage(
-                              tagId: widget.pageId?.topicTagId,
-                              onClose: () {
-                                Navigator.of(context).pop();
-                              },
-                            )
-                          : Center(
-                              child: Text("Please provide Id"),
-                            ));
+          children: [
+            widget.child,
+            Positioned(
+              right: 0,
+              top: learnBtnTopPos,
+              child: GestureDetector(
+                onVerticalDragUpdate: (details) {
+                  if (!widget.isLearnBtnStatic) {
+                    setState(() {
+                      learnBtnTopPos += details.delta.dy;
+                    });
+                  }
                 },
-                child: Center(
-                  child: //Icon(Icons.chevron_left, color: Colors.white),
-                      SvgPicture.asset(
-                    "packages/tradeable_flutter_sdk/lib/assets/images/axis_learn_logo_dec.svg",
-                    height: 30,
+                child: Container(
+                  width: 40,
+                  height: 40,
+                  decoration: BoxDecoration(
+                      boxShadow: [
+                        BoxShadow(
+                          color: Color.fromARGB(255, 245, 241, 10),
+                          blurRadius: animationValue * 8,
+                          spreadRadius: animationValue,
+                          offset: Offset(0, 0),
+                        ),
+                      ],
+                      gradient: LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        colors: [Colors.white, Colors.white],
+                        //colors: [Color(0xffed1164), Color(0xff97144d)],
+                      ),
+                      // border: Border.all(color: Color(0xFF97144D), width: 2),
+                      border: Border(
+                        left: BorderSide(color: Color(0xFF97144D), width: 2),
+                        top: BorderSide(color: Color(0xFF97144D), width: 2),
+                        bottom: BorderSide(color: Color(0xFF97144D), width: 2),
+                      ),
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(8),
+                          bottomLeft: Radius.circular(8))),
+                  child: MaterialButton(
+                    padding: const EdgeInsets.all(0),
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(8),
+                        bottomLeft: Radius.circular(8),
+                        topRight: Radius.zero,
+                        bottomRight: Radius.zero,
+                      ),
+                    ),
+                    onPressed: () {
+                      TradeableRightSideDrawer.open(
+                          context: context,
+                          drawerBorderRadius: 24,
+                          drawerColor:
+                              Theme.of(context).customColors.background,
+                          body: widget.pageId != null
+                              ? TopicListPage(
+                                  tagId: widget.pageId?.topicTagId,
+                                  onClose: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                )
+                              : Center(
+                                  child: Text("Please provide Id"),
+                                ));
+                    },
+                    child: Center(
+                      child: //Icon(Icons.chevron_left, color: Colors.white),
+                          SvgPicture.asset(
+                        "packages/tradeable_flutter_sdk/lib/assets/images/axis_learn_logo_dec.svg",
+                        height: 30,
+                      ),
+                    ),
                   ),
                 ),
               ),
-            ),
-          ),
-        )
-      ],
-    ));
+            )
+          ],
+        ));
   }
 }

@@ -95,10 +95,11 @@ class _TopicListPageState extends State<TopicListPage> {
                   alignment: Alignment.topRight,
                   child: InkWell(
                     onTap: widget.onClose,
-                    child: const Icon(Icons.close_rounded),
+                    child: Icon(Icons.close_rounded,
+                        color: Theme.of(context).customColors.iconColor),
                   ),
                 ),
-                const Text(
+                Text(
                   "What do you want to learn about today?",
                   style: TextStyle(
                     fontSize: 20,
@@ -130,10 +131,10 @@ class _TopicListPageState extends State<TopicListPage> {
                         final index = entry.key;
                         final item = entry.value;
                         final cardColors = [
-                          Color(0xffF9EBEF),
-                          Color(0xffEBF0F9),
-                          Color(0xffF9F1EB),
-                          Color(0xffEFF9EB)
+                          Theme.of(context).customColors.topicCardColor1,
+                          Theme.of(context).customColors.topicCardColor2,
+                          Theme.of(context).customColors.topicCardColor3,
+                          Theme.of(context).customColors.topicCardColor4
                         ];
                         final cardColor = cardColors[index % cardColors.length];
                         return Padding(
@@ -211,10 +212,11 @@ class _TopicListPageState extends State<TopicListPage> {
                   child: Row(
                     children: [
                       Text(relatedTopics[index].name,
-                          style: TextStyle(fontSize: 14)),
+                          style: const TextStyle(fontSize: 14)),
                       const SizedBox(width: 6),
                       Icon(Icons.arrow_forward_ios_rounded,
-                          size: 14, color: Colors.black)
+                          size: 14,
+                          color: Theme.of(context).customColors.iconColor)
                     ],
                   ),
                 ),
@@ -230,8 +232,10 @@ class _TopicListPageState extends State<TopicListPage> {
         borderRadius: const BorderRadius.only(
           bottomLeft: Radius.circular(10),
         ),
-        color: const Color(0xffF9F9F9),
-        border: Border.all(color: const Color(0xffE2E2E2)),
+        color: Theme.of(context).customColors.buttonColor,
+        border: Border(
+            top: BorderSide(
+                color: Theme.of(context).customColors.buttonBorderColor)),
       ),
       child: InkWell(
         onTap: () {
@@ -239,11 +243,11 @@ class _TopicListPageState extends State<TopicListPage> {
             MaterialPageRoute(builder: (context) => LearnDashboard()),
           );
         },
-        child: const Center(
+        child: Center(
           child: Text(
             "Go to Learn Dashboard",
             style: TextStyle(
-              color: Color(0xff97144D),
+              color: Theme.of(context).customColors.goToLearnDashboardBtn,
               fontWeight: FontWeight.bold,
             ),
           ),

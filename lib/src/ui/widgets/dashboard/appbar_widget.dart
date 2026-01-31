@@ -14,10 +14,13 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     final textStyles =
         TFS().themeData?.customTextStyles ?? Theme.of(context).customTextStyles;
+    final colors =
+        TFS().themeData?.customColors ?? Theme.of(context).customColors;
 
     return AppBar(
       backgroundColor: color,
       title: Text(title, style: textStyles.mediumBold),
+      centerTitle: false,
       titleSpacing: 0,
       actionsPadding: EdgeInsets.only(right: 10),
       leading: IconButton(
@@ -28,7 +31,7 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
               Navigator.of(context).pop();
             }
           },
-          icon: Icon(Icons.arrow_back)),
+          icon: Icon(Icons.arrow_back, color: colors.backBtnColor)),
     );
   }
 

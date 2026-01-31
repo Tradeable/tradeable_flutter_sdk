@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:tradeable_flutter_sdk/src/models/banner_model.dart';
 import 'package:tradeable_flutter_sdk/src/models/courses_model.dart';
 import 'package:tradeable_flutter_sdk/src/network/api.dart';
 import 'package:tradeable_flutter_sdk/src/tfs.dart';
@@ -8,6 +10,7 @@ import 'package:tradeable_flutter_sdk/src/ui/widgets/dashboard/courses_horizonta
 import 'package:tradeable_flutter_sdk/src/ui/widgets/dashboard/overall_progress_widget.dart';
 import 'package:tradeable_flutter_sdk/src/ui/widgets/dashboard/topic_tag_widget.dart';
 import 'package:tradeable_flutter_sdk/src/utils/app_theme.dart';
+import 'package:tradeable_flutter_sdk/src/utils/events.dart';
 
 class LearnDashboard extends StatefulWidget {
   const LearnDashboard({super.key});
@@ -18,7 +21,7 @@ class LearnDashboard extends StatefulWidget {
 
 class _LearnDashboard extends State<LearnDashboard> {
   final PageController _controller = PageController();
-  List<String> banners = [];
+  List<BannerModel> banners = [];
   List<CoursesModel> courses = [];
 
   @override
@@ -31,7 +34,7 @@ class _LearnDashboard extends State<LearnDashboard> {
   void getBanners() async {
     API().getBanners().then((v) {
       setState(() {
-        banners = v.map((e) => e['url'].toString()).toList();
+        banners = v;
       });
     });
   }
@@ -44,6 +47,19 @@ class _LearnDashboard extends State<LearnDashboard> {
     });
   }
 
+  Future<void> openCtaUrl() async {
+    final index = _controller.page?.round() ?? 0;
+    if (index >= banners.length) return;
+
+    final ctaUri = banners[index].ctaUri;
+    if (ctaUri == null || ctaUri.isEmpty) return;
+
+    final uri = Uri.tryParse(ctaUri);
+    if (uri == null) return;
+
+    await launchUrl(uri);
+  }
+
   @override
   Widget build(BuildContext context) {
     final colors =
@@ -51,8 +67,8 @@ class _LearnDashboard extends State<LearnDashboard> {
 
     return Scaffold(
       backgroundColor: colors.background,
-      appBar:
-          AppBarWidget(title: "Learn Dashboard", color: colors.neutralColor),
+      appBar: AppBarWidget(
+          title: "Learn Dashboard", color: colors.learnDashboardAppbarColor),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -87,13 +103,13 @@ class _LearnDashboard extends State<LearnDashboard> {
 
     return Container(
       padding: const EdgeInsets.only(left: 16, right: 16, bottom: 20, top: 12),
-      color: colors.neutralColor,
+      color: colors.learnDashboardAppbarColor,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text("Welcome!",
               style: textStyles.mediumBold.copyWith(
-                  fontStyle: FontStyle.italic, color: colors.primary)),
+                  fontStyle: FontStyle.italic, color: colors.headerColor)),
           Text("Ready to learn the ropes? Your trading adventure begins now!",
               style: textStyles.smallNormal
                   .copyWith(color: colors.textColorSecondary)),
@@ -107,16 +123,25 @@ class _LearnDashboard extends State<LearnDashboard> {
                           borderRadius: BorderRadius.circular(14)),
                       child: ClipRRect(
                           borderRadius: BorderRadius.circular(14),
-                          child: PageView(
-                            controller: _controller,
-                            children: banners.map((url) {
-                              return Image.network(
-                                url,
-                                fit: BoxFit.fill,
-                                errorBuilder: (context, error, stackTrace) =>
-                                    const Icon(Icons.broken_image),
-                              );
-                            }).toList(),
+                          child: GestureDetector(
+                            onTap: () {
+                              TFS().onEvent(
+                                  eventName:
+                                      AppEvents.learnDashboardBannerClick,
+                                  data: {});
+                              openCtaUrl();
+                            },
+                            child: PageView(
+                              controller: _controller,
+                              children: banners.map((banner) {
+                                return Image.network(
+                                  banner.imageUrl ?? '',
+                                  fit: BoxFit.fill,
+                                  errorBuilder: (context, error, stackTrace) =>
+                                      const Icon(Icons.broken_image),
+                                );
+                              }).toList(),
+                            ),
                           )),
                     ),
                     const SizedBox(height: 16),
@@ -129,7 +154,7 @@ class _LearnDashboard extends State<LearnDashboard> {
                             dotHeight: 6,
                             dotWidth: 6,
                             spacing: 4,
-                            dotColor: colors.borderColorSecondary),
+                            dotColor: colors.sliderInactiveDotColor),
                       ),
                     ),
                   ],

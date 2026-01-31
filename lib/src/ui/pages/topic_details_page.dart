@@ -128,7 +128,9 @@ class _TopicDetailPageState extends State<TopicDetailPage> {
     }
 
     return Scaffold(
-        backgroundColor: widget.topic?.cardColor ?? Color(0xffF9F1EB),
+        backgroundColor: Theme.of(context).brightness == Brightness.dark
+            ? colors.background
+            : widget.topic?.cardColor ?? Color(0xffF9F1EB),
         appBar: renderAppBar(),
         body: SafeArea(
           child: WidgetPage(
@@ -174,7 +176,7 @@ class _TopicDetailPageState extends State<TopicDetailPage> {
       leading: Align(
         alignment: Alignment.topLeft,
         child: IconButton(
-          icon: Icon(Icons.arrow_back, size: 24),
+          icon: Icon(Icons.arrow_back, size: 24, color: colors.backBtnColor),
           onPressed: () => Navigator.pop(context),
         ),
       ),
@@ -184,11 +186,10 @@ class _TopicDetailPageState extends State<TopicDetailPage> {
           AutoSizeText(_topicUserModel?.name ?? "",
               minFontSize: 12,
               maxFontSize: 18,
-              style:
-                  TextStyle(fontWeight: FontWeight.bold, color: Colors.black)),
-          SizedBox(
-            height: 4,
-          ),
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: colors.topicDetailsHeadersColor)),
+          SizedBox(height: 4),
           _topicUserModel != null
               ? Row(
                   children: [
@@ -205,7 +206,8 @@ class _TopicDetailPageState extends State<TopicDetailPage> {
                     const SizedBox(width: 6),
                     Text(
                       '$completedFlows/$totalFlows ${completedFlows == totalFlows ? "Completed" : "Ongoing..."}',
-                      style: TextStyle(fontSize: 10, color: Colors.black),
+                      style: TextStyle(
+                          fontSize: 10, color: colors.topicDetailsHeadersColor),
                     ),
                   ],
                 )
@@ -218,7 +220,7 @@ class _TopicDetailPageState extends State<TopicDetailPage> {
           padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
               shape: BoxShape.circle,
-              border: Border.all(color: colors.borderColorSecondary)),
+              border: Border.all(color: colors.topicDetailsHeadersColor)),
           child: InkWell(
             onTap: () {
               showModalBottomSheet(
@@ -247,7 +249,10 @@ class _TopicDetailPageState extends State<TopicDetailPage> {
               );
             },
             child: SvgPicture.asset(
-                "packages/tradeable_flutter_sdk/lib/assets/images/dashboard_menu.svg"),
+              "packages/tradeable_flutter_sdk/lib/assets/images/dashboard_menu.svg",
+              colorFilter: ColorFilter.mode(
+                  colors.topicDetailsHeadersColor, BlendMode.srcIn),
+            ),
           ),
         )
       ],

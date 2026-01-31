@@ -23,7 +23,9 @@ class _PageListState extends State<PageList> {
       isLearnBtnStatic: false,
       learnBtnTopPos: 80,
       child: Scaffold(
-        appBar: AppBar(),
+        appBar: AppBar(
+          backgroundColor: Theme.of(context).customColors.background,
+        ),
         body: SafeArea(
           child: Column(
             children: [
@@ -34,8 +36,11 @@ class _PageListState extends State<PageList> {
                   Container(
                     padding: EdgeInsets.all(10),
                     decoration: BoxDecoration(
-                      color: Colors.white,
-                      border: Border.all(color: Colors.black),
+                      color: Theme.of(context).customColors.dropdownBgColor,
+                      border: Border.all(
+                          color: Theme.of(context)
+                              .customColors
+                              .borderColorPrimary),
                       borderRadius: BorderRadius.circular(4.0),
                     ),
                     child: DropdownButton<PageId>(

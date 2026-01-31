@@ -38,10 +38,10 @@ class CoursesHorizontalList extends StatelessWidget {
                   Text("VIEW ALL",
                       style: textStyles.smallBold
                           .copyWith(fontSize: 12)
-                          .copyWith(color: colors.borderColorPrimary)),
+                          .copyWith(color: colors.viewAllTextColor)),
                   const SizedBox(width: 4),
                   Icon(Icons.arrow_forward_ios,
-                      size: 10, color: colors.borderColorPrimary)
+                      size: 10, color: colors.viewAllTextColor)
                 ],
               ),
             )
@@ -57,10 +57,10 @@ class CoursesHorizontalList extends StatelessWidget {
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (context, index) {
                       final cardColors = [
-                        Color(0xffF9F1EB),
-                        Color(0xffEBF0F9),
-                        Color(0xffF9EBEF),
-                        Color(0xffEFF9EB)
+                        colors.courseCardColor1,
+                        colors.courseCardColor2,
+                        colors.courseCardColor3,
+                        colors.courseCardColor4
                       ];
                       return CourseListItem(
                         model: courses[index],
