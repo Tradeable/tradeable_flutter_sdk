@@ -288,21 +288,26 @@ class _FlowsList extends State<FlowsList> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text("Enjoyed the lesson?", style: textStyles.mediumBold),
-                  Text("Put your learning into action."),
+                  Text(
+                    "Enjoyed the lesson?",
+                    style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black),
+                  ),
+                  Text(
+                    "Put your learning into action.",
+                    style: TextStyle(color: Colors.black),
+                  ),
                   const SizedBox(height: 8),
                   SizedBox(
                     width: 100,
                     child: ButtonWidget(
-                        color: colors.primary,
+                        color: colors.axisPrimaryColor,
                         btnContent: "Let's go!",
                         borderRadius: BorderRadius.circular(12),
-                        textStyle: textStyles.smallBold.copyWith(
-                            fontSize: 12,
-                            color:
-                                Theme.of(context).brightness == Brightness.dark
-                                    ? Colors.black
-                                    : Colors.white),
+                        textStyle: textStyles.smallBold
+                            .copyWith(fontSize: 12, color: Colors.white),
                         onTap: () {
                           Navigator.of(context).pop();
                           Navigator.of(context).pop();

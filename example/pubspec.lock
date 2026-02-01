@@ -294,7 +294,7 @@ packages:
     description:
       path: "."
       ref: axis_main
-      resolved-ref: b9525ea89b03fa6b02e92c191c6df91a32428471
+      resolved-ref: "3e6a1865ca210aec1176cd356a8d077601141eb6"
       url: "https://github.com/adityagohad/fin_chart.git"
     source: git
     version: "0.0.1"
@@ -793,8 +793,8 @@ packages:
     dependency: transitive
     description:
       path: "."
-      ref: dark_mode
-      resolved-ref: "04086db186826e9fa6e487a932761731b46c5b3e"
+      ref: axis_main
+      resolved-ref: "49f4a095b4bf6b23ec15255d5ddfb3bf4056b28f"
       url: "https://github.com/Tradeable/tradeable_learn_widget.git"
     source: git
     version: "0.0.1"

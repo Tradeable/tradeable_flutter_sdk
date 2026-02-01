@@ -121,6 +121,7 @@ class ThemeColors {
   final Color headerColor;
   final Color courseBtmSheetBtnColor;
   final Color topicDetailsHeadersColor;
+  final Color axisPrimaryColor;
 
   ThemeColors(
       {required this.primary,
@@ -197,7 +198,8 @@ class ThemeColors {
       required this.overallProgressPercentageColor,
       required this.headerColor,
       required this.courseBtmSheetBtnColor,
-      required this.topicDetailsHeadersColor});
+      required this.topicDetailsHeadersColor,
+      required this.axisPrimaryColor});
 
   // Light theme colors factory
   static ThemeColors light() {
@@ -276,7 +278,8 @@ class ThemeColors {
         overallProgressPercentageColor: const Color(0xffED1164),
         headerColor: const Color(0xff97144D),
         courseBtmSheetBtnColor: const Color(0xff97144D),
-        topicDetailsHeadersColor: Colors.black);
+        topicDetailsHeadersColor: Colors.black,
+        axisPrimaryColor: Color(0xff97144D));
   }
 
   // Dark theme colors factory
@@ -356,7 +359,8 @@ class ThemeColors {
         overallProgressPercentageColor: Colors.white,
         headerColor: Colors.white,
         courseBtmSheetBtnColor: const Color(0xffF14687),
-        topicDetailsHeadersColor: Colors.white);
+        topicDetailsHeadersColor: Colors.white,
+        axisPrimaryColor: Color(0xff97144D));
   }
 }
 
