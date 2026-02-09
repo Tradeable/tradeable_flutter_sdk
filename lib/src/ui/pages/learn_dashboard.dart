@@ -10,7 +10,6 @@ import 'package:tradeable_flutter_sdk/src/ui/widgets/dashboard/courses_horizonta
 import 'package:tradeable_flutter_sdk/src/ui/widgets/dashboard/overall_progress_widget.dart';
 import 'package:tradeable_flutter_sdk/src/ui/widgets/dashboard/topic_tag_widget.dart';
 import 'package:tradeable_flutter_sdk/src/utils/app_theme.dart';
-import 'package:tradeable_flutter_sdk/src/utils/events.dart';
 
 class LearnDashboard extends StatefulWidget {
   final String? source;
@@ -29,6 +28,9 @@ class _LearnDashboard extends State<LearnDashboard> {
   void initState() {
     getBanners();
     getModules();
+    TFS().onEvent(
+        eventName: "Traders_Learn_Dashboard",
+        data: {"source": widget.source, "entity_id": TFS().clientId ?? ""});
     super.initState();
   }
 
@@ -128,10 +130,10 @@ class _LearnDashboard extends State<LearnDashboard> {
                           borderRadius: BorderRadius.circular(14),
                           child: GestureDetector(
                             onTap: () {
-                              TFS().onEvent(
-                                  eventName:
-                                      AppEvents.learnDashboardBannerClick,
-                                  data: {});
+                              // TFS().onEvent(
+                              //     eventName:
+                              //         AppEvents.learnDashboardBannerClick,
+                              //     data: {});
                               openCtaUrl();
                             },
                             child: PageView(

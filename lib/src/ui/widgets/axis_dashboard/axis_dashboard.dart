@@ -6,10 +6,12 @@ import 'package:tradeable_flutter_sdk/tradeable_flutter_sdk.dart';
 class AxisDashboard extends StatefulWidget {
   final EdgeInsets padding;
   final int dateThreshold;
+  final String? source;
   const AxisDashboard(
       {super.key,
       this.padding = const EdgeInsets.all(12),
-      this.dateThreshold = 100000});
+      this.dateThreshold = 100000,
+      this.source});
 
   @override
   State<AxisDashboard> createState() => _AxisDashboardState();
@@ -72,7 +74,8 @@ class _AxisDashboardState extends State<AxisDashboard> {
           onTap: () {
             Navigator.of(context)
                 .push(
-              MaterialPageRoute(builder: (context) => const LearnDashboard()),
+              MaterialPageRoute(
+                  builder: (context) => LearnDashboard(source: widget.source)),
             )
                 .then((value) {
               if (value == true) {

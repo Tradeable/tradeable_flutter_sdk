@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:tradeable_flutter_sdk/src/models/topic_user_model.dart';
 import 'package:tradeable_flutter_sdk/src/ui/widgets/topic_tile.dart';
 import 'package:tradeable_flutter_sdk/src/ui/widgets/module_card_shimmer.dart';
-import 'package:tradeable_flutter_sdk/src/utils/events.dart';
 import 'package:tradeable_flutter_sdk/tradeable_flutter_sdk.dart';
 
 class TopicListPage extends StatefulWidget {
@@ -144,14 +143,14 @@ class _TopicListPageState extends State<TopicListPage> {
                           child: TopicTile(
                             moduleModel: item,
                             onClick: () async {
-                              TFS().onEvent(
-                                  eventName: AppEvents.beginTopic,
-                                  data: {
-                                    "comingFrom": "sideDrawer",
-                                    "title": item.name,
-                                    "total":
-                                        "${item.progress.completed}/${item.progress.total}"
-                                  });
+                              // TFS().onEvent(
+                              //     eventName: AppEvents.beginTopic,
+                              //     data: {
+                              //       "comingFrom": "sideDrawer",
+                              //       "title": item.name,
+                              //       "total":
+                              //           "${item.progress.completed}/${item.progress.total}"
+                              //     });
                               await Navigator.of(context)
                                   .push(MaterialPageRoute(
                                       builder: (context) => TopicDetailPage(

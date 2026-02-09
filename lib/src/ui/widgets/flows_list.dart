@@ -15,6 +15,7 @@ class FlowsList extends StatefulWidget {
   final TopicFlowModel flowModel;
   final Function(int) onFlowSelected;
   final int completedFlowId;
+  final TopicUserModel topic;
   final String? source;
 
   const FlowsList(
@@ -22,6 +23,7 @@ class FlowsList extends StatefulWidget {
       required this.flowModel,
       required this.onFlowSelected,
       required this.completedFlowId,
+      required this.topic,
       this.source});
 
   @override
@@ -260,7 +262,19 @@ class _FlowsList extends State<FlowsList> {
 
         return MaterialButton(
           padding: EdgeInsets.zero,
-          onPressed: () => widget.onFlowSelected(item.flowId),
+          onPressed: () {
+            widget.onFlowSelected(item.flowId);
+
+            TFS().onEvent(eventName: "Traders_Learn_Visited", data: {
+              "source": widget.source,
+              "category": widget.topic.name,
+              "sub_category": item.name,
+              "panel": "Bottom_Panel",
+              "progress":
+                  "${widget.topic.progress.completed}/${widget.topic.progress.total}",
+              "entity_id": TFS().clientId ?? ""
+            });
+          },
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
           child: shouldBounce ? BouncingWidget(child: flowIcon) : flowIcon,
@@ -316,7 +330,7 @@ class _FlowsList extends State<FlowsList> {
                               data: {
                                 "source": widget.source,
                                 "action": "Lets Go",
-                                "entity_id": widget.flowModel.topicId
+                                "entity_id": TFS().clientId ?? ""
                               });
                           Navigator.of(context).pop();
                           Navigator.of(context).pop();

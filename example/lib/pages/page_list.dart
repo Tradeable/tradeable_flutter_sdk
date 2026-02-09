@@ -22,7 +22,7 @@ class _PageListState extends State<PageList> {
       pageId: selectedPage,
       isLearnBtnStatic: false,
       learnBtnTopPos: 80,
-      source: "",
+      source: selectedPage?.name ?? "",
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Theme.of(context).customColors.background,
@@ -72,7 +72,7 @@ class _PageListState extends State<PageList> {
                 ],
               ),
               Spacer(),
-              AxisDashboard(),
+              AxisDashboard(source: "Dashboard Widget"),
               // MaterialButton(
               //     onPressed: () {
               //       Navigator.of(context).push(

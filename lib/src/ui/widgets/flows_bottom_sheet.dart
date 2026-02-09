@@ -83,6 +83,7 @@ class _FlowsBottomSheet extends State<FlowsBottomSheet> {
                   topicContextId: widget.topic.topicContextId,
                 ),
                 source: widget.source,
+                topic: widget.topic,
                 onFlowSelected: (flowId) {
                   setState(() {
                     Navigator.of(context).pop();
@@ -94,7 +95,7 @@ class _FlowsBottomSheet extends State<FlowsBottomSheet> {
                       "sub_category": widget.topic.name,
                       "progress":
                           "${widget.topic.progress.completed}/${widget.topic.progress.total}",
-                      "entity_id": widget.topic.topicId
+                      "entity_id": TFS().clientId ?? ""
                     });
                     widget.onFlowItemClicked(currentFlowId!);
                   });

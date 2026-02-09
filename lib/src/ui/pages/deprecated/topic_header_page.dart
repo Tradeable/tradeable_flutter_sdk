@@ -84,6 +84,7 @@ class _TopicHeaderWidgetState extends State<TopicHeaderWidget> {
                       topicContextId: widget.topic.topicContextId,
                     ),
                     completedFlowId: -1,
+                    topic: widget.topic,
                     source: widget.source,
                     onFlowSelected: (flowId) {
                       setState(() {

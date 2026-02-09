@@ -71,7 +71,7 @@ class _TopicDetailPageState extends State<TopicDetailPage> {
       "category": _topicUserModel?.name,
       "progress":
           "${_topicUserModel?.progress.completed ?? 0}/${_topicUserModel?.progress.total ?? 0}",
-      "entity_id": widget.topicId ?? widget.topicId!
+      "entity_id": TFS().clientId ?? ""
     });
   }
 
@@ -167,20 +167,12 @@ class _TopicDetailPageState extends State<TopicDetailPage> {
                             flowId = id;
                           }),
                           completedFlowId: flowId ?? -1,
+                          source: widget.source,
                         ),
                       ),
                     );
                   },
                 );
-                TFS().onEvent(eventName: "Traders_Learn_Visited", data: {
-                  "source": widget.source,
-                  "category": _topicUserModel?.name,
-                  "sub_category": _topicUserModel?.name,
-                  "panel": "Bottom_Panel",
-                  "progress":
-                      "${_topicUserModel?.progress.completed ?? 0}/${_topicUserModel?.progress.total ?? 0}",
-                  "entity_id": _topicUserModel?.topicId ?? -1
-                });
               }),
         ));
   }

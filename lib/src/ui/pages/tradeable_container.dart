@@ -108,7 +108,7 @@ class _TradeableContainerState extends State<TradeableContainer>
                                 ));
                       TFS().onEvent(eventName: "Traders_Learn_Visited", data: {
                         "source": widget.source,
-                        "entity_id": widget.pageId?.topicTagId
+                        "entity_id": TFS().clientId ?? ""
                       });
                     },
                     child: Center(

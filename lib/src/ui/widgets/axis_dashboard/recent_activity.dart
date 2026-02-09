@@ -5,20 +5,21 @@ import 'package:tradeable_flutter_sdk/src/models/progress_model.dart';
 import 'package:tradeable_flutter_sdk/src/tfs.dart';
 import 'package:tradeable_flutter_sdk/src/ui/pages/course_details_page.dart';
 import 'package:tradeable_flutter_sdk/src/utils/app_theme.dart';
-import 'package:tradeable_flutter_sdk/src/utils/events.dart';
 
 class RecentActivity extends StatelessWidget {
   final List<OverallProgressModel> overallProgress;
   final double progressPercent;
   final CoursesModel? coursesModel;
   final VoidCallback updateProgress;
+  final String? source;
 
   const RecentActivity(
       {super.key,
       required this.overallProgress,
       required this.progressPercent,
       this.coursesModel,
-      required this.updateProgress});
+      required this.updateProgress,
+      this.source});
 
   @override
   Widget build(BuildContext context) {
@@ -98,12 +99,23 @@ class RecentActivity extends StatelessWidget {
       double progressPercent) {
     return InkWell(
       onTap: () async {
-        TFS().onEvent(eventName: AppEvents.viewAllTopicsInCourse, data: {
-          "progressPercent": progressPercent,
-          "courseTitle": item.name
+        // TFS().onEvent(eventName: AppEvents.viewAllTopicsInCourse, data: {
+        //   "progressPercent": progressPercent,
+        //   "courseTitle": item.name
+        // });
+        TFS().onEvent(eventName: "Traders_Learn_Visited", data: {
+          "source": source,
+          "category": "Overall Progress",
+          "sub_category": item.name,
+          "progress":
+              "${((item.progress.completed / item.progress.total) * 100).toStringAsFixed(2)}%",
+          "entity_id": TFS().clientId ?? ""
         });
         await Navigator.of(context).push(MaterialPageRoute(
-            builder: (_) => CourseDetailsPage(courseId: item.id)));
+            builder: (_) => CourseDetailsPage(
+                  courseId: item.id,
+                  source: source,
+                )));
         updateProgress();
       },
       borderRadius: BorderRadius.circular(12),
@@ -183,10 +195,10 @@ class RecentActivity extends StatelessWidget {
 
     return InkWell(
       onTap: () async {
-        TFS().onEvent(eventName: AppEvents.viewAllTopicsInCourse, data: {
-          "progressPercent": progressPercent,
-          "courseTitle": item.name
-        });
+        // TFS().onEvent(eventName: AppEvents.viewAllTopicsInCourse, data: {
+        //   "progressPercent": progressPercent,
+        //   "courseTitle": item.name
+        // });
         await Navigator.of(context).push(MaterialPageRoute(
             builder: (_) => CourseDetailsPage(courseId: item.id)));
         updateProgress();

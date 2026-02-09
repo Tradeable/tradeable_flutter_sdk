@@ -6,7 +6,6 @@ import 'package:tradeable_flutter_sdk/src/ui/pages/course_details_page.dart';
 import 'package:tradeable_flutter_sdk/src/ui/widgets/dashboard/appbar_widget.dart';
 import 'package:tradeable_flutter_sdk/src/utils/app_theme.dart';
 import 'package:tradeable_flutter_sdk/src/tfs.dart';
-import 'package:tradeable_flutter_sdk/src/utils/events.dart';
 
 class UserActivityScreen extends StatefulWidget {
   final List<OverallProgressModel> progressItems;
@@ -65,10 +64,10 @@ class _UserActivityScreen extends State<UserActivityScreen> {
       }
     }
 
-    TFS().onEvent(eventName: AppEvents.viewAllOverallProgress, data: {
-      "completed": completedItems.length,
-      "inProgress": inProgressItems.length
-    });
+    // TFS().onEvent(eventName: AppEvents.viewAllOverallProgress, data: {
+    //   "completed": completedItems.length,
+    //   "inProgress": inProgressItems.length
+    // });
   }
 
   @override
@@ -155,12 +154,12 @@ class _UserActivityScreen extends State<UserActivityScreen> {
           child: InkWell(
             borderRadius: BorderRadius.circular(10),
             onTap: () async {
-              TFS().onEvent(eventName: AppEvents.viewAllTopicsInCourse, data: {
-                "courseTitle": item.name,
-                "progress":
-                    ((item.progress.completed / item.progress.total) * 100)
-                        .toStringAsFixed(0)
-              });
+              // TFS().onEvent(eventName: AppEvents.viewAllTopicsInCourse, data: {
+              //   "courseTitle": item.name,
+              //   "progress":
+              //       ((item.progress.completed / item.progress.total) * 100)
+              //           .toStringAsFixed(0)
+              // });
               await Navigator.of(context)
                   .push(MaterialPageRoute(
                       builder: (context) =>

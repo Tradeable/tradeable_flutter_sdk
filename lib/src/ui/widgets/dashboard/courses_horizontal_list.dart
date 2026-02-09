@@ -40,7 +40,7 @@ class CoursesHorizontalList extends StatelessWidget {
                   "category": "Courses",
                   "sub_category": "VIEW_ALL",
                   "progress": "",
-                  "entity_id": ""
+                  "entity_id": TFS().clientId ?? ""
                 });
               },
               child: Row(
@@ -76,6 +76,7 @@ class CoursesHorizontalList extends StatelessWidget {
                         model: courses[index],
                         group: group,
                         courseBgColor: cardColors[index % cardColors.length],
+                        source: source,
                       );
                     }),
               )
