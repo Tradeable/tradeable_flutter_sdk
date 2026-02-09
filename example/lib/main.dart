@@ -10,21 +10,22 @@ final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   TFS().initialize(
-    baseUrl: "",
+    baseUrl: "https://dev.api.tradeable.app/axis/",
     theme: WidgetsBinding.instance.platformDispatcher.platformBrightness ==
             Brightness.dark
         ? AppTheme.darkTheme()
         : AppTheme.lightTheme(),
     onEvent: (String eventName, Map<String, dynamic>? data) {
-      //print("Event triggered : $eventName with data: $data");
+      print("Event triggered : $eventName with data: $data");
     },
     onTokenExpiration: () async {
-      // TFS().registerApp(
-      //     authorization: "",
-      //     portalToken: "",
-      //     appId: "",
-      //     clientId: "",
-      //     publicKey: "");
+      TFS().registerApp(
+          authorization: "",
+          portalToken:
+              "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiMSIsIm9pZCI6MiwiaWF0IjoxNzQyNDkwOTY0LCJleHAiOjk5OTk5OTk5OTl9.BbSv_2Z9JgE53bIMbFzg2MaeeCFsrza-epaay7BfEj0",
+          appId: "",
+          clientId: "111",
+          publicKey: "");
     },
   );
   runApp(const MyApp());
