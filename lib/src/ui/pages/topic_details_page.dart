@@ -41,7 +41,6 @@ class _TopicDetailPageState extends State<TopicDetailPage> {
     if (widget.topic != null) {
       _topicUserModel = widget.topic;
       //flowId = _topicUserModel!.startFlow;
-      print(widget.source);
       if (flowId == null) {
         getFlows();
       }
