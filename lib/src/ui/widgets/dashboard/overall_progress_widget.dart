@@ -11,8 +11,9 @@ import 'package:tradeable_flutter_sdk/src/tfs.dart';
 
 class OverallProgressWidget extends StatefulWidget {
   final CoursesModel? coursesModel;
+  final String? source;
 
-  const OverallProgressWidget({super.key, this.coursesModel});
+  const OverallProgressWidget({super.key, this.coursesModel, this.source});
 
   @override
   State<StatefulWidget> createState() => _OverallProgressIndicator();
@@ -41,6 +42,14 @@ class _OverallProgressIndicator extends State<OverallProgressWidget> {
         inProgress = va.summary.inProgress;
         total = va.summary.total;
       });
+    });
+
+    TFS().onEvent(eventName: "Traders_Learn_Visited", data: {
+      "source": widget.source,
+      "category": "Overall Progress",
+      "sub_category": "",
+      "progress": "${((completed / total) * 100).toStringAsFixed(2)}%",
+      "entity_id": ""
     });
   }
 

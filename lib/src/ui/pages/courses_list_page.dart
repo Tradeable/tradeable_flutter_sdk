@@ -9,8 +9,9 @@ import 'package:tradeable_flutter_sdk/src/utils/events.dart';
 
 class CoursesListPage extends StatefulWidget {
   final List<CoursesModel> courses;
+  final String? source;
 
-  const CoursesListPage({super.key, required this.courses});
+  const CoursesListPage({super.key, required this.courses, this.source});
 
   @override
   State<StatefulWidget> createState() => _CoursesListScreen();
@@ -38,6 +39,14 @@ class _CoursesListScreen extends State<CoursesListPage> {
         courses = val;
         isLoading = false;
       });
+    });
+
+    TFS().onEvent(eventName: "Traders_Learn_Visited", data: {
+      "source": widget.source,
+      "category": "Courses",
+      "sub_category": "VIEW_ALL",
+      "progress": "",
+      "entity_id": ""
     });
   }
 

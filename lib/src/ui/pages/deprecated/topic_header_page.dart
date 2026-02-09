@@ -13,13 +13,14 @@ class TopicHeaderWidget extends StatefulWidget {
   final TopicUserModel topic;
   final VoidCallback onBack;
   final Function(ExpansionData) onExpandChanged;
+  final String? source;
 
-  const TopicHeaderWidget({
-    super.key,
-    required this.topic,
-    required this.onBack,
-    required this.onExpandChanged,
-  });
+  const TopicHeaderWidget(
+      {super.key,
+      required this.topic,
+      required this.onBack,
+      required this.onExpandChanged,
+      this.source});
 
   @override
   State<TopicHeaderWidget> createState() => _TopicHeaderWidgetState();
@@ -83,6 +84,7 @@ class _TopicHeaderWidgetState extends State<TopicHeaderWidget> {
                       topicContextId: widget.topic.topicContextId,
                     ),
                     completedFlowId: -1,
+                    source: widget.source,
                     onFlowSelected: (flowId) {
                       setState(() {
                         setState(() {

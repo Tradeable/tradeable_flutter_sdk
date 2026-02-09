@@ -10,11 +10,10 @@ import 'package:tradeable_learn_widget/utils/button_widget.dart';
 
 class CourseTopicsBottomSheet extends StatefulWidget {
   final int courseId;
+  final String? source;
 
-  const CourseTopicsBottomSheet({
-    super.key,
-    required this.courseId,
-  });
+  const CourseTopicsBottomSheet(
+      {super.key, required this.courseId, this.source});
 
   @override
   State<CourseTopicsBottomSheet> createState() =>
@@ -86,6 +85,7 @@ class _CourseTopicsBottomSheetState extends State<CourseTopicsBottomSheet> {
                             child: TopicProgressList(
                               courseId: widget.courseId,
                               topics: coursesModel!.topics ?? [],
+                              source: widget.source,
                             ),
                           ),
                           SizedBox(height: 20),

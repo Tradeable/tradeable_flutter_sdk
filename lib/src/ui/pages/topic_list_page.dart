@@ -9,12 +9,14 @@ class TopicListPage extends StatefulWidget {
   final VoidCallback onClose;
   final int? tagId;
   final bool showBottomButton;
+  final String? source;
 
   const TopicListPage(
       {super.key,
       required this.onClose,
       required this.tagId,
-      this.showBottomButton = true});
+      this.showBottomButton = true,
+      this.source});
 
   @override
   State<TopicListPage> createState() => _TopicListPageState();
@@ -154,7 +156,8 @@ class _TopicListPageState extends State<TopicListPage> {
                                   .push(MaterialPageRoute(
                                       builder: (context) => TopicDetailPage(
                                           topic: item.copyWith(
-                                              cardColor: cardColor))))
+                                              cardColor: cardColor),
+                                          source: widget.source)))
                                   .then((val) {
                                 setState(() {
                                   _showShimmer = true;
@@ -206,8 +209,9 @@ class _TopicListPageState extends State<TopicListPage> {
                 child: InkWell(
                   onTap: () {
                     Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) =>
-                            TopicDetailPage(topic: relatedTopics[index])));
+                        builder: (context) => TopicDetailPage(
+                            topic: relatedTopics[index],
+                            source: widget.source)));
                   },
                   child: Row(
                     children: [
@@ -240,7 +244,8 @@ class _TopicListPageState extends State<TopicListPage> {
       child: InkWell(
         onTap: () {
           Navigator.of(context).push(
-            MaterialPageRoute(builder: (context) => LearnDashboard()),
+            MaterialPageRoute(
+                builder: (context) => LearnDashboard(source: widget.source)),
           );
         },
         child: Center(

@@ -16,8 +16,10 @@ class TopicDetailPage extends StatefulWidget {
   final TopicUserModel? topic;
   final int? topicId;
   final int? courseId;
+  final String? source;
 
-  const TopicDetailPage({super.key, this.topic, this.topicId, this.courseId});
+  const TopicDetailPage(
+      {super.key, this.topic, this.topicId, this.courseId, this.source});
 
   @override
   State<TopicDetailPage> createState() => _TopicDetailPageState();
@@ -62,6 +64,14 @@ class _TopicDetailPageState extends State<TopicDetailPage> {
     }
     setState(() {
       _loading = false;
+    });
+
+    TFS().onEvent(eventName: "Traders_Learn_Visited", data: {
+      "source": widget.source,
+      "category": _topicUserModel?.name,
+      "progress":
+          "${_topicUserModel?.progress.completed ?? 0}/${_topicUserModel?.progress.total ?? 0}",
+      "entity_id": widget.topicId ?? widget.topicId!
     });
   }
 
@@ -162,6 +172,15 @@ class _TopicDetailPageState extends State<TopicDetailPage> {
                     );
                   },
                 );
+                TFS().onEvent(eventName: "Traders_Learn_Visited", data: {
+                  "source": widget.source,
+                  "category": _topicUserModel?.name,
+                  "sub_category": _topicUserModel?.name,
+                  "panel": "Bottom_Panel",
+                  "progress":
+                      "${_topicUserModel?.progress.completed ?? 0}/${_topicUserModel?.progress.total ?? 0}",
+                  "entity_id": _topicUserModel?.topicId ?? -1
+                });
               }),
         ));
   }

@@ -8,9 +8,10 @@ import 'package:tradeable_flutter_sdk/src/tfs.dart';
 class TopicProgressList extends StatelessWidget {
   final int courseId;
   final List<Topic> topics;
+  final String? source;
 
   const TopicProgressList(
-      {super.key, required this.courseId, required this.topics});
+      {super.key, required this.courseId, required this.topics, this.source});
 
   @override
   Widget build(BuildContext context) {
@@ -55,6 +56,7 @@ class TopicProgressList extends StatelessWidget {
                 Navigator.of(context).pop();
                 Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) => TopicDetailPage(
+                        source: source,
                         topic: TopicUserModel(
                             topicId: topic.id,
                             name: topic.name,

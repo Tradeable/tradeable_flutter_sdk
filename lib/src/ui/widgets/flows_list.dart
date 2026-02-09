@@ -15,12 +15,14 @@ class FlowsList extends StatefulWidget {
   final TopicFlowModel flowModel;
   final Function(int) onFlowSelected;
   final int completedFlowId;
+  final String? source;
 
   const FlowsList(
       {super.key,
       required this.flowModel,
       required this.onFlowSelected,
-      required this.completedFlowId});
+      required this.completedFlowId,
+      this.source});
 
   @override
   State<StatefulWidget> createState() => _FlowsList();
@@ -309,6 +311,13 @@ class _FlowsList extends State<FlowsList> {
                         textStyle: textStyles.smallBold
                             .copyWith(fontSize: 12, color: Colors.white),
                         onTap: () {
+                          TFS().onEvent(
+                              eventName: "Traders_Learn_Visited",
+                              data: {
+                                "source": widget.source,
+                                "action": "Lets Go",
+                                "entity_id": widget.flowModel.topicId
+                              });
                           Navigator.of(context).pop();
                           Navigator.of(context).pop();
                         }),

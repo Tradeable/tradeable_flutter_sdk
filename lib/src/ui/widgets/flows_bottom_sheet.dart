@@ -3,17 +3,20 @@ import 'package:tradeable_flutter_sdk/src/models/topic_flow_model.dart';
 import 'package:tradeable_flutter_sdk/src/models/topic_user_model.dart';
 import 'package:tradeable_flutter_sdk/src/network/api.dart';
 import 'package:tradeable_flutter_sdk/src/ui/widgets/flows_list.dart';
+import 'package:tradeable_flutter_sdk/tradeable_flutter_sdk.dart';
 
 class FlowsBottomSheet extends StatefulWidget {
   final TopicUserModel topic;
   final Function(int) onFlowItemClicked;
   final int completedFlowId;
+  final String? source;
 
   const FlowsBottomSheet(
       {super.key,
       required this.topic,
       required this.onFlowItemClicked,
-      required this.completedFlowId});
+      required this.completedFlowId,
+      this.source});
 
   @override
   State<StatefulWidget> createState() => _FlowsBottomSheet();
@@ -79,10 +82,20 @@ class _FlowsBottomSheet extends State<FlowsBottomSheet> {
                   topicContextType: widget.topic.topicContextType,
                   topicContextId: widget.topic.topicContextId,
                 ),
+                source: widget.source,
                 onFlowSelected: (flowId) {
                   setState(() {
                     Navigator.of(context).pop();
                     currentFlowId = flowId;
+
+                    TFS().onEvent(eventName: "Traders_Learn_Visited", data: {
+                      "source": widget.source,
+                      "category": widget.topic.name,
+                      "sub_category": widget.topic.name,
+                      "progress":
+                          "${widget.topic.progress.completed}/${widget.topic.progress.total}",
+                      "entity_id": widget.topic.topicId
+                    });
                     widget.onFlowItemClicked(currentFlowId!);
                   });
                 },

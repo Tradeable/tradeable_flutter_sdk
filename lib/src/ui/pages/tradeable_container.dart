@@ -9,14 +9,15 @@ class TradeableContainer extends StatefulWidget {
   final double learnBtnTopPos;
   final PageId? pageId;
   final bool isLearnBtnStatic;
+  final String? source;
 
-  const TradeableContainer({
-    super.key,
-    required this.child,
-    this.learnBtnTopPos = 180,
-    this.isLearnBtnStatic = true,
-    this.pageId,
-  });
+  const TradeableContainer(
+      {super.key,
+      required this.child,
+      this.learnBtnTopPos = 180,
+      this.isLearnBtnStatic = true,
+      this.pageId,
+      this.source});
 
   @override
   State<TradeableContainer> createState() => _TradeableContainerState();
@@ -100,10 +101,15 @@ class _TradeableContainerState extends State<TradeableContainer>
                                   onClose: () {
                                     Navigator.of(context).pop();
                                   },
+                                  source: widget.source,
                                 )
                               : Center(
                                   child: Text("Please provide Id"),
                                 ));
+                      TFS().onEvent(eventName: "Traders_Learn_Visited", data: {
+                        "source": widget.source,
+                        "entity_id": widget.pageId?.topicTagId
+                      });
                     },
                     child: Center(
                       child: //Icon(Icons.chevron_left, color: Colors.white),

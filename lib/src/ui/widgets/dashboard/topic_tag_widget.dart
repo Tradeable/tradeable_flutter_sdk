@@ -8,7 +8,8 @@ import 'package:tradeable_flutter_sdk/src/tfs.dart';
 import 'package:tradeable_flutter_sdk/src/utils/events.dart';
 
 class TopicTagWidget extends StatelessWidget {
-  const TopicTagWidget({super.key});
+  final String? source;
+  const TopicTagWidget({super.key, this.source});
 
   @override
   Widget build(BuildContext context) {
@@ -49,6 +50,13 @@ class TopicTagWidget extends StatelessWidget {
                       showBottomButton: false,
                     ),
                   );
+                  TFS().onEvent(eventName: "Traders_Learn_Visited", data: {
+                    "source": source,
+                    "category": "Quick Links",
+                    "sub_category": tags[i].formattedName,
+                    "progress": "",
+                    "entity_id": tags[i].topicTagId
+                  });
                 },
                 child: Container(
                   padding:

@@ -12,8 +12,9 @@ import 'package:tradeable_flutter_sdk/src/utils/events.dart';
 class CourseDetailsPage extends StatefulWidget {
   final CoursesModel? model;
   final int? courseId;
+  final String? source;
 
-  const CourseDetailsPage({super.key, this.model, this.courseId});
+  const CourseDetailsPage({super.key, this.model, this.courseId, this.source});
 
   @override
   State<StatefulWidget> createState() => _CourseDetailsScreen();
@@ -73,6 +74,7 @@ class _CourseDetailsScreen extends State<CourseDetailsPage> {
                         Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) => TopicDetailPage(
                                 courseId: widget.courseId,
+                                source: widget.source,
                                 topic: TopicUserModel(
                                     topicId: item.id,
                                     name: item.name,
