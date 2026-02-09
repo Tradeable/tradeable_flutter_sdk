@@ -5,10 +5,10 @@ import 'package:tradeable_flutter_sdk/src/ui/pages/topic_list_page.dart';
 import 'package:tradeable_flutter_sdk/src/ui/widgets/tradeable_right_side_drawer.dart';
 import 'package:tradeable_flutter_sdk/src/utils/app_theme.dart';
 import 'package:tradeable_flutter_sdk/src/tfs.dart';
-import 'package:tradeable_flutter_sdk/src/utils/events.dart';
 
 class TopicTagWidget extends StatelessWidget {
-  const TopicTagWidget({super.key});
+  final String? source;
+  const TopicTagWidget({super.key, this.source});
 
   @override
   Widget build(BuildContext context) {
@@ -37,9 +37,9 @@ class TopicTagWidget extends StatelessWidget {
             for (int i = 0; i < tags.length; i++)
               InkWell(
                 onTap: () {
-                  TFS().onEvent(
-                      eventName: AppEvents.quickLinkClick,
-                      data: {"title": tags[i].formattedName});
+                  // TFS().onEvent(
+                  //     eventName: AppEvents.quickLinkClick,
+                  //     data: {"title": tags[i].formattedName});
                   TradeableRightSideDrawer.open(
                     context: context,
                     drawerBorderRadius: 24,
@@ -47,8 +47,16 @@ class TopicTagWidget extends StatelessWidget {
                       tagId: tags[i].topicTagId,
                       onClose: () => Navigator.of(context).pop(),
                       showBottomButton: false,
+                      source: source,
                     ),
                   );
+                  TFS().onEvent(eventName: "Traders_Learn_Visited", data: {
+                    "source": source,
+                    "category": "Quick Links",
+                    "sub_category": tags[i].formattedName,
+                    "progress": "",
+                    "entity_id": TFS().clientId ?? ""
+                  });
                 },
                 child: Container(
                   padding:

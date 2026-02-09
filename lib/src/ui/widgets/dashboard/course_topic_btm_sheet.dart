@@ -5,16 +5,14 @@ import 'package:tradeable_flutter_sdk/src/ui/pages/course_details_page.dart';
 import 'package:tradeable_flutter_sdk/src/utils/app_theme.dart';
 import 'package:tradeable_flutter_sdk/src/tfs.dart';
 import 'package:tradeable_flutter_sdk/src/ui/widgets/dashboard/topic_progress_widget.dart';
-import 'package:tradeable_flutter_sdk/src/utils/events.dart';
 import 'package:tradeable_learn_widget/utils/button_widget.dart';
 
 class CourseTopicsBottomSheet extends StatefulWidget {
   final int courseId;
+  final String? source;
 
-  const CourseTopicsBottomSheet({
-    super.key,
-    required this.courseId,
-  });
+  const CourseTopicsBottomSheet(
+      {super.key, required this.courseId, this.source});
 
   @override
   State<CourseTopicsBottomSheet> createState() =>
@@ -86,6 +84,7 @@ class _CourseTopicsBottomSheetState extends State<CourseTopicsBottomSheet> {
                             child: TopicProgressList(
                               courseId: widget.courseId,
                               topics: coursesModel!.topics ?? [],
+                              source: widget.source,
                             ),
                           ),
                           SizedBox(height: 20),
@@ -93,9 +92,9 @@ class _CourseTopicsBottomSheetState extends State<CourseTopicsBottomSheet> {
                             color: colors.courseBtmSheetBtnColor,
                             btnContent: "View more",
                             onTap: () {
-                              TFS().onEvent(
-                                  eventName: AppEvents.viewAllTopicsInCourse,
-                                  data: {"courseTitle": coursesModel!.name});
+                              // TFS().onEvent(
+                              //     eventName: AppEvents.viewAllTopicsInCourse,
+                              //     data: {"courseTitle": coursesModel!.name});
                               Navigator.of(context).pop();
                               Navigator.of(context).push(MaterialPageRoute(
                                 builder: (context) =>

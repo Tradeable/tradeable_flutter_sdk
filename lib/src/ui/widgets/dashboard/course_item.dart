@@ -4,21 +4,21 @@ import 'package:tradeable_flutter_sdk/src/models/courses_model.dart';
 import 'package:tradeable_flutter_sdk/src/ui/widgets/dashboard/course_topic_btm_sheet.dart';
 import 'package:tradeable_flutter_sdk/src/utils/app_theme.dart';
 import 'package:tradeable_flutter_sdk/src/tfs.dart';
-import 'package:tradeable_flutter_sdk/src/utils/events.dart';
 
 class CourseListItem extends StatelessWidget {
   final CoursesModel model;
   final AutoSizeGroup group;
   final Color courseBgColor;
   final bool showTag;
+  final String? source;
 
-  const CourseListItem({
-    super.key,
-    required this.model,
-    required this.group,
-    required this.courseBgColor,
-    this.showTag = false,
-  });
+  const CourseListItem(
+      {super.key,
+      required this.model,
+      required this.group,
+      required this.courseBgColor,
+      this.showTag = false,
+      this.source});
 
   @override
   Widget build(BuildContext context) {
@@ -44,9 +44,19 @@ class CourseListItem extends StatelessWidget {
       ),
       child: InkWell(
         onTap: () {
-          TFS().onEvent(
-              eventName: AppEvents.courseBottomSheetOpened,
-              data: {"courseTitle": model.name});
+          // TFS().onEvent(
+          //     eventName: AppEvents.courseBottomSheetOpened,
+          //     data: {"courseTitle": model.name});
+
+          TFS().onEvent(eventName: "Traders_Learn_Visited", data: {
+            "source": source,
+            "category": "Courses",
+            "sub_category": model.name,
+            "progress": model.progress.total > 0
+                ? "${((model.progress.completed / model.progress.total) * 100).toStringAsFixed(2)}%"
+                : "0%",
+            "entity_id": TFS().clientId ?? ""
+          });
           showBottomsheet(context, model.id);
         },
         child: Stack(
@@ -135,7 +145,7 @@ class CourseListItem extends StatelessWidget {
       backgroundColor: Colors.transparent,
       isScrollControlled: true,
       builder: (context) {
-        return CourseTopicsBottomSheet(courseId: courseId);
+        return CourseTopicsBottomSheet(courseId: courseId, source: source);
       },
     );
   }

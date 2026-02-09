@@ -9,8 +9,9 @@ import 'package:tradeable_flutter_sdk/src/utils/app_theme.dart';
 
 class CoursesHorizontalList extends StatelessWidget {
   final List<CoursesModel> courses;
+  final String? source;
 
-  const CoursesHorizontalList({super.key, required this.courses});
+  const CoursesHorizontalList({super.key, required this.courses, this.source});
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +32,16 @@ class CoursesHorizontalList extends StatelessWidget {
             InkWell(
               onTap: () {
                 Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => CoursesListPage(courses: courses)));
+                    builder: (context) =>
+                        CoursesListPage(courses: courses, source: source)));
+
+                TFS().onEvent(eventName: "Traders_Learn_Visited", data: {
+                  "source": source,
+                  "category": "Courses",
+                  "sub_category": "VIEW_ALL",
+                  "progress": "",
+                  "entity_id": TFS().clientId ?? ""
+                });
               },
               child: Row(
                 children: [
@@ -66,6 +76,7 @@ class CoursesHorizontalList extends StatelessWidget {
                         model: courses[index],
                         group: group,
                         courseBgColor: cardColors[index % cardColors.length],
+                        source: source,
                       );
                     }),
               )

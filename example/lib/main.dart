@@ -16,7 +16,7 @@ void main() {
         ? AppTheme.darkTheme()
         : AppTheme.lightTheme(),
     onEvent: (String eventName, Map<String, dynamic>? data) {
-      //print("Event triggered : $eventName with data: $data");
+      // print("Event triggered : $eventName with data: $data");
     },
     onTokenExpiration: () async {
       // TFS().registerApp(

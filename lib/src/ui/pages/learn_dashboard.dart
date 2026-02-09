@@ -10,10 +10,10 @@ import 'package:tradeable_flutter_sdk/src/ui/widgets/dashboard/courses_horizonta
 import 'package:tradeable_flutter_sdk/src/ui/widgets/dashboard/overall_progress_widget.dart';
 import 'package:tradeable_flutter_sdk/src/ui/widgets/dashboard/topic_tag_widget.dart';
 import 'package:tradeable_flutter_sdk/src/utils/app_theme.dart';
-import 'package:tradeable_flutter_sdk/src/utils/events.dart';
 
 class LearnDashboard extends StatefulWidget {
-  const LearnDashboard({super.key});
+  final String? source;
+  const LearnDashboard({super.key, this.source});
 
   @override
   State<StatefulWidget> createState() => _LearnDashboard();
@@ -28,6 +28,9 @@ class _LearnDashboard extends State<LearnDashboard> {
   void initState() {
     getBanners();
     getModules();
+    TFS().onEvent(
+        eventName: "Traders_Learn_Dashboard",
+        data: {"source": widget.source, "entity_id": TFS().clientId ?? ""});
     super.initState();
   }
 
@@ -80,11 +83,13 @@ class _LearnDashboard extends State<LearnDashboard> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   OverallProgressWidget(
-                      coursesModel: courses.isNotEmpty ? courses[0] : null),
+                      coursesModel: courses.isNotEmpty ? courses[0] : null,
+                      source: widget.source),
                   const SizedBox(height: 20),
-                  CoursesHorizontalList(courses: courses),
+                  CoursesHorizontalList(
+                      courses: courses, source: widget.source),
                   const SizedBox(height: 20),
-                  TopicTagWidget(),
+                  TopicTagWidget(source: widget.source),
                 ],
               ),
             )
@@ -125,10 +130,10 @@ class _LearnDashboard extends State<LearnDashboard> {
                           borderRadius: BorderRadius.circular(14),
                           child: GestureDetector(
                             onTap: () {
-                              TFS().onEvent(
-                                  eventName:
-                                      AppEvents.learnDashboardBannerClick,
-                                  data: {});
+                              // TFS().onEvent(
+                              //     eventName:
+                              //         AppEvents.learnDashboardBannerClick,
+                              //     data: {});
                               openCtaUrl();
                             },
                             child: PageView(

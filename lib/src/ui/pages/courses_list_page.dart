@@ -5,12 +5,12 @@ import 'package:tradeable_flutter_sdk/src/ui/pages/course_details_page.dart';
 import 'package:tradeable_flutter_sdk/src/ui/widgets/dashboard/appbar_widget.dart';
 import 'package:tradeable_flutter_sdk/src/utils/app_theme.dart';
 import 'package:tradeable_flutter_sdk/src/tfs.dart';
-import 'package:tradeable_flutter_sdk/src/utils/events.dart';
 
 class CoursesListPage extends StatefulWidget {
   final List<CoursesModel> courses;
+  final String? source;
 
-  const CoursesListPage({super.key, required this.courses});
+  const CoursesListPage({super.key, required this.courses, this.source});
 
   @override
   State<StatefulWidget> createState() => _CoursesListScreen();
@@ -22,7 +22,7 @@ class _CoursesListScreen extends State<CoursesListPage> {
 
   @override
   void initState() {
-    TFS().onEvent(eventName: AppEvents.viewAllCourses, data: {});
+    // TFS().onEvent(eventName: AppEvents.viewAllCourses, data: {});
     if (widget.courses.isEmpty) {
       getModules();
     } else {
@@ -38,6 +38,14 @@ class _CoursesListScreen extends State<CoursesListPage> {
         courses = val;
         isLoading = false;
       });
+    });
+
+    TFS().onEvent(eventName: "Traders_Learn_Visited", data: {
+      "source": widget.source,
+      "category": "Courses",
+      "sub_category": "VIEW_ALL",
+      "progress": "",
+      "entity_id": TFS().clientId ?? ""
     });
   }
 
@@ -79,16 +87,17 @@ class _CoursesListScreen extends State<CoursesListPage> {
                                 .toInt();
                             return InkWell(
                               onTap: () async {
-                                TFS().onEvent(
-                                    eventName: AppEvents.viewAllTopicsInCourse,
-                                    data: {
-                                      "progressPercent": totalPercent,
-                                      "courseTitle": item.name
-                                    });
+                                // TFS().onEvent(
+                                //     eventName: AppEvents.viewAllTopicsInCourse,
+                                //     data: {
+                                //       "progressPercent": totalPercent,
+                                //       "courseTitle": item.name
+                                //     });
                                 await Navigator.of(context)
                                     .push(MaterialPageRoute(
-                                        builder: (context) =>
-                                            CourseDetailsPage(model: item)))
+                                        builder: (context) => CourseDetailsPage(
+                                            model: item,
+                                            source: widget.source)))
                                     .then((val) {
                                   setState(() {
                                     isLoading = true;
@@ -188,7 +197,7 @@ class _CoursesListScreen extends State<CoursesListPage> {
                                         totalPercent == 0
                                             ? "BEGIN"
                                             : totalPercent == 100
-                                                ? "REVIST"
+                                                ? "REVISIT"
                                                 : "CONTINUE",
                                         style: textStyles.smallBold.copyWith(
                                             fontSize: 12,

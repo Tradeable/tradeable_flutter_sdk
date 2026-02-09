@@ -16,8 +16,10 @@ class TopicDetailPage extends StatefulWidget {
   final TopicUserModel? topic;
   final int? topicId;
   final int? courseId;
+  final String? source;
 
-  const TopicDetailPage({super.key, this.topic, this.topicId, this.courseId});
+  const TopicDetailPage(
+      {super.key, this.topic, this.topicId, this.courseId, this.source});
 
   @override
   State<TopicDetailPage> createState() => _TopicDetailPageState();
@@ -62,6 +64,14 @@ class _TopicDetailPageState extends State<TopicDetailPage> {
     }
     setState(() {
       _loading = false;
+    });
+
+    TFS().onEvent(eventName: "Traders_Learn_Visited", data: {
+      "source": widget.source,
+      "category": _topicUserModel?.name,
+      "progress":
+          "${_topicUserModel?.progress.completed ?? 0}/${_topicUserModel?.progress.total ?? 0}",
+      "entity_id": TFS().clientId ?? ""
     });
   }
 
@@ -157,6 +167,7 @@ class _TopicDetailPageState extends State<TopicDetailPage> {
                             flowId = id;
                           }),
                           completedFlowId: flowId ?? -1,
+                          source: widget.source,
                         ),
                       ),
                     );
@@ -242,6 +253,7 @@ class _TopicDetailPageState extends State<TopicDetailPage> {
                           flowId = id;
                         }),
                         completedFlowId: -1,
+                        source: widget.source,
                       ),
                     ),
                   );

@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:tradeable_flutter_sdk/src/utils/security.dart';
 import 'package:tradeable_flutter_sdk/tradeable_flutter_sdk.dart';
@@ -74,7 +75,29 @@ class TFS {
     return _tokenExpirationCallback?.call();
   }
 
+  String get _currentOS {
+    if (kIsWeb) {
+      return "web";
+    }
+    switch (defaultTargetPlatform) {
+      case TargetPlatform.android:
+        return "Android";
+      case TargetPlatform.iOS:
+        return "iOS";
+      case TargetPlatform.macOS:
+        return "macOS";
+      case TargetPlatform.windows:
+        return "windows";
+      case TargetPlatform.linux:
+        return "linux";
+      case TargetPlatform.fuchsia:
+        return "fuchsia";
+    }
+  }
+
   onEvent({required String eventName, required Map<String, dynamic> data}) {
-    return _onEventCallback?.call(eventName, data);
+    final enrichedData = Map<String, dynamic>.from(data);
+    enrichedData.putIfAbsent("OS", () => _currentOS);
+    return _onEventCallback?.call(eventName, enrichedData);
   }
 }
