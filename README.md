@@ -76,6 +76,7 @@ You can configure the container by passing a `pageId`:
 Widget build(BuildContext context) {
   return TradeableLearnContainer(
     pageId: PageId.axis,
+    source: "",
     child: Scaffold(
       appBar: AppBar(),
       body: const SafeArea(child: Placeholder())
@@ -91,7 +92,7 @@ Widget build(BuildContext context) {
   return Scaffold(
     appBar: AppBar(),
     body: SafeArea(
-      child: AxisDashboard()
+      child: AxisDashboard(source : "")
     )
   );
 }
