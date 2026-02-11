@@ -6,12 +6,17 @@ import 'package:tradeable_flutter_sdk/src/utils/app_theme.dart';
 import 'package:tradeable_flutter_sdk/src/tfs.dart';
 
 class TopicProgressList extends StatelessWidget {
+  final String courseName;
   final int courseId;
   final List<Topic> topics;
   final String? source;
 
   const TopicProgressList(
-      {super.key, required this.courseId, required this.topics, this.source});
+      {super.key,
+      required this.courseName,
+      required this.courseId,
+      required this.topics,
+      this.source});
 
   @override
   Widget build(BuildContext context) {
@@ -53,6 +58,16 @@ class TopicProgressList extends StatelessWidget {
             const SizedBox(width: 12),
             InkWell(
               onTap: () {
+                TFS().onEvent(eventName: "Traders_Learn_Visited", data: {
+                  "source": source,
+                  "module": "Courses",
+                  "category": courseName,
+                  "sub_category": topic.name,
+                  "progress": topic.progress.total > 0
+                      ? "${((topic.progress.completed / topic.progress.total) * 100).toStringAsFixed(2)}%"
+                      : "0%",
+                  "entity_id": TFS().clientId ?? ""
+                });
                 Navigator.of(context).pop();
                 Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) => TopicDetailPage(

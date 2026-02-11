@@ -70,6 +70,15 @@ class _CourseDetailsScreen extends State<CourseDetailsPage> {
                         //           .ceil()
                         //           .toStringAsFixed(0)
                         // });
+                        TFS()
+                            .onEvent(eventName: "Traders_Learn_Visited", data: {
+                          "source": widget.source,
+                          "module": coursesModel?.name,
+                          "sub_category": item.name,
+                          "progress":
+                              "${((item.progress.completed / item.progress.total) * 100).toStringAsFixed(2)}%",
+                          "entity_id": TFS().clientId ?? ""
+                        });
                         Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) => TopicDetailPage(
                                 courseId: widget.courseId,

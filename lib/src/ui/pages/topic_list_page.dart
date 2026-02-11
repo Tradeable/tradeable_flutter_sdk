@@ -151,6 +151,16 @@ class _TopicListPageState extends State<TopicListPage> {
                               //       "total":
                               //           "${item.progress.completed}/${item.progress.total}"
                               //     });
+
+                              TFS().onEvent(
+                                  eventName: "Traders_Learn_Visited",
+                                  data: {
+                                    "module": item.name,
+                                    "progress":
+                                        "${item.progress.completed}/${item.progress.total}",
+                                    "source": widget.source,
+                                    "entity_id": TFS().clientId ?? ""
+                                  });
                               await Navigator.of(context)
                                   .push(MaterialPageRoute(
                                       builder: (context) => TopicDetailPage(

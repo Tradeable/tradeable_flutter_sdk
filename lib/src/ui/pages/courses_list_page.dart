@@ -39,14 +39,6 @@ class _CoursesListScreen extends State<CoursesListPage> {
         isLoading = false;
       });
     });
-
-    TFS().onEvent(eventName: "Traders_Learn_Visited", data: {
-      "source": widget.source,
-      "category": "Courses",
-      "sub_category": "VIEW_ALL",
-      "progress": "",
-      "entity_id": TFS().clientId ?? ""
-    });
   }
 
   @override
@@ -93,6 +85,16 @@ class _CoursesListScreen extends State<CoursesListPage> {
                                 //       "progressPercent": totalPercent,
                                 //       "courseTitle": item.name
                                 //     });
+                                TFS().onEvent(
+                                    eventName: "Traders_Learn_Visited",
+                                    data: {
+                                      "source": widget.source,
+                                      "module": "Courses",
+                                      "category": item.name,
+                                      "progress":
+                                          "${((item.progress.completed / item.progress.total) * 100).toStringAsFixed(2)}%",
+                                      "entity_id": TFS().clientId ?? ""
+                                    });
                                 await Navigator.of(context)
                                     .push(MaterialPageRoute(
                                         builder: (context) => CourseDetailsPage(

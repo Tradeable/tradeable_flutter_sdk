@@ -267,8 +267,8 @@ class _FlowsList extends State<FlowsList> {
 
             TFS().onEvent(eventName: "Traders_Learn_Visited", data: {
               "source": widget.source,
-              "category": widget.topic.name,
-              "sub_category": item.name,
+              "module": widget.topic.name,
+              "category": item.name,
               "panel": "Bottom_Panel",
               "progress":
                   "${widget.topic.progress.completed}/${widget.topic.progress.total}",

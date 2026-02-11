@@ -181,6 +181,14 @@ class _OverallProgressIndicator extends State<OverallProgressWidget> {
                   const SizedBox(width: 10),
                   InkWell(
                     onTap: () async {
+                      TFS().onEvent(eventName: "Traders_Learn_Visited", data: {
+                        "source": widget.source,
+                        "module": "Overall Progress",
+                        "category": "VIEW_ALL",
+                        "progress":
+                            "${((completed / total) * 100).toStringAsFixed(2)}%",
+                        "entity_id": TFS().clientId ?? ""
+                      });
                       await Navigator.of(context).push(MaterialPageRoute(
                           builder: (context) => UserActivityScreen(
                                 progressItems: model?.overall ?? [],
@@ -189,15 +197,6 @@ class _OverallProgressIndicator extends State<OverallProgressWidget> {
                                 },
                               )));
                       getProgress();
-
-                      TFS().onEvent(eventName: "Traders_Learn_Visited", data: {
-                        "source": widget.source,
-                        "category": "Overall Progress",
-                        "sub_category": "VIEW_ALL",
-                        "progress":
-                            "${((completed / total) * 100).toStringAsFixed(2)}%",
-                        "entity_id": TFS().clientId ?? ""
-                      });
                     },
                     child: Row(
                       children: [

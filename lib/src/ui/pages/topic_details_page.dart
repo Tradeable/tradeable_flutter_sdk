@@ -234,6 +234,14 @@ class _TopicDetailPageState extends State<TopicDetailPage> {
               border: Border.all(color: colors.topicDetailsHeadersColor)),
           child: InkWell(
             onTap: () {
+              TFS().onEvent(eventName: "Traders_Learn_Visited", data: {
+                "source": widget.source,
+                "module": widget.topic?.name,
+                "panel": "Bottom_Panel",
+                "progress":
+                    "${widget.topic?.progress.completed}/${widget.topic?.progress.total}",
+                "entity_id": TFS().clientId ?? ""
+              });
               showModalBottomSheet(
                 isScrollControlled: true,
                 backgroundColor: Colors.transparent,

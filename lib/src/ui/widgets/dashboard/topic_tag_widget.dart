@@ -52,8 +52,8 @@ class TopicTagWidget extends StatelessWidget {
                   );
                   TFS().onEvent(eventName: "Traders_Learn_Visited", data: {
                     "source": source,
-                    "category": "Quick Links",
-                    "sub_category": tags[i].formattedName,
+                    "module": "Quick Links",
+                    "category": tags[i].formattedName,
                     "progress": "",
                     "entity_id": TFS().clientId ?? ""
                   });
