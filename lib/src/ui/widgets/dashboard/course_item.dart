@@ -50,8 +50,8 @@ class CourseListItem extends StatelessWidget {
 
           TFS().onEvent(eventName: "Traders_Learn_Visited", data: {
             "source": source,
-            "category": "Courses",
-            "sub_category": model.name,
+            "module": "Courses",
+            "category": model.name,
             "progress": model.progress.total > 0
                 ? "${((model.progress.completed / model.progress.total) * 100).toStringAsFixed(2)}%"
                 : "0%",

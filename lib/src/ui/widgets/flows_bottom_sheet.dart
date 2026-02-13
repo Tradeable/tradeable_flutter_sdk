@@ -87,15 +87,6 @@ class _FlowsBottomSheet extends State<FlowsBottomSheet> {
                   setState(() {
                     Navigator.of(context).pop();
                     currentFlowId = flowId;
-
-                    TFS().onEvent(eventName: "Traders_Learn_Visited", data: {
-                      "source": widget.source,
-                      "category": widget.topic.name,
-                      "sub_category": widget.topic.name,
-                      "progress":
-                          "${widget.topic.progress.completed}/${widget.topic.progress.total}",
-                      "entity_id": TFS().clientId ?? ""
-                    });
                     widget.onFlowItemClicked(currentFlowId!);
                   });
                 },

@@ -82,6 +82,7 @@ class _CourseTopicsBottomSheetState extends State<CourseTopicsBottomSheet> {
                           const SizedBox(height: 20),
                           Expanded(
                             child: TopicProgressList(
+                              courseName: coursesModel!.name,
                               courseId: widget.courseId,
                               topics: coursesModel!.topics ?? [],
                               source: widget.source,
@@ -95,6 +96,15 @@ class _CourseTopicsBottomSheetState extends State<CourseTopicsBottomSheet> {
                               // TFS().onEvent(
                               //     eventName: AppEvents.viewAllTopicsInCourse,
                               //     data: {"courseTitle": coursesModel!.name});
+                              TFS().onEvent(
+                                  eventName: "Traders_Learn_Visited",
+                                  data: {
+                                    "source": widget.source,
+                                    "module": "Courses",
+                                    "category": "VIEW_ALL",
+                                    "progress": "",
+                                    "entity_id": TFS().clientId ?? ""
+                                  });
                               Navigator.of(context).pop();
                               Navigator.of(context).push(MaterialPageRoute(
                                 builder: (context) =>

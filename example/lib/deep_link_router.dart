@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:tradeable_flutter_sdk/src/ui/pages/topic_list_page.dart';
+import 'package:tradeable_flutter_sdk/src/ui/widgets/tradeable_right_side_drawer.dart';
 import 'package:tradeable_flutter_sdk/tradeable_flutter_sdk.dart';
 
 class DeepLinkRouter {
@@ -59,6 +61,24 @@ class DeepLinkRouter {
           navigatorKey.currentState?.push(
             MaterialPageRoute(
                 builder: (_) => TopicDetailPage(topicId: topicId)),
+          );
+        }
+        break;
+      case "/openSideDrawer":
+        final tagIdStr = queryParams?['tagId'];
+        final tagId = tagIdStr != null ? int.tryParse(tagIdStr) : null;
+        final source = queryParams?['source'];
+        final context = navigatorKey.currentContext;
+        if (tagId != null && context != null) {
+          TradeableRightSideDrawer.open(
+            context: context,
+            drawerBorderRadius: 24,
+            body: TopicListPage(
+              tagId: tagId,
+              onClose: () => Navigator.of(context).pop(),
+              showBottomButton: false,
+              source: source,
+            ),
           );
         }
         break;

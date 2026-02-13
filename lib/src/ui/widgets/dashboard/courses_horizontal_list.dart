@@ -37,8 +37,8 @@ class CoursesHorizontalList extends StatelessWidget {
 
                 TFS().onEvent(eventName: "Traders_Learn_Visited", data: {
                   "source": source,
-                  "category": "Courses",
-                  "sub_category": "VIEW_ALL",
+                  "module": "Courses",
+                  "category": "VIEW_ALL",
                   "progress": "",
                   "entity_id": TFS().clientId ?? ""
                 });

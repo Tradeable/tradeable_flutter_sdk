@@ -105,7 +105,7 @@ class RecentActivity extends StatelessWidget {
         // });
         TFS().onEvent(eventName: "Traders_Learn_Visited", data: {
           "source": source,
-          "category": "Overall Progress",
+          "module": "Overall Progress",
           "sub_category": item.name,
           "progress":
               "${((item.progress.completed / item.progress.total) * 100).toStringAsFixed(2)}%",
