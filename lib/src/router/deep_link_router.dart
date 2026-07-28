@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:tradeable_flutter_sdk/src/ui/pages/topic_list_page.dart';
-import 'package:tradeable_flutter_sdk/src/ui/widgets/tradeable_right_side_drawer.dart';
 import 'package:tradeable_flutter_sdk/tradeable_flutter_sdk.dart';
 
 class DeepLinkRouter {
@@ -9,12 +7,10 @@ class DeepLinkRouter {
   DeepLinkRouter(this.navigatorKey);
 
   String? parseRouteFromUri(Uri? uri) {
-    if (uri != null &&
-        uri.pathSegments.isNotEmpty &&
-        uri.pathSegments.first == 'app') {
-      if (uri.pathSegments.length > 1) {
-        return '/${uri.pathSegments[1]}';
-      }
+    if (uri == null || uri.pathSegments.isEmpty) return null;
+
+    if (uri.pathSegments.first == 'app' && uri.pathSegments.length > 1) {
+      return '/${uri.pathSegments[1]}';
     }
     return null;
   }
@@ -32,8 +28,7 @@ class DeepLinkRouter {
         );
         break;
       case "/courseById":
-        final courseIdStr = queryParams?['courseId'];
-        final courseId = courseIdStr != null ? int.tryParse(courseIdStr) : null;
+        final courseId = int.tryParse(queryParams?['courseId'] ?? '');
         if (courseId != null) {
           navigatorKey.currentState?.push(
             MaterialPageRoute(
@@ -42,8 +37,7 @@ class DeepLinkRouter {
         }
         break;
       case "/flowById":
-        final flowIdStr = queryParams?['flowId'];
-        final flowId = flowIdStr != null ? int.tryParse(flowIdStr) : null;
+        final flowId = int.tryParse(queryParams?['flowId'] ?? '');
         if (flowId != null) {
           navigatorKey.currentState?.push(
             MaterialPageRoute(
@@ -55,8 +49,7 @@ class DeepLinkRouter {
         }
         break;
       case "/topicById":
-        final topicIdStr = queryParams?['topicId'];
-        final topicId = topicIdStr != null ? int.tryParse(topicIdStr) : null;
+        final topicId = int.tryParse(queryParams?['topicId'] ?? '');
         if (topicId != null) {
           navigatorKey.currentState?.push(
             MaterialPageRoute(
@@ -65,8 +58,7 @@ class DeepLinkRouter {
         }
         break;
       case "/openSideDrawer":
-        final tagIdStr = queryParams?['tagId'];
-        final tagId = tagIdStr != null ? int.tryParse(tagIdStr) : null;
+        final tagId = int.tryParse(queryParams?['tagId'] ?? '');
         final source = queryParams?['source'];
         final context = navigatorKey.currentContext;
         if (tagId != null && context != null) {
@@ -81,6 +73,15 @@ class DeepLinkRouter {
             ),
           );
         }
+        break;
+      case "/userActivity":
+        navigatorKey.currentState?.push(
+          MaterialPageRoute(
+              builder: (_) => UserActivityScreen(
+                    progressItems: const [],
+                    updateProgress: () {},
+                  )),
+        );
         break;
     }
   }

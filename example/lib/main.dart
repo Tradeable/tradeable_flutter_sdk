@@ -3,7 +3,6 @@ import 'package:example/pages/page_list.dart';
 import 'package:flutter/material.dart';
 import 'package:tradeable_flutter_sdk/tradeable_flutter_sdk.dart';
 import 'dart:async';
-import 'package:example/deep_link_router.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
@@ -11,6 +10,7 @@ void main() {
   WidgetsFlutterBinding.ensureInitialized();
   TFS().initialize(
     baseUrl: "",
+    navigatorKey: navigatorKey,
     theme: WidgetsBinding.instance.platformDispatcher.platformBrightness ==
             Brightness.dark
         ? AppTheme.darkTheme()
@@ -40,18 +40,14 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   late final AppLinks _appLinks;
   StreamSubscription<Uri>? _linkSub;
-  late final DeepLinkRouter _deepLinkRouter;
 
   @override
   void initState() {
     super.initState();
     _appLinks = AppLinks();
-    _deepLinkRouter = DeepLinkRouter(navigatorKey);
     _linkSub = _appLinks.uriLinkStream.listen((Uri? uri) {
-      final route = _deepLinkRouter.parseRouteFromUri(uri);
-      final queryParams = uri?.queryParameters;
-      if (route != null) {
-        _deepLinkRouter.handleDeepLink(route, queryParams: queryParams);
+      if (uri != null) {
+        TFS().handleDeepLink(uri);
       }
     });
   }
