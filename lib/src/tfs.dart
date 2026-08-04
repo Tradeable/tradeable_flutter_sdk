@@ -21,6 +21,7 @@ class TFS {
   ThemeData? themeData;
   EventCallback? _onEventCallback;
   TokenExpirationCallback? _tokenExpirationCallback;
+  DeepLinkRouter? _deepLinkRouter;
 
   static final TFS _instance = TFS._internal();
 
@@ -40,11 +41,13 @@ class TFS {
 
   void initialize({
     required String baseUrl,
+    required GlobalKey<NavigatorState> navigatorKey,
     ThemeData? theme,
     EventCallback? onEvent,
     TokenExpirationCallback? onTokenExpiration,
   }) {
     this.baseUrl = baseUrl;
+    _deepLinkRouter = DeepLinkRouter(navigatorKey);
     _secretKey = generateSecretKey();
     themeData = theme ?? AppTheme.lightTheme();
     TLW().initialize(themeData: themeData);
@@ -69,6 +72,14 @@ class TFS {
     _appId = appId;
     _clientId = clientId;
     _publicKey = publicKey;
+  }
+
+  void handleDeepLink(Uri uri) {
+    if (_deepLinkRouter == null) return;
+    final route = _deepLinkRouter!.parseRouteFromUri(uri);
+    if (route != null) {
+      _deepLinkRouter!.handleDeepLink(route, queryParams: uri.queryParameters);
+    }
   }
 
   Future<void> onTokenExpired() async {

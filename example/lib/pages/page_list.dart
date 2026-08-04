@@ -1,3 +1,4 @@
+import 'package:example/pages/deep_link_test_page.dart';
 import 'package:flutter/material.dart';
 import 'package:tradeable_flutter_sdk/tradeable_flutter_sdk.dart';
 
@@ -26,6 +27,17 @@ class _PageListState extends State<PageList> {
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Theme.of(context).customColors.background,
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.link),
+              tooltip: 'Deep Link Test',
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(builder: (_) => const DeepLinkTestPage()),
+                );
+              },
+            ),
+          ],
         ),
         body: SafeArea(
           child: Column(

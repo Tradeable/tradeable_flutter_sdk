@@ -28,7 +28,7 @@ class _LearnDashboard extends State<LearnDashboard> {
   void initState() {
     getBanners();
     getModules();
-    TFS().onEvent(eventName: "Traders_Learn_Dashboard", data: {
+    TFS().onEvent(eventName: "Traders_Learn_Visited", data: {
       "module": "Learn Dashboard",
       "source": widget.source,
       "entity_id": TFS().clientId ?? ""
